@@ -1,0 +1,35 @@
+---
+title: Troubleshoot statistics queries
+description: Resolve common authentication, identifier, timing, and response errors.
+sidebar:
+  order: 10
+---
+
+Use [shared cURL setup](../setup/) before retrying a query.
+
+| Symptom | Check |
+| --- | --- |
+| HTTP 401 or 403 from the API | Confirm the token is current and has read access to the `statistics` namespace. A `system` query needs separate tenant-wide access. |
+| HTTP 404 from API inventory | Confirm discovery is enabled and use the load balancer's `ves.io/app_type` label. |
+| HTTP 404 from API statistics | Use the telemetry `VIRTUAL_HOST` returned by the service graph. |
+| HTTP 500 from service graph | Regenerate ordered Unix time values. A reversed window produced HTTP 500 in the prototype. |
+| Empty metric series | Confirm the timer is active, widen the window, and allow up to ten minutes for rollup. |
+| No WAF block event | Confirm the HTTPS request reached this load balancer, the WAF is in blocking mode, and the query uses the correct virtual host. |
+| TLS or DNS failure | Confirm the delegated zone, managed record, certificate readiness, and load balancer domain. |
+
+**1. Print the current time window.**
+
+```bash
+printf 'start=%s end=%s\n' "$START_TIME" "$END_TIME"
+test "$START_TIME" -lt "$END_TIME"
+```
+
+**2. Refresh the window when it is stale.**
+
+```bash
+export END_TIME="$(date -u +%s)"
+export START_TIME="$((END_TIME - 7200))"
+export START_24H="$((END_TIME - 86400))"
+```
+
+Keep diagnostic output private. Security events and access logs can contain personal or sensitive request data.

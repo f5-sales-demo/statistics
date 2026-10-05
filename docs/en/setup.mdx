@@ -1,0 +1,112 @@
+---
+title: Set up cURL
+description: Authenticate once and discover the identifiers used by statistics queries.
+sidebar:
+  order: 2
+---
+
+## Check prerequisites
+
+Use Bash, cURL 7.76 or later, and `jq` 1.7 or later. Obtain an F5 Distributed Cloud API token with read access to the `statistics` namespace. Do not put the token in a command line, URL, document, or Git file. Tenant-wide queries require separate `system` namespace access and are outside this learning path.
+
+## Set shared variables
+
+**1. Enter your tenant URL.**
+
+```bash
+read -r -p 'F5 XC tenant URL: ' TENANT_URL
+export TENANT_URL
+```
+
+**2. Enter your API token without echoing it.**
+
+```bash
+read -r -s -p 'F5 XC API token: ' XC_TOKEN
+printf '\n'
+export XC_TOKEN
+```
+
+**3. Set the demo identifiers.**
+
+```bash
+export DEMO_HOST=statistics.f5-sales-demo.com
+export NAMESPACE="${DEMO_HOST%%.*}"
+export LOAD_BALANCER="$NAMESPACE"
+```
+
+**4. Set ordered UTC time windows.**
+
+```bash
+export END_TIME="$(date -u +%s)"
+export START_TIME="$((END_TIME - 7200))"
+export START_24H="$((END_TIME - 86400))"
+test "$START_24H" -lt "$START_TIME"
+test "$START_TIME" -lt "$END_TIME"
+```
+
+The API accepts Unix epoch seconds as strings. Refresh all three times before a later query. A reversed window can return HTTP 500.
+
+## Read the load balancer identifiers
+
+**1. Fetch the load balancer configuration.**
+
+```bash
+lb_json="$(curl --silent --show-error --fail-with-body \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Accept: application/json' \
+  "${TENANT_URL}/api/config/namespaces/${NAMESPACE}/http_loadbalancers/${LOAD_BALANCER}")"
+```
+
+**2. Read its API discovery state and app type.**
+
+```bash
+API_DISCOVERY_ENABLED="$(jq -er '(.spec.enable_api_discovery != null)' <<<"$lb_json")"
+APP_TYPE="$(jq -r '.metadata.labels["ves.io/app_type"] // empty' <<<"$lb_json")"
+export API_DISCOVERY_ENABLED APP_TYPE
+jq -er '{name: .metadata.name, namespace: .metadata.namespace,
+  waf: .spec.app_firewall.name,
+  api_discovery_enabled: (.spec.enable_api_discovery != null)}' <<<"$lb_json"
+```
+
+If discovery is enabled but `APP_TYPE` is empty, wait for configuration to settle and retry before querying inventory.
+
+## Find the telemetry virtual host
+
+**1. Request active service graph nodes in the current window.**
+
+```bash
+request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
+  --arg end "$END_TIME" '{
+    namespace: $ns, start_time: $start, end_time: $end,
+    step: "5m", range: "5m", group_by: ["VHOST"],
+    field_selector: {node: {metric: {upstream: ["HTTP_REQUEST_RATE"]}}}
+  }')"
+graph_json="$(curl --silent --show-error --fail-with-body \
+  --request POST \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Content-Type: application/json' \
+  --data-binary "$request" \
+  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/graph/service")"
+```
+
+**2. Select this load balancer's unique virtual host.**
+
+```bash
+VIRTUAL_HOST="$(jq -er --arg suffix "-$LOAD_BALANCER" '
+  [.data.nodes[]?.id.vhost // empty | select(endswith($suffix))]
+  | unique
+  | if length == 1 then .[0] else error("Expected one demo VHOST") end
+' <<<"$graph_json")"
+export VIRTUAL_HOST
+```
+
+The configuration name, telemetry `VIRTUAL_HOST`, and `APP_TYPE` serve different APIs. Generate demo traffic and wait for telemetry if the graph has no matching node.
+
+## Read responses consistently
+
+The examples use `--fail-with-body` so HTTP errors stop the command while preserving the error body.
+Some counts and point values are JSON strings; convert them with `tonumber` only when present. A
+missing metric series means no data for that selector and window. Service graph points can arrive
+several minutes after requests; the prototype observed a new five-minute bucket about six minutes
+after a burst. Allow up to ten minutes before investigating a missing new sample. Logs and discovery
+can have different delays.

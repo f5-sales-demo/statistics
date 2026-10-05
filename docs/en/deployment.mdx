@@ -1,0 +1,90 @@
+---
+title: Deploy the demo
+description: Review and apply the pinned Terraform root with private local state.
+sidebar:
+  order: 3
+---
+
+The Terraform root pins `f5-sales-demo/xcsh` 15.0.0 and immutable commits of the [origin
+server](https://github.com/f5-sales-demo/origin-server) and [traffic
+generator](https://github.com/f5-sales-demo/traffic-generator). It uses the signed-in Azure
+subscription, sets `deployer=statistics`, and stores local state under
+`$HOME/.local/state/statistics`. The two default East US 2 VMs are `Standard_D16s_v3` and
+`Standard_F16s_v2`.
+
+## Prepare the operator shell
+
+**1. Sign in to the approved Azure sales-demo subscription with the Azure CLI.**
+
+**2. Create an ignored `.env` file in the repository root with `XCSH_API_URL` and `XCSH_API_TOKEN`.**
+
+**3. Restrict the file to your user.**
+
+```bash
+chmod 0600 .env
+```
+
+**4. Export the credentials without printing them.**
+
+```bash
+set -a
+source .env
+set +a
+```
+
+**5. Bind Terraform to the signed-in subscription.**
+
+```bash
+export TF_VAR_subscription_id="$(az account show --query id --output tsv)"
+export TF_CLI_CONFIG_FILE=/dev/null
+```
+
+## Review the plan
+
+**1. Confirm that `statistics.f5-sales-demo.com` has no existing DNS answer and the `statistics` namespace and named objects are unowned.**
+
+**2. Create the private state directory.**
+
+```bash
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/statistics"
+install -d -m 0700 "$state_dir"
+```
+
+**3. Initialize the local backend.**
+
+```bash
+terraform -chdir=terraform init -input=false \
+  -backend-config="path=$state_dir/terraform.tfstate"
+```
+
+**4. Validate the configuration.**
+
+```bash
+terraform -chdir=terraform validate
+```
+
+**5. Save a plan outside Git.**
+
+```bash
+terraform -chdir=terraform plan -input=false \
+  -out="$state_dir/statistics.tfplan"
+```
+
+**6. Inspect the planned resource actions.**
+
+```bash
+terraform -chdir=terraform show -json "$state_dir/statistics.tfplan" |
+  jq -r '.resource_changes[] | [.address, (.change.actions | join(","))] | @tsv'
+```
+
+The first plan should contain only creates for the dedicated VMs, networking, namespace, health check, origin pool, blocking WAF, HTTPS load balancer, and generator timer extension. Investigate any update, replacement, or deletion before applying. The origin module permits inbound ports 22, 80, 443, and 8888; the generator permits 22.
+
+## Apply the reviewed plan
+
+**1. Apply the saved plan.**
+
+```bash
+terraform -chdir=terraform apply -input=false "$state_dir/statistics.tfplan"
+```
+
+**2. Follow [verification](../verification/) after the origin and generator finish cloud-init. Keep the timer running so later API examples have fresh traffic.**
