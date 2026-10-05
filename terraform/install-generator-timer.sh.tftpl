@@ -2,7 +2,7 @@
 set -euo pipefail
 install -d -m 0755 /var/lib/statistics-demo
 
-cat > /usr/local/bin/statistics-demo-traffic <<'TRAFFIC'
+cat >/usr/local/bin/statistics-demo-traffic <<'TRAFFIC'
 #!/usr/bin/env bash
 set -euo pipefail
 exec 9>/run/statistics-demo-traffic.lock
@@ -41,7 +41,7 @@ fi
 TRAFFIC
 chmod 0755 /usr/local/bin/statistics-demo-traffic
 
-cat > /etc/systemd/system/statistics-demo-traffic.service <<'UNIT'
+cat >/etc/systemd/system/statistics-demo-traffic.service <<'UNIT'
 [Unit]
 Description=Bounded statistics demo traffic
 After=network-online.target
@@ -53,7 +53,7 @@ ExecStart=/usr/local/bin/statistics-demo-traffic
 TimeoutStartSec=90
 UNIT
 
-cat > /etc/systemd/system/statistics-demo-traffic.timer <<'UNIT'
+cat >/etc/systemd/system/statistics-demo-traffic.timer <<'UNIT'
 [Unit]
 Description=Send statistics demo requests once a minute
 
