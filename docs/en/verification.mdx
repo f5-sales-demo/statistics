@@ -72,9 +72,11 @@ Expect `active` and an increasing run count. The service sends at most three nor
 
 **10. Record a second service graph sample with a later timestamp and nonzero request rate.**
 
-**11. Run each resource guide and confirm its expected fields.**
+**11. Run each resource guide.**
 
-**12. Record sanitized counts and times without tenant IDs, client addresses, headers, raw events, or credentials.**
+**12. Check each response for the expected fields.**
+
+**13. Record sanitized counts and times without tenant IDs, client addresses, headers, raw events, or credentials.**
 
 The prototype observed one new service metric bucket about six minutes after a burst. Poll for up to ten minutes before treating absence as a failure.
 
@@ -91,6 +93,7 @@ These observations are from 5 October 2026 UTC. Re-run the checks for current va
 | Service graph | The 21:45 five-minute bucket had `HTTP_REQUEST_RATE=0.0236054167`; the 21:50 bucket had `0.0192674306`. Both followed timer traffic. |
 | Firewall counters | A five-minute request returned `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` series. |
 | Access logs | The namespace query returned 185 hits in the 21:48 replay. |
+| API discovery | The statistics and inventory reads returned HTTP 200, but both showed zero endpoints 20 minutes after a 90-request JSON API burst. The inventory had no update timestamp. |
 
 The pinned origin VM finished its application bootstrap but cloud-init reported an error installing
 the optional `dool` package. The requested routes passed direct and protected health checks; use

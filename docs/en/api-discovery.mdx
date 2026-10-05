@@ -43,3 +43,5 @@ jq -er '{
 ```
 
 Expect `last_update`, `count`, and category counts. The response filter omits captured paths, request bodies, and sensitive-data details. A newly deployed API route can take time to appear.
+
+In the first live run of this deployment, both queries returned HTTP 200 but reported zero endpoints after a bounded 90-request JSON API burst and 20 minutes of polling. The inventory had no update timestamp. Keep the generator timer running and repeat the queries; do not substitute endpoint counts from another load balancer.
