@@ -1,25 +1,25 @@
 ---
-title: Find other statistics APIs
+title: Statistics APIs
 description: Map additional telemetry families to the resources that produce them.
 sidebar:
-  order: 12
+  order: 11
 ---
 
-This guide verifies statistics produced by the current HTTP demo. The following families need their own deployed responder and a separate live query before they become runnable guides.
+These API families provide statistics for different resources. Each family below needs its own deployed responder and live verification before it can have a runnable guide.
 
 | API family | Required demo resource |
 | --- | --- |
 | Bot defense | Bot defense policy and traffic that exercises its detection paths |
 | Client-side defense | Protected browser application with client-side telemetry enabled |
-| DDoS | L3/L4 or L7 protection and authorized load or attack simulation |
-| TCP | TCP load balancer, origin listener, and connection traffic |
-| DNS | Managed DNS zone, records, and query traffic |
-| CDN/cache | CDN load balancer or cache policy with hit and miss traffic |
+| Distributed denial of service (DDoS) | Network-layer or application-layer protection and authorized load or attack simulation |
+| Transmission Control Protocol (TCP) | TCP load balancer, origin listener, and connection traffic |
+| Domain Name System (DNS) | Managed DNS zone, records, and query traffic |
+| Content delivery network (CDN)/cache | CDN load balancer or cache policy with hit and miss traffic |
 | Multi-cloud networking | Connected sites, routes, and cross-site flows |
 | Kubernetes | Registered cluster or virtual Kubernetes workload |
 | Audit logs | Authorized configuration or account activity |
 
-Use [origin performance](../origin-performance/), [application health](../application-health/), and the [service graph](../service-graph/), [firewall counters](../firewall-metrics/), [security events](../security-events/), [API discovery](../api-discovery/), and [access logs](../access-logs/) for this HTTP demo.
+For the current HTTP demo, use [HTTP access logs](../access-logs/), [Load balancer metrics](../service-graph/), [Origin performance](../origin-performance/), [Application health](../application-health/), [API activity](../api-discovery/), [WAF metrics](../firewall-metrics/), and [Security events](../security-events/).
 
 ## Supported HTTP metrics with no current points
 
@@ -28,4 +28,4 @@ Use [origin performance](../origin-performance/), [application health](../applic
 | Graph `ACTIVE_CONNECTIONS` and `NEW_CONNECTION_RATE` | Requested with VHOST traffic metrics; no returned series in the measured window | Capture meaningful connection telemetry before adding a populated example |
 | `/api/data/namespaces/{namespace}/app_security/metrics` | Namespace and `VH_NAME` query returned HTTP 200 with empty counters | Retain WAF counters and authoritative event logs; capture meaningful metric points before presenting counts |
 
-These are unavailable telemetry for the measured selector and window. HTTP 200 does not make an empty response a populated result. See [verification](../verification/) for timestamps and the empty security-metric response. DNS, cache/CDN, TCP, sites, and Kubernetes need their own future resources and acceptance.
+These are unavailable telemetry for the measured selector and window. HTTP 200 does not make an empty response a populated result. See [verification](../verification/#empty-security-event-metric-response) for timestamps and the empty security-metric response. DNS, cache/CDN, TCP, sites, and Kubernetes need their own future resources and acceptance.

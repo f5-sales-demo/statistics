@@ -1,107 +1,66 @@
 ---
-title: Verify the live demo
-description: Check the origin, HTTPS route, WAF, generator, and two fresh telemetry samples.
+title: Verification
+description: Check demo readiness and compare the bounded request sequence with measured telemetry.
 sidebar:
-  order: 10
+  order: 9
 ---
 
-Use the existing demo and complete [shared cURL setup](../setup/) first. For a new deployment, use the [Terraform reference](../deployment/). Keep the timer enabled after acceptance.
+Verify that the demo serves requests, records WAF blocks, and returns telemetry. The measured results below show how access logs, API activity, and sampled metrics differ.
 
-**1. Wait for both Azure VMs to finish application provisioning.**
+## Check readiness
 
-**2. Resolve the demo hostname.**
+For a new deployment, wait for the origin and generator applications to finish provisioning. Use the public routes as the application readiness check.
 
-```bash
-dig +short "$XCSH_DEMO_HOST" A
-```
+1. Check DNS and the HTTPS health route.
 
-**3. Check the public HTTPS health route and certificate.**
+   ```bash
+   dig +short "$XCSH_DEMO_HOST" A
+   curl --silent --show-error --fail-with-body --output /dev/null \
+     --write-out 'status=%{http_code} tls=%{ssl_verify_result}\n' \
+     "https://$XCSH_DEMO_HOST/health"
+   ```
 
-```bash
-curl --silent --show-error --fail-with-body --output /dev/null \
-  --write-out 'status=%{http_code} tls=%{ssl_verify_result}\n' \
-  "https://$XCSH_DEMO_HOST/health"
-```
+   Expect `status=200 tls=0`, which confirms HTTP success and certificate verification.
 
-Expect `status=200 tls=0`. Do not use `-k`.
+2. Check an API route through the load balancer.
 
-**4. Check an API route through the load balancer.**
+   ```bash
+   curl --silent --show-error --fail-with-body --output /dev/null \
+     --write-out 'status=%{http_code}\n' \
+     "https://$XCSH_DEMO_HOST/httpbin/get?statistics_probe=$(date -u +%s)"
+   ```
 
-```bash
-curl --silent --show-error --fail-with-body --output /dev/null \
-  --write-out 'status=%{http_code}\n' \
-  "https://$XCSH_DEMO_HOST/httpbin/get?statistics_probe=$(date -u +%s)"
-```
+3. Check the WAF rejection page with one authorized probe to this F5-owned demo.
 
-**5. Send one authorized WAF probe to this F5-owned demo.**
+   ```bash
+   XCSH_WAF_BODY="$(mktemp)"
+   trap 'rm -f "$XCSH_WAF_BODY"' EXIT
+   curl --silent --show-error --output "$XCSH_WAF_BODY" --write-out 'status=%{http_code}\n' \
+     --get --data-urlencode "q=' OR 1=1--" \
+     "https://$XCSH_DEMO_HOST/httpbin/get"
+   grep -i '<title>Request Rejected</title>' "$XCSH_WAF_BODY"
+   ```
 
-```bash
-XCSH_WAF_BODY="$(mktemp)"
-trap 'rm -f "$XCSH_WAF_BODY"' EXIT
-curl --silent --show-error --output "$XCSH_WAF_BODY" --write-out 'status=%{http_code}\n' \
-  --get --data-urlencode "q=' OR 1=1--" \
-  "https://$XCSH_DEMO_HOST/httpbin/get"
-```
+   The rejection page can return HTTP 200. Confirm its title and a matching [security event](../security-events/) with `action: "block"`.
 
-**6. Confirm the rejection page.**
+4. Check the generator timer on its dedicated VM.
 
-```bash
-grep -i '<title>Request Rejected</title>' "$XCSH_WAF_BODY"
-```
+   Authenticate to the approved Azure subscription before using the Azure CLI.
 
-The current F5 rejection page can return HTTP 200. Confirm the page title and a matching
-[security event](../security-events/) with `action: "block"`; the status code alone is
-not a WAF result. The generator sends the same bounded probe every fifth timer run.
+   ```bash
+   az vm run-command invoke \
+     --resource-group rg-traffic-generator-lab-statistics \
+     --name vm-traffic-generator-statistics \
+     --command-id RunShellScript \
+     --scripts 'systemctl is-active statistics-demo-traffic.timer; cat /var/lib/statistics-demo/run-count' \
+     --query 'value[].message' --output tsv
+   ```
 
-**7. Check the generator timer on its dedicated VM.**
-
-```bash
-az vm run-command invoke \
-  --resource-group rg-traffic-generator-lab-statistics \
-  --name vm-traffic-generator-statistics \
-  --command-id RunShellScript \
-  --scripts 'systemctl is-active statistics-demo-traffic.timer; cat /var/lib/statistics-demo/run-count' \
-  --query 'value[].message' --output tsv
-```
-
-Expect `active` and an increasing run count. The service sends at most three normal requests per minute and one WAF probe every fifth run.
-
-**8. Record one [service graph](../service-graph/) sample after the first new five-minute bucket appears.**
-
-**9. Wait for the next five-minute bucket.**
-
-**10. Record a second service graph sample with a later timestamp and nonzero request rate.**
-
-**11. Run each resource guide.**
-
-**12. Check each response for the expected fields.**
-
-**13. Record sanitized counts and times without tenant IDs, client addresses, headers, raw events, or credentials.**
-
-The prototype observed one new service metric bucket about six minutes after a burst. Poll for up to ten minutes before treating absence as a failure.
-
-## Results from this deployment
-
-These observations are from 5 October 2026 UTC. Re-run the checks for current values.
-
-| Check | Observed result |
-| --- | --- |
-| DNS and TLS | F5 authoritative and public resolvers returned the demo A record; HTTPS certificate verification returned `0`. |
-| Origin and load balancer | `/health`, `/httpbin/get`, and `/httpbin/anything/statistics` returned HTTP 200. |
-| WAF | The SQL injection probe returned a `Request Rejected` page with HTTP 200; the security-event query recorded `action: "block"`. |
-| Generator | The timer remained active and its run count increased from 46 to 51 between checks. |
-| Service graph | The 21:45 five-minute bucket had `HTTP_REQUEST_RATE=0.0236054167`; the 21:50 bucket had `0.0192674306`. Both followed timer traffic. |
-| Firewall counters | A five-minute request returned `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` series. |
-| Access logs | The namespace query returned 185 hits in the 21:48 replay. |
-| API discovery | The first read showed zero endpoints after the burst; the 6 October 02:14 UTC read returned three discovered endpoints and three inventory entries. |
-
-The pinned origin VM finished its application bootstrap but cloud-init reported an error installing
-the optional `dool` package. The requested routes passed direct and protected health checks; use
-those checks as the application readiness gate.
+   Expect `active` and an increasing run count. The timer sends three normal requests each minute and one WAF probe every fifth run. Keep it enabled for fresh telemetry.
 
 ## Observed command output
 
-Captured 2026-10-06 02:14:35 UTC through 2026-10-06 02:15:08 UTC. These are selected command-output lines in order; the DNS address and Azure wrapper are omitted.
+Captured 2026-10-06 02:14:35 UTC through 2026-10-06 02:15:08 UTC. Readiness checks returned these results:
 
 ```text
 status=200 tls=0
@@ -112,9 +71,9 @@ active
 312
 ```
 
-## Verify request outcomes without stopping the origin
+## Run the bounded request sequence
 
-Capture baseline statistics before generating requests. The following sequence sends 30 requests sequentially: 20 health requests, five explicit 404 responses, and five explicit 503 responses. Each request has a ten-second timeout and a unique marker. It uses the origin's status routes, so the origin stays online. A status mismatch stops the sequence.
+Record a baseline with [Load balancer metrics](../service-graph/). This sequence sends 30 requests: 20 health requests, five explicit 404 responses, and five explicit 503 responses. Each request has a ten-second timeout and a unique marker. The origin stays online. A status mismatch stops the sequence.
 
 ```bash
 export XCSH_RUN_MARKER="statistics-outcomes-$(date -u +%Y%m%dT%H%M%SZ)"
@@ -140,19 +99,22 @@ done
 export XCSH_BURST_END="$(date -u +%s)"
 ```
 
-The measured sequence ran from 2026-10-06T03:09:40Z to 2026-10-06T03:10:01Z. All 30 statuses matched: 20 × 200, five × 404, and five × 503. The existing timer continued to generate its normal traffic, so window-wide counts include background requests.
+After telemetry rollup, [refresh the query window](../setup/#refresh-the-time-window) and compare [HTTP access logs](../access-logs/#count-all-matching-logs), [API activity](../api-discovery/), and load balancer metrics. Allow up to ten minutes for a new five-minute metric bucket.
 
-After rollup, refresh the shared query window and replay the guides. Keep receipts private with owner-only permissions,
-including the UTC capture time, HTTP status, original response, request selector, and sanitized summary. Compare
-published output to that summary; replace identifiers without changing measured values. Do not publish raw receipts,
-headers, credentials, addresses, or captured bodies.
+## Measured request results
 
-The first post-sequence log snapshot at 03:13:40 UTC counted 430 logs across five populated pages and an empty final
-page. The complete window contained 413 responses with code 200, 12 with code 404, and five with code 503. The first
-page contained 100 logs: 90 with code 200, five with code 404, and five with code 503. The discrepancy illustrates why
-first-page class counts are not complete-window totals. All returned methods were GET.
+The sequence ran from 2026-10-06T03:09:40Z to 2026-10-06T03:10:01Z. All 30 statuses matched: 20 × 200, five × 404, and five × 503. The timer continued to send traffic, so window-wide counts include background requests.
 
-The API-call summary from the same replay reported 378 calls, all in its returned 2xx class. Its top-active list covered three discovered endpoints. The explicit status routes were present in access logs but absent from that discovered-endpoint population. Compare these surfaces within their own scope rather than equating API calls with all HTTP requests.
+The log snapshot at 2026-10-06T03:13:40Z contained 430 logs across five populated pages and an empty final page. All returned methods were GET.
+
+| HTTP status code | First page | All matching logs |
+| --- | --- | --- |
+| 200 | 90 | 413 |
+| 404 | 5 | 12 |
+| 503 | 5 | 5 |
+| Total | 100 | 430 |
+
+First-page counts omit most of the logs in this window. The API-call summary reported 378 calls, all in its returned 2xx class, and its top-active list covered three discovered endpoints. The status routes appeared in access logs but not in that discovered-endpoint population. Compare each count within its query scope.
 
 ## Empty security-event metric response
 

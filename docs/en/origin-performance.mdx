@@ -2,68 +2,137 @@
 title: Origin performance
 description: Match the configured origin and compare its node and edge metrics.
 sidebar:
-  order: 5
+  order: 4
 ---
 
-Complete [shared cURL setup](../setup/) to match `XCSH_GRAPH_DESTINATION` to the configured origin pool and discover `XCSH_GRAPH_SOURCE`.
-
-Use the destination node's `upstream` metrics for the service receiving requests. The edge's `data.metric.data`
+Origin metrics show the request path from the public network to the configured origin. Use the destination node's `upstream` metrics for the service receiving requests. The edge's `data.metric.data`
 describes the path from the selected source to that destination. Compare rates and errors with response latency, server
-RTT, and data transfer time. A high response latency alone does not identify an application bottleneck; server RTT and
+round-trip time (RTT), and data transfer time. A high response latency alone does not identify an application bottleneck; server RTT and
 transfer time help explain where time was spent.
 
-**1. Request node and edge metrics with service identities retained.**
+## Match the origin graph identity
 
-```bash
-XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
-  --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
-    namespace: $ns, start_time: $start, end_time: $end,
-    step: "5m", range: "5m", group_by: ["VHOST", "SERVICE"],
-    label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
-    field_selector: {
-      node: {metric: {upstream: [
-        "HTTP_REQUEST_RATE", "HTTP_ERROR_RATE", "HTTP_ERROR_RATE_4XX",
-      "HTTP_ERROR_RATE_5XX", "HTTP_RESPONSE_LATENCY",
-      "REQUEST_THROUGHPUT", "RESPONSE_THROUGHPUT", "REQUEST_TO_ORIGIN_RATE",
-      "CLIENT_RTT", "SERVER_RTT", "HTTP_SERVER_DATA_TRANSFER_TIME"
-      ]}},
-      edge: {metric: {types: [
-        "HTTP_REQUEST_RATE", "HTTP_ERROR_RATE", "HTTP_ERROR_RATE_4XX",
-        "HTTP_ERROR_RATE_5XX", "HTTP_RESPONSE_LATENCY",
-        "REQUEST_THROUGHPUT", "RESPONSE_THROUGHPUT", "REQUEST_TO_ORIGIN_RATE",
-        "CLIENT_RTT", "SERVER_RTT", "HTTP_SERVER_DATA_TRANSFER_TIME"
-      ]}}
-    }
-  }')"
+Use `VHOST` and `SERVICE` grouping to discover both ends of the request edge. The demo pool contains one public-IP origin. Match its configured address exactly; a service label or the load-balancer name alone is insufficient.
+
+1. Read the configured default pool and its unique public IP.
+
+   ```bash
+   XCSH_ORIGIN_POOL="$(jq -er '
+     [.spec.default_route_pools[]?.pool.name] | unique
+     | if length == 1 then .[0] else error("Expected one origin pool") end
+   ' <<<"$XCSH_LB_JSON")"
+   XCSH_POOL_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     "${XCSH_API_URL}/api/config/namespaces/${XCSH_NAMESPACE}/origin_pools/${XCSH_ORIGIN_POOL}")"
+   XCSH_ORIGIN_IP="$(jq -er '
+     [.spec.origin_servers[]?.public_ip.ip // empty] | unique
+     | if length == 1 then .[0] else error("Expected one public-IP origin") end
+   ' <<<"$XCSH_POOL_JSON")"
+   ```
+
+2. Discover the source and destination services.
+
+   ```bash
+   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" \
+     --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" \
+     --arg vh "$XCSH_VIRTUAL_HOST" '{
+       namespace: $ns, start_time: $start, end_time: $end,
+       step: "5m", range: "5m", group_by: ["VHOST", "SERVICE"],
+       label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
+       field_selector: {node: {metric: {upstream: ["HTTP_REQUEST_RATE"]}},
+                        edge: {metric: {types: ["HTTP_REQUEST_RATE"]}}}
+     }')"
+   XCSH_GRAPH_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+     --request POST \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Content-Type: application/json' \
+     --data-binary "$XCSH_REQUEST" \
+     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
+   XCSH_GRAPH_DESTINATION="$(jq -er --arg vh "$XCSH_VIRTUAL_HOST" \
+     --arg ip "$XCSH_ORIGIN_IP" '
+     [.data.edges[]? | select(.dst_id.vhost == $vh)
+       | .dst_id.service | select(. == ("S:" + $ip))] | unique
+     | if length == 1 then .[0] else error("No unique configured origin edge") end
+   ' <<<"$XCSH_GRAPH_JSON")"
+   XCSH_GRAPH_SOURCE="$(jq -er --arg vh "$XCSH_VIRTUAL_HOST" \
+     --arg dst "$XCSH_GRAPH_DESTINATION" '
+     [.data.edges[]? | select(.dst_id.vhost == $vh and .dst_id.service == $dst)
+       | .src_id.service] | unique
+     | if length == 1 then .[0] else error("Expected one source service") end
+   ' <<<"$XCSH_GRAPH_JSON")"
+   export XCSH_ORIGIN_POOL XCSH_ORIGIN_IP XCSH_GRAPH_SOURCE XCSH_GRAPH_DESTINATION
+   jq -n --arg source "$XCSH_GRAPH_SOURCE" --arg destination "$XCSH_GRAPH_DESTINATION" \
+     '{source: $source, destination: $destination, configured_origin_match: true}'
+   ```
+
+The origin address is returned as a service identity prefixed with `S:`. The source is the public network identity. These commands deliberately stop if the configured origin cannot be matched uniquely. Other pool types or multiple origins need their own matching procedure.
+
+### Matched origin
+
+Captured 2026-10-06T03:13:41Z; HTTP 200.
+
+```json
+{
+  "source": "<XCSH_GRAPH_SOURCE>",
+  "destination": "<XCSH_GRAPH_DESTINATION>",
+  "configured_origin_match": true
+}
 ```
 
-**2. Query the matched node and edge.**
+## Query origin metrics
 
-```bash
-XCSH_ORIGIN_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
-  --request POST \
-  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
-  --header 'Content-Type: application/json' \
-  --data-binary "$XCSH_REQUEST" \
-  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
-jq -er --arg vh "$XCSH_VIRTUAL_HOST" --arg src "$XCSH_GRAPH_SOURCE" \
-  --arg dst "$XCSH_GRAPH_DESTINATION" '
-  def summary: {type, unit, points: (.value.raw | length),
-                latest: (.value.raw[-1] // null)};
-  {step, source: $src, destination: $dst,
-   node: ([.data.nodes[]? | select(.id.vhost == $vh and .id.service == $dst)
-     | .data.metric.upstream[]? | summary] | sort_by(.type)),
-   edge: ([.data.edges[]? | select(.dst_id.vhost == $vh and
-     .src_id.service == $src and .dst_id.service == $dst)
-     | .data.metric.data[]? | summary] | sort_by(.type))}
-' <<<"$XCSH_ORIGIN_JSON"
-```
+1. Request node and edge metrics with service identities retained.
+
+   ```bash
+   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+     --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
+       namespace: $ns, start_time: $start, end_time: $end,
+       step: "5m", range: "5m", group_by: ["VHOST", "SERVICE"],
+       label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
+       field_selector: {
+         node: {metric: {upstream: [
+           "HTTP_REQUEST_RATE", "HTTP_ERROR_RATE", "HTTP_ERROR_RATE_4XX",
+           "HTTP_ERROR_RATE_5XX", "HTTP_RESPONSE_LATENCY",
+           "REQUEST_THROUGHPUT", "RESPONSE_THROUGHPUT", "REQUEST_TO_ORIGIN_RATE",
+           "CLIENT_RTT", "SERVER_RTT", "HTTP_SERVER_DATA_TRANSFER_TIME"
+         ]}},
+         edge: {metric: {types: [
+           "HTTP_REQUEST_RATE", "HTTP_ERROR_RATE", "HTTP_ERROR_RATE_4XX",
+           "HTTP_ERROR_RATE_5XX", "HTTP_RESPONSE_LATENCY",
+           "REQUEST_THROUGHPUT", "RESPONSE_THROUGHPUT", "REQUEST_TO_ORIGIN_RATE",
+           "CLIENT_RTT", "SERVER_RTT", "HTTP_SERVER_DATA_TRANSFER_TIME"
+         ]}}
+       }
+     }')"
+   ```
+
+2. Query the matched node and edge.
+
+   ```bash
+   XCSH_ORIGIN_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+     --request POST \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Content-Type: application/json' \
+     --data-binary "$XCSH_REQUEST" \
+     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
+   jq -er --arg vh "$XCSH_VIRTUAL_HOST" --arg src "$XCSH_GRAPH_SOURCE" \
+     --arg dst "$XCSH_GRAPH_DESTINATION" '
+     def summary: {type, unit, points: (.value.raw | length),
+                   latest: (.value.raw[-1] // null)};
+     {step, source: $src, destination: $dst,
+      node: ([.data.nodes[]? | select(.id.vhost == $vh and .id.service == $dst)
+        | .data.metric.upstream[]? | summary] | sort_by(.type)),
+      edge: ([.data.edges[]? | select(.dst_id.vhost == $vh and
+        .src_id.service == $src and .dst_id.service == $dst)
+        | .data.metric.data[]? | summary] | sort_by(.type))}
+   ' <<<"$XCSH_ORIGIN_JSON"
+   ```
 
 Both arrays must contain metric points before interpreting origin performance. An absent error series is unavailable telemetry, not proof of zero errors. Rate units are per second, throughput is bits per second, and returned latency, RTT, and transfer-time units are preserved. A measured transfer time of `"0"` is a returned value; it does not mean the field was absent.
 
 ## Measured response
 
-Captured 2026-10-06T03:13:42Z; HTTP 200 for the query and every required page. Identifiers are replaced with XCSH placeholders; values, units, counts, and point timestamps are preserved.
+Captured 2026-10-06T03:13:42Z; HTTP 200.
 
 ```json
 {

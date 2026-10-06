@@ -2,45 +2,45 @@
 title: API activity
 description: Compare API calls by response class, top active endpoints, and discovery inventory.
 sidebar:
-  order: 7
+  order: 6
 ---
 
-Complete [shared cURL setup](../setup/) first. Continue only when `XCSH_API_DISCOVERY_ENABLED=true`. The statistics endpoint uses `XCSH_VIRTUAL_HOST`; the inventory endpoint uses the exact `XCSH_APP_TYPE` label.
+API activity shows call counts by response class, the busiest discovered endpoints, and endpoint inventory.
 
 ## Count calls by response class
 
-These POST summary APIs cover API endpoint activity, which can differ from all HTTP access logs. They use `XCSH_VIRTUAL_HOST` and the time window inside `apiep_summary_filter`; the inventory query below uses `XCSH_APP_TYPE`. The summary filter's end is exclusive.
+API discovery must be enabled (`XCSH_API_DISCOVERY_ENABLED=true`) for these queries. Summary queries use `XCSH_VIRTUAL_HOST` and the time window in `apiep_summary_filter`; the end time is exclusive. Counts cover API endpoints and can differ from HTTP access logs.
 
-**1. Build a fixed-window summary request.**
+1. Build a fixed-window summary request.
 
-```bash
-test "$XCSH_API_DISCOVERY_ENABLED" = true
-XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" \
-  --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" '{
-    namespace: $ns, name: $vh,
-    apiep_summary_filter: {start_time: $start, end_time: $end}
-  }')"
-```
+   ```bash
+   test "$XCSH_API_DISCOVERY_ENABLED" = true
+   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" \
+     --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" '{
+       namespace: $ns, name: $vh,
+       apiep_summary_filter: {start_time: $start, end_time: $end}
+     }')"
+   ```
 
-**2. Query the returned API-call counters.**
+2. Query the returned API-call counters.
 
-```bash
-XCSH_API_CALLS_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
-  --request POST \
-  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
-  --header 'Content-Type: application/json' \
-  --data-binary "$XCSH_REQUEST" \
-  "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/calls_by_response_code")"
-jq -er '{total_calls,
-  request_count_per_rsp_code: (.request_count_per_rsp_code | sort_by(.rsp_code_class))
-}' <<<"$XCSH_API_CALLS_JSON"
-```
+   ```bash
+   XCSH_API_CALLS_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+     --request POST \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Content-Type: application/json' \
+     --data-binary "$XCSH_REQUEST" \
+     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/calls_by_response_code")"
+   jq -er '{total_calls,
+     request_count_per_rsp_code: (.request_count_per_rsp_code | sort_by(.rsp_code_class))
+   }' <<<"$XCSH_API_CALLS_JSON"
+   ```
 
-The actual fields are `total_calls` and `request_count_per_rsp_code`, whose entries contain `rsp_code_class` and `count`. `total_calls` is a JSON string while class counts are numbers. These are request counts, not sampled rates. A missing class is not a measured zero. Keep the API population and window with the output when comparing it to logs.
+The response fields are `total_calls` and `request_count_per_rsp_code`, whose entries contain `rsp_code_class` and `count`. `total_calls` is a JSON string while class counts are numbers. These are request counts, not sampled rates. A missing class is not a measured zero. Keep the API population and window with the output when comparing it to logs.
 
 ## Measured call summary
 
-Captured 2026-10-06T03:13:52Z; HTTP 200 for the query and every required page. Identifiers are replaced with XCSH placeholders; values, units, counts, and point timestamps are preserved.
+Captured 2026-10-06T03:13:52Z; HTTP 200.
 
 ```json
 {
@@ -56,7 +56,7 @@ Captured 2026-10-06T03:13:52Z; HTTP 200 for the query and every required page. I
 
 ## Find the busiest endpoints
 
-**1. Request the top five by request percentage.**
+Request the top five endpoints by request percentage:
 
 ```bash
 XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" \
@@ -75,11 +75,11 @@ jq -er '{top_apieps: [.top_apieps[]? | {apiep_url, method, top_by_metric_value}]
 ' <<<"$XCSH_API_TOP_JSON"
 ```
 
-`top_by_metric_value` is the integer percentage of requests to that endpoint relative to all API endpoints for this selector. It is not a call count. The default selector ranks security-event percentage; set the request-percentage selector explicitly. Do not assume backend array order is a descending ranking, and do not expect rounded percentages or a top-five subset to sum to 100.
+`top_by_metric_value` is the integer percentage of requests to that endpoint relative to all API endpoints for this selector. It is not a call count. The default selector ranks endpoints by security-event percentage; set the request-percentage selector explicitly. Do not assume backend array order is a descending ranking, and do not expect rounded percentages or a top-five subset to sum to 100.
 
 ## Measured endpoint activity
 
-Captured 2026-10-06T03:13:53Z; HTTP 200 for the query and every required page. Identifiers are replaced with XCSH placeholders; values, units, counts, and point timestamps are preserved.
+Captured 2026-10-06T03:13:53Z; HTTP 200.
 
 ```json
 {
@@ -103,11 +103,9 @@ Captured 2026-10-06T03:13:53Z; HTTP 200 for the query and every required page. I
 }
 ```
 
-Published `apiep_url` values below are stable XCSH placeholders for the private endpoint identities. The cURL query returns the actual discovered paths; keep those private if they identify users or captured application data.
-
 ## Read endpoint statistics
 
-**1. Query the virtual host.**
+Query the telemetry virtual host:
 
 ```bash
 test "$XCSH_API_DISCOVERY_ENABLED" = true
@@ -137,7 +135,7 @@ Captured 2026-10-06 02:14:32 UTC; HTTP 200. These are category counts, not a sum
 
 ## Read endpoint inventory
 
-**1. Query the app type.**
+Use the exact `XCSH_APP_TYPE` label from the load balancer configuration. If it is empty, wait for configuration to settle and repeat identifier discovery. Query the app type:
 
 ```bash
 test "$XCSH_API_DISCOVERY_ENABLED" = true
@@ -154,13 +152,13 @@ jq -er '{
 }'
 ```
 
-Expect `last_update`, `count`, and category counts. The response filter omits captured paths, request bodies, and sensitive-data details. A newly deployed API route can take time to appear.
+The summary contains `last_update`, `count`, and category counts. A new API route can take time to appear.
 
-In the first live run of this deployment, both queries returned HTTP 200 but reported zero endpoints after a bounded 90-request JSON API burst and 20 minutes of polling. The later measured response below reports three discovered endpoints and three inventory entries. Its `last_update` field is still null, so do not infer a backend refresh time.
+The measured inventory contains three entries. Its `last_update` is null, so it does not provide a refresh time.
 
 ### Observed endpoint inventory
 
-Captured 2026-10-06 02:14:32 UTC; HTTP 200. The endpoint list is reduced to its count and categories; paths and captured bodies are omitted.
+Captured 2026-10-06 02:14:32 UTC; HTTP 200.
 
 ```json
 {
