@@ -10,8 +10,8 @@ Complete [shared cURL setup](../setup/) first. Equal `step` and `range` values p
 **1. Build the firewall request.**
 
 ```bash
-request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
-  --arg end "$END_TIME" '{
+request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+  --arg end "$XCSH_END_TIME" '{
     namespace: $ns, start_time: $start, end_time: $end,
     step: "5m", range: "5m",
     field_selector: ["TOTAL_REQUESTS", "ATTACKED_REQUESTS",
@@ -24,11 +24,11 @@ request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
 
 ```bash
 curl --silent --show-error --fail-with-body --request POST \
-  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Content-Type: application/json' \
   --data-binary "$request" \
-  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/app_firewall/metrics" |
-jq -er --arg vh "$VIRTUAL_HOST" '{
+  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_firewall/metrics" |
+jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
   step,
   metrics: [.data[]? | {
     type,
