@@ -1,0 +1,100 @@
+---
+title: Verify the live demo
+description: Check the origin, HTTPS route, WAF, generator, and two fresh telemetry samples.
+sidebar:
+  order: 9
+---
+
+Complete [deployment](../deployment/) and [shared cURL setup](../setup/) first. Keep the timer enabled after acceptance.
+
+**1. Wait for both Azure VMs to finish application provisioning.**
+
+**2. Resolve the demo hostname.**
+
+```bash
+dig +short "$DEMO_HOST" A
+```
+
+**3. Check the public HTTPS health route and certificate.**
+
+```bash
+curl --silent --show-error --fail-with-body --output /dev/null \
+  --write-out 'status=%{http_code} tls=%{ssl_verify_result}\n' \
+  "https://$DEMO_HOST/health"
+```
+
+Expect `status=200 tls=0`. Do not use `-k`.
+
+**4. Check an API route through the load balancer.**
+
+```bash
+curl --silent --show-error --fail-with-body --output /dev/null \
+  --write-out 'status=%{http_code}\n' \
+  "https://$DEMO_HOST/httpbin/get?statistics_probe=$(date -u +%s)"
+```
+
+**5. Send one authorized WAF probe to this F5-owned demo.**
+
+```bash
+waf_body="$(mktemp)"
+trap 'rm -f "$waf_body"' EXIT
+curl --silent --show-error --output "$waf_body" --write-out 'status=%{http_code}\n' \
+  --get --data-urlencode "q=' OR 1=1--" \
+  "https://$DEMO_HOST/httpbin/get"
+```
+
+**6. Confirm the rejection page.**
+
+```bash
+grep -i '<title>Request Rejected</title>' "$waf_body"
+```
+
+The current F5 rejection page can return HTTP 200. Confirm the page title and a matching
+[security event](../security-events/) with `action: "block"`; the status code alone is
+not a WAF result. The generator sends the same bounded probe every fifth timer run.
+
+**7. Check the generator timer on its dedicated VM.**
+
+```bash
+az vm run-command invoke \
+  --resource-group rg-traffic-generator-lab-statistics \
+  --name vm-traffic-generator-statistics \
+  --command-id RunShellScript \
+  --scripts 'systemctl is-active statistics-demo-traffic.timer; cat /var/lib/statistics-demo/run-count' \
+  --query 'value[].message' --output tsv
+```
+
+Expect `active` and an increasing run count. The service sends at most three normal requests per minute and one WAF probe every fifth run.
+
+**8. Record one [service graph](../service-graph/) sample after the first new five-minute bucket appears.**
+
+**9. Wait for the next five-minute bucket.**
+
+**10. Record a second service graph sample with a later timestamp and nonzero request rate.**
+
+**11. Run each resource guide.**
+
+**12. Check each response for the expected fields.**
+
+**13. Record sanitized counts and times without tenant IDs, client addresses, headers, raw events, or credentials.**
+
+The prototype observed one new service metric bucket about six minutes after a burst. Poll for up to ten minutes before treating absence as a failure.
+
+## Results from this deployment
+
+These observations are from 5 October 2026 UTC. Re-run the checks for current values.
+
+| Check | Observed result |
+| --- | --- |
+| DNS and TLS | F5 authoritative and public resolvers returned the demo A record; HTTPS certificate verification returned `0`. |
+| Origin and load balancer | `/health`, `/httpbin/get`, and `/httpbin/anything/statistics` returned HTTP 200. |
+| WAF | The SQL injection probe returned a `Request Rejected` page with HTTP 200; the security-event query recorded `action: "block"`. |
+| Generator | The timer remained active and its run count increased from 46 to 51 between checks. |
+| Service graph | The 21:45 five-minute bucket had `HTTP_REQUEST_RATE=0.0236054167`; the 21:50 bucket had `0.0192674306`. Both followed timer traffic. |
+| Firewall counters | A five-minute request returned `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` series. |
+| Access logs | The namespace query returned 185 hits in the 21:48 replay. |
+| API discovery | The statistics and inventory reads returned HTTP 200, but both showed zero endpoints 20 minutes after a 90-request JSON API burst. The inventory had no update timestamp. |
+
+The pinned origin VM finished its application bootstrap but cloud-init reported an error installing
+the optional `dool` package. The requested routes passed direct and protected health checks; use
+those checks as the application readiness gate.

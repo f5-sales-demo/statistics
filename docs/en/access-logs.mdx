@@ -1,0 +1,41 @@
+---
+title: Query HTTP access logs
+description: Count recent HTTP responses for the statistics virtual host.
+sidebar:
+  order: 8
+---
+
+Complete [shared cURL setup](../setup/) first. This query uses the namespace-scoped Access Log Query V2 operation and filters by `VIRTUAL_HOST`. The summary excludes client addresses, headers, and raw log messages.
+
+**1. Build the log request.**
+
+```bash
+log_query="$(jq -nr --arg vh "$VIRTUAL_HOST" \
+  '"{vh_name=\"" + $vh + "\"}"')"
+request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
+  --arg end "$END_TIME" --arg query "$log_query" '{
+    namespace: $ns, start_time: $start, end_time: $end,
+    limit: 100, sort: "DESCENDING", query: $query
+  }')"
+```
+
+**2. Query the logs.**
+
+```bash
+curl --silent --show-error --fail-with-body --request POST \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Content-Type: application/json' \
+  --data-binary "$request" \
+  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/access_logs" |
+jq -er --arg ns "$NAMESPACE" --arg vh "$VIRTUAL_HOST" '{
+  total_hits: (.total_hits | tonumber),
+  returned: ([.logs[]? | (if type == "string" then fromjson else . end)
+    | select(.namespace == $ns and .vh_name == $vh)] | length),
+  response_codes: ([.logs[]? |
+    (if type == "string" then fromjson else . end)
+    | select(.namespace == $ns and .vh_name == $vh)
+    | .rsp_code] | group_by(.) | map({code: .[0], count: length}))
+}'
+```
+
+Expect `total_hits`, `returned`, and response-code counts. `total_hits` can exceed the first page. The request caps output at 100 logs; use the documented scroll operation for a complete export.

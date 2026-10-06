@@ -1,0 +1,47 @@
+---
+title: Query API discovery
+description: Read endpoint statistics and inventory for the statistics load balancer.
+sidebar:
+  order: 7
+---
+
+Complete [shared cURL setup](../setup/) first. Continue only when `API_DISCOVERY_ENABLED=true`. The statistics endpoint uses `VIRTUAL_HOST`; the inventory endpoint uses the exact `APP_TYPE` label.
+
+## Read endpoint statistics
+
+**1. Query the virtual host.**
+
+```bash
+test "$API_DISCOVERY_ENABLED" = true
+test -n "$VIRTUAL_HOST"
+curl --silent --show-error --fail-with-body \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Accept: application/json' \
+  "${TENANT_URL}/api/ml/data/namespaces/${NAMESPACE}/virtual_hosts/${VIRTUAL_HOST}/api_endpoints/stats" |
+jq -er '{total_endpoints, inventory, discovered, shadow, pii_detected}'
+```
+
+Expect `total_endpoints`, `inventory`, `discovered`, `shadow`, and `pii_detected`. Categories can overlap, so their sum need not equal the total.
+
+## Read endpoint inventory
+
+**1. Query the app type.**
+
+```bash
+test "$API_DISCOVERY_ENABLED" = true
+test -n "$APP_TYPE"
+curl --silent --show-error --fail-with-body \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Accept: application/json' \
+  "${TENANT_URL}/api/ml/data/namespaces/${NAMESPACE}/app_types/${APP_TYPE}/api_endpoints" |
+jq -er '{
+  last_update,
+  count: (.apiep_list | length),
+  categories: ([.apiep_list[]?.category] | group_by(.) |
+    map({category: .[0], count: length}))
+}'
+```
+
+Expect `last_update`, `count`, and category counts. The response filter omits captured paths, request bodies, and sensitive-data details. A newly deployed API route can take time to appear.
+
+In the first live run of this deployment, both queries returned HTTP 200 but reported zero endpoints after a bounded 90-request JSON API burst and 20 minutes of polling. The inventory had no update timestamp. Keep the generator timer running and repeat the queries; do not substitute endpoint counts from another load balancer.

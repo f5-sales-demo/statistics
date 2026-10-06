@@ -1,0 +1,45 @@
+---
+title: Query service graph metrics
+description: Read request rate, error rate, and latency for the statistics virtual host.
+sidebar:
+  order: 4
+---
+
+Complete [shared cURL setup](../setup/) first. This request reads only the `statistics` namespace and filters the response to its discovered `VIRTUAL_HOST`.
+
+**1. Build a five-minute service graph request.**
+
+```bash
+request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
+  --arg end "$END_TIME" '{
+    namespace: $ns, start_time: $start, end_time: $end,
+    step: "5m", range: "5m", group_by: ["VHOST"],
+    field_selector: {node: {metric: {upstream: [
+      "HTTP_REQUEST_RATE", "HTTP_ERROR_RATE", "HTTP_ERROR_RATE_4XX",
+      "HTTP_ERROR_RATE_5XX", "HTTP_RESPONSE_LATENCY",
+      "HTTP_RESPONSE_LATENCY_PERCENTILE_50",
+      "HTTP_RESPONSE_LATENCY_PERCENTILE_90",
+      "HTTP_RESPONSE_LATENCY_PERCENTILE_99"
+    ]}}}
+  }')"
+```
+
+**2. Query the graph.**
+
+```bash
+curl --silent --show-error --fail-with-body --request POST \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Content-Type: application/json' \
+  --data-binary "$request" \
+  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/graph/service" |
+jq -er --arg vh "$VIRTUAL_HOST" '{
+  step,
+  virtual_host: $vh,
+  metrics: [.data.nodes[]? | select(.id.vhost == $vh)
+    | .data.metric.upstream[]?
+    | {type, unit, points: (.value.raw | length),
+       latest: (.value.raw[-1] // null)}]
+}'
+```
+
+Expect `step`, the selected `virtual_host`, and available metric entries with `type`, `unit`, `points`, and `latest`. A new traffic burst can take about six minutes to appear in a five-minute bucket. See [verification](../verification/) for the acceptance sample.

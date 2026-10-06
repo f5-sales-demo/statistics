@@ -1,0 +1,41 @@
+---
+title: Query firewall counters
+description: Read hourly request and block counts for the statistics application firewall.
+sidebar:
+  order: 5
+---
+
+Complete [shared cURL setup](../setup/) first. Equal `step` and `range` values produce nonoverlapping five-minute count buckets.
+
+**1. Build the firewall request.**
+
+```bash
+request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
+  --arg end "$END_TIME" '{
+    namespace: $ns, start_time: $start, end_time: $end,
+    step: "5m", range: "5m",
+    field_selector: ["TOTAL_REQUESTS", "ATTACKED_REQUESTS",
+                     "BLOCKED_REQUESTS", "BOT_DETECTION"],
+    group_by: ["VIRTUAL_HOST"]
+  }')"
+```
+
+**2. Query the counters.**
+
+```bash
+curl --silent --show-error --fail-with-body --request POST \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Content-Type: application/json' \
+  --data-binary "$request" \
+  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/app_firewall/metrics" |
+jq -er --arg vh "$VIRTUAL_HOST" '{
+  step,
+  metrics: [.data[]? | {
+    type,
+    total: ([.data[]? | select(.key.VIRTUAL_HOST == $vh)
+             | .value[]?.value | tonumber] | add // 0)
+  }]
+}'
+```
+
+Expect `step` and available `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` totals. A zero means no matching buckets in the selected window. Compare blocks with [security events](../security-events/).

@@ -1,0 +1,39 @@
+---
+title: Query security events
+description: Read WAF block events for the statistics virtual host without exposing request data.
+sidebar:
+  order: 6
+---
+
+Complete [shared cURL setup](../setup/) first. The event API returns JSON-encoded strings. Decode them and select only fields needed to confirm WAF action.
+
+**1. Build a virtual-host and block-action query.**
+
+```bash
+event_query="$(jq -nr --arg vh "$VIRTUAL_HOST" \
+  '"{vh_name=\"" + $vh + "\",action=\"block\"}"')"
+request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_24H" \
+  --arg end "$END_TIME" --arg query "$event_query" '{
+    namespace: $ns, start_time: $start, end_time: $end,
+    limit: 100, sort: "DESCENDING", query: $query
+  }')"
+```
+
+**2. Query the events.**
+
+```bash
+curl --silent --show-error --fail-with-body --request POST \
+  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header 'Content-Type: application/json' \
+  --data-binary "$request" \
+  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/app_security/events" |
+jq -er --arg ns "$NAMESPACE" --arg vh "$VIRTUAL_HOST" '{
+  total_hits: (.total_hits | tonumber),
+  events: [.events[]? | (if type == "string" then fromjson else . end)
+    | select(.namespace == $ns and .vh_name == $vh)
+    | {time, namespace, vh_name, action, sec_event_type,
+       sec_event_name, rsp_code, app_firewall_name}]
+}'
+```
+
+Expect `total_hits` and matching events with `action: "block"` and an application firewall name. This guide does not print client addresses, headers, or raw event bodies. `total_hits` can exceed the first 100 returned events; use the scroll API for complete exports.

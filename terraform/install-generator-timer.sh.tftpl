@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+set -euo pipefail
+install -d -m 0755 /var/lib/statistics-demo
+
+cat >/usr/local/bin/statistics-demo-traffic <<'TRAFFIC'
+#!/usr/bin/env bash
+set -euo pipefail
+exec 9>/run/statistics-demo-traffic.lock
+flock -n 9 || exit 0
+
+fqdn="${fqdn}"
+count_file=/var/lib/statistics-demo/run-count
+run=0
+if [[ -s "$count_file" ]]; then
+  read -r run < "$count_file"
+fi
+run=$((run + 1))
+printf '%s\n' "$run" > "$count_file"
+marker="$(date -u +%s)-$run"
+
+for path in /health /httpbin/get /httpbin/anything/statistics; do
+  curl --fail --silent --show-error --max-time 15 --retry 1 \
+    --output /dev/null --header 'X-Statistics-Demo: minute-probe' \
+    "https://$fqdn$path?statistics_probe=$marker"
+done
+
+if (( run % 5 == 0 )); then
+  waf_body="$(mktemp)"
+  trap 'rm -f "$waf_body"' EXIT
+  status="$(curl --silent --show-error --max-time 15 --output "$waf_body" \
+    --write-out '%%{http_code}' --get \
+    --header 'X-Statistics-Demo: waf-probe' \
+    --data-urlencode "q=' OR 1=1--" \
+    "https://$fqdn/httpbin/get?statistics_probe=$marker")"
+  if [[ "$status" != 200 && "$status" != 403 ]] || \
+     ! grep -qi '<title>Request Rejected</title>' "$waf_body"; then
+    printf 'WAF probe was not rejected (HTTP %s)\n' "$status" >&2
+    exit 1
+  fi
+fi
+TRAFFIC
+chmod 0755 /usr/local/bin/statistics-demo-traffic
+
+cat >/etc/systemd/system/statistics-demo-traffic.service <<'UNIT'
+[Unit]
+Description=Bounded statistics demo traffic
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/statistics-demo-traffic
+TimeoutStartSec=90
+UNIT
+
+cat >/etc/systemd/system/statistics-demo-traffic.timer <<'UNIT'
+[Unit]
+Description=Send statistics demo requests once a minute
+
+[Timer]
+OnCalendar=minutely
+AccuracySec=1s
+Persistent=false
+Unit=statistics-demo-traffic.service
+
+[Install]
+WantedBy=timers.target
+UNIT
+
+systemctl daemon-reload
+systemctl enable --now statistics-demo-traffic.timer
