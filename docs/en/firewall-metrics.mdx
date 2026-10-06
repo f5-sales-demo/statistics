@@ -7,6 +7,12 @@ sidebar:
 
 Web application firewall (WAF) metrics show request, attack, block, and bot-detection counts. Equal `step` and `range` values produce nonoverlapping five-minute count buckets.
 
+## Query scope
+
+Query `XCSH_NAMESPACE` over the fixed two-hour `XCSH_START_TIME`–`XCSH_END_TIME` window. Group by `VIRTUAL_HOST` and retain only the discovered `XCSH_VIRTUAL_HOST` in the summary. The current demo requires its blocking application firewall and traffic.
+
+## Request procedure
+
 1. Build the firewall request.
 
    ```bash
@@ -38,8 +44,6 @@ Web application firewall (WAF) metrics show request, attack, block, and bot-dete
    }'
    ```
 
-Expect `step` and available `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` totals. The filter uses `0` when no matching buckets exist; this fallback is not a measured zero. Inspect the original response before interpreting a zero total. Compare blocks with [security events](../security-events/).
-
 ## Observed response
 
 Captured 2026-10-06T03:13:55Z; HTTP 200. Totals cover the two-hour query window.
@@ -67,3 +71,5 @@ Captured 2026-10-06T03:13:55Z; HTTP 200. Totals cover the two-hour query window.
   ]
 }
 ```
+
+Expect `step` and available `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` totals. The filter uses `0` when no matching buckets exist; this fallback is not a measured zero. Inspect the original response before interpreting a zero total. Compare blocks with [security events](../security-events/).

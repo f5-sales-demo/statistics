@@ -2,10 +2,10 @@
 title: Statistics APIs
 description: Map additional telemetry families to the resources that produce them.
 sidebar:
-  order: 11
+  order: 10
 ---
 
-These API families provide statistics for different resources. Each family below needs its own deployed responder and live verification before it can have a runnable guide.
+Statistics covers resource telemetry across the F5 Distributed Cloud platform. The current HTTP deployment demonstrates the seven resource guides linked below. The additional families in this table require separate deployment and verification; this project has no measured runnable examples for them.
 
 | API family | Required demo resource |
 | --- | --- |
@@ -28,4 +28,4 @@ For the current HTTP demo, use [HTTP access logs](../access-logs/), [Load balanc
 | Graph `ACTIVE_CONNECTIONS` and `NEW_CONNECTION_RATE` | Requested with VHOST traffic metrics; no returned series in the measured window | Capture meaningful connection telemetry before adding a populated example |
 | `/api/data/namespaces/{namespace}/app_security/metrics` | Namespace and `VH_NAME` query returned HTTP 200 with empty counters | Retain WAF counters and authoritative event logs; capture meaningful metric points before presenting counts |
 
-These are unavailable telemetry for the measured selector and window. HTTP 200 does not make an empty response a populated result. See [verification](../verification/#empty-security-event-metric-response) for timestamps and the empty security-metric response. DNS, cache/CDN, TCP, sites, and Kubernetes need their own future resources and acceptance.
+These are unavailable telemetry for the measured selector and window. HTTP 200 does not make an empty response a populated result. See [Security events](../security-events/#empty-security-event-metric-response) for timestamps and the empty security-metric response. DNS, cache/CDN, TCP, sites, and Kubernetes need their own future resources and acceptance.

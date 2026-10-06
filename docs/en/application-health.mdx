@@ -9,6 +9,12 @@ Graph health scores are calculated indicators based on application service-level
 
 A graph score is not that threshold, a count of passing probes, or proof that every route succeeded. Read its returned timestamp and compare it with [HTTP access logs](../access-logs/) and [origin performance](../origin-performance/).
 
+## Query scope
+
+Query `XCSH_NAMESPACE` and the discovered `XCSH_VIRTUAL_HOST` over the fixed two-hour `XCSH_START_TIME`–`XCSH_END_TIME` window, grouped by `VHOST` with five-minute buckets.
+
+## Request procedure
+
 1. Request the graph score types.
 
    ```bash
@@ -42,8 +48,6 @@ A graph score is not that threshold, a count of passing probes, or proof that ev
    }' <<<"$XCSH_HEALTH_JSON"
    ```
 
-The score schema defines percentages; the response has no `unit` field. This live response returned only `HEALTHSCORE_OVERALL`, although five types were requested. Other score types are unavailable for this window. Preserve the fractional value and timestamp rather than rounding it to a pass/fail label.
-
 ## Measured response
 
 Captured 2026-10-06T03:13:42Z; HTTP 200.
@@ -65,3 +69,5 @@ Captured 2026-10-06T03:13:42Z; HTTP 200.
   ]
 }
 ```
+
+The score schema defines percentages; the response has no `unit` field. This live response returned only `HEALTHSCORE_OVERALL`, although five types were requested. Other score types are unavailable for this window. Preserve the fractional value and timestamp rather than rounding it to a pass/fail label.
