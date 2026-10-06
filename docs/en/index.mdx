@@ -1,24 +1,52 @@
 ---
-title: Understand HTTP traffic
+title: HTTP traffic statistics
 description: Answer traffic, request failure, origin latency, and API activity questions with live statistics.
 sidebar:
   order: 1
   label: Overview
 ---
 
-Start with [shared cURL setup](./setup/) to authenticate and select the running HTTP demo. Then choose the question you need to answer.
+Use F5 Distributed Cloud statistics to answer questions about HTTP traffic, request failures, origin performance, and security. Choose a guide, then set up cURL below before running its query.
 
 | Question | Guide | What you can learn |
 | --- | --- | --- |
-| How much traffic arrived? | [Load-balancer traffic](./service-graph/) | Request rate, throughput, ingress/egress, requests to origin, and client/server RTT |
-| Which requests failed? | [Request outcomes](./access-logs/) | Response codes, classes, and methods from a first page or a complete paginated window |
+| How much traffic arrived? | [Load balancer metrics](./service-graph/) | Request rate, throughput, ingress/egress, requests to origin, and client/server round-trip time (RTT) |
+| Which requests failed? | [HTTP access logs](./access-logs/) | Response codes, classes, and methods from a first page or a complete paginated window |
 | Is the origin slow? | [Origin performance](./origin-performance/) | Rates, errors, latency, throughput, server RTT, and transfer time on the matched origin node and edge |
 | Is the application healthy? | [Application health](./application-health/) | Calculated graph health scores with their returned timestamps |
 | Which APIs are busiest? | [API activity](./api-discovery/) | Calls by response class, top active endpoints, and discovery inventory |
-| Did the WAF act? | [Firewall counters](./firewall-metrics/) and [security events](./security-events/) | Measured counters and authoritative block events |
+| Did the web application firewall (WAF) act? | [WAF metrics](./firewall-metrics/) and [security events](./security-events/) | Measured counters and authoritative block events |
+
+## Set up cURL
+
+Use Bash, cURL 7.76 or later, and `jq` 1.7 or later. Obtain an F5 Distributed Cloud API token with read access to the `statistics` namespace. Tenant-wide `system` queries need separate access and are outside this guide.
+
+Create a private, ignored `.env` file in the repository root containing `XCSH_API_URL`, `XCSH_API_TOKEN`, and `XCSH_NAMESPACE`; restrict it to mode `0600`. Run this block from that directory in one Bash session:
+
+```bash
+set -euo pipefail
+umask 077
+source .env
+: "${XCSH_API_URL:?Set XCSH_API_URL in .env}"
+: "${XCSH_API_TOKEN:?Set XCSH_API_TOKEN in .env}"
+: "${XCSH_NAMESPACE:?Set XCSH_NAMESPACE in .env}"
+export XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE
+test "$XCSH_NAMESPACE" = statistics
+export XCSH_DEMO_HOST=statistics.f5-sales-demo.com
+export XCSH_LOAD_BALANCER="$XCSH_NAMESPACE"
+export XCSH_END_TIME="$(date -u +%s)"
+export XCSH_START_TIME="$((XCSH_END_TIME - 7200))"
+export XCSH_START_24H="$((XCSH_END_TIME - 86400))"
+test "$XCSH_START_24H" -lt "$XCSH_START_TIME"
+test "$XCSH_START_TIME" -lt "$XCSH_END_TIME"
+```
+
+[Discover the shared identifiers](./setup/#read-the-load-balancer-identifiers) once in this session, then run your selected query. Origin performance includes its own origin discovery. Query reference also covers time-window refresh and response conventions.
+
+## Running demo
 
 The existing demo owns the `statistics` namespace, a blocking WAF, API discovery, and an HTTPS load balancer at `statistics.f5-sales-demo.com`. Its dedicated Azure origin serves health and HTTP API routes. The running generator sends three marked requests each minute and one WAF probe every fifth minute. Query this deployment directly; no persistent metrics collector is needed.
 
-[Verification](./verification/) shows a bounded request sequence and measured telemetry after rollup. Use [troubleshooting](./troubleshooting/) for authentication, identity, and delay problems. The [API family catalog](./api-catalog/) separates currently empty HTTP metrics from families requiring future resources.
+[Verification](./verification/) shows a bounded request sequence and measured telemetry after rollup. Use [troubleshooting](./troubleshooting/) for authentication, identity, and delay problems. [Statistics APIs](./api-catalog/) separates currently empty HTTP metrics from families requiring future resources.
 
 For infrastructure ownership, pinned resources, local state, plan/apply, and teardown, use the [Terraform reference](./deployment/). A running deployment needs no infrastructure change to follow these queries.

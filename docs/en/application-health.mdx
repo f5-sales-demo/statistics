@@ -2,51 +2,51 @@
 title: Application health
 description: Read calculated graph health scores with returned timestamps.
 sidebar:
-  order: 6
+  order: 5
 ---
 
-Complete [shared cURL setup](../setup/) first. Graph health scores are calculated indicators based on application SLAs and KPIs. They differ from the configured origin health check: the demo probes `/health` every ten seconds with a three-second timeout, one healthy result to become healthy, and two unhealthy results to become unhealthy.
+Graph health scores are calculated indicators based on application service-level agreements (SLAs) and key performance indicators (KPIs). They differ from the configured origin health check: the demo probes `/health` every ten seconds with a three-second timeout, one healthy result to become healthy, and two unhealthy results to become unhealthy.
 
-A graph score is not that threshold, a count of passing probes, or proof that every route succeeded. Read its returned timestamp and compare it with [request outcomes](../access-logs/) and [origin performance](../origin-performance/).
+A graph score is not that threshold, a count of passing probes, or proof that every route succeeded. Read its returned timestamp and compare it with [HTTP access logs](../access-logs/) and [origin performance](../origin-performance/).
 
-**1. Request the graph score types.**
+1. Request the graph score types.
 
-```bash
-XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
-  --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
-    namespace: $ns, start_time: $start, end_time: $end,
-    step: "5m", range: "5m", group_by: ["VHOST"],
-    label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
-    field_selector: {node: {healthscore: {types: [
-      "HEALTHSCORE_CONNECTIVITY", "HEALTHSCORE_PERFORMANCE",
-      "HEALTHSCORE_SECURITY", "HEALTHSCORE_RELIABILITY", "HEALTHSCORE_OVERALL"
-    ]}}}
-  }')"
-```
+   ```bash
+   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+     --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
+       namespace: $ns, start_time: $start, end_time: $end,
+       step: "5m", range: "5m", group_by: ["VHOST"],
+       label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
+       field_selector: {node: {healthscore: {types: [
+         "HEALTHSCORE_CONNECTIVITY", "HEALTHSCORE_PERFORMANCE",
+         "HEALTHSCORE_SECURITY", "HEALTHSCORE_RELIABILITY", "HEALTHSCORE_OVERALL"
+       ]}}}
+     }')"
+   ```
 
-**2. Print available scores and their latest points.**
+2. Print available scores and their latest points.
 
-```bash
-XCSH_HEALTH_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
-  --request POST \
-  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
-  --header 'Content-Type: application/json' \
-  --data-binary "$XCSH_REQUEST" \
-  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
-jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
-  step, virtual_host: $vh,
-  healthscores: ([.data.nodes[]? | select(.id.vhost == $vh)
-    | .data.healthscore.data[]?
-    | {type, points: (.value | length), latest: (.value[-1] // null)}]
-    | sort_by(.type))
-}' <<<"$XCSH_HEALTH_JSON"
-```
+   ```bash
+   XCSH_HEALTH_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+     --request POST \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Content-Type: application/json' \
+     --data-binary "$XCSH_REQUEST" \
+     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
+   jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
+     step, virtual_host: $vh,
+     healthscores: ([.data.nodes[]? | select(.id.vhost == $vh)
+       | .data.healthscore.data[]?
+       | {type, points: (.value | length), latest: (.value[-1] // null)}]
+       | sort_by(.type))
+   }' <<<"$XCSH_HEALTH_JSON"
+   ```
 
 The score schema defines percentages; the response has no `unit` field. This live response returned only `HEALTHSCORE_OVERALL`, although five types were requested. Other score types are unavailable for this window. Preserve the fractional value and timestamp rather than rounding it to a pass/fail label.
 
 ## Measured response
 
-Captured 2026-10-06T03:13:42Z; HTTP 200 for the query and every required page. Identifiers are replaced with XCSH placeholders; values, units, counts, and point timestamps are preserved.
+Captured 2026-10-06T03:13:42Z; HTTP 200.
 
 ```json
 {

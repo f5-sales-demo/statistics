@@ -1,48 +1,48 @@
 ---
-title: Query firewall counters
+title: WAF metrics
 description: Read five-minute request and block counts for the statistics application firewall.
 sidebar:
-  order: 8
+  order: 7
 ---
 
-Complete [shared cURL setup](../setup/) first. Equal `step` and `range` values produce nonoverlapping five-minute count buckets.
+Web application firewall (WAF) metrics show request, attack, block, and bot-detection counts. Equal `step` and `range` values produce nonoverlapping five-minute count buckets.
 
-**1. Build the firewall request.**
+1. Build the firewall request.
 
-```bash
-XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
-  --arg end "$XCSH_END_TIME" '{
-    namespace: $ns, start_time: $start, end_time: $end,
-    step: "5m", range: "5m",
-    field_selector: ["TOTAL_REQUESTS", "ATTACKED_REQUESTS",
-                     "BLOCKED_REQUESTS", "BOT_DETECTION"],
-    group_by: ["VIRTUAL_HOST"]
-  }')"
-```
+   ```bash
+   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+     --arg end "$XCSH_END_TIME" '{
+       namespace: $ns, start_time: $start, end_time: $end,
+       step: "5m", range: "5m",
+       field_selector: ["TOTAL_REQUESTS", "ATTACKED_REQUESTS",
+                        "BLOCKED_REQUESTS", "BOT_DETECTION"],
+       group_by: ["VIRTUAL_HOST"]
+     }')"
+   ```
 
-**2. Query the counters.**
+2. Query the counters.
 
-```bash
-curl --silent --show-error --fail-with-body --request POST \
-  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
-  --header 'Content-Type: application/json' \
-  --data-binary "$XCSH_REQUEST" \
-  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_firewall/metrics" |
-jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
-  step,
-  metrics: [.data[]? | {
-    type,
-    total: ([.data[]? | select(.key.VIRTUAL_HOST == $vh)
-             | .value[]?.value | tonumber] | add // 0)
-  }]
-}'
-```
+   ```bash
+   curl --silent --show-error --fail-with-body --request POST \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Content-Type: application/json' \
+     --data-binary "$XCSH_REQUEST" \
+     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_firewall/metrics" |
+   jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
+     step,
+     metrics: [.data[]? | {
+       type,
+       total: ([.data[]? | select(.key.VIRTUAL_HOST == $vh)
+                | .value[]?.value | tonumber] | add // 0)
+     }]
+   }'
+   ```
 
-Expect `step` and available `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` totals. A zero means no matching buckets in the selected window. Compare blocks with [security events](../security-events/).
+Expect `step` and available `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` totals. The filter uses `0` when no matching buckets exist; this fallback is not a measured zero. Inspect the original response before interpreting a zero total. Compare blocks with [security events](../security-events/).
 
 ## Observed response
 
-Captured 2026-10-06T03:13:55Z; HTTP 200. Totals cover the two-hour window selected in shared setup.
+Captured 2026-10-06T03:13:55Z; HTTP 200. Totals cover the two-hour query window.
 
 ```json
 {
