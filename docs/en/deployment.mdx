@@ -2,7 +2,7 @@
 title: Terraform reference
 description: Review and apply the pinned Terraform root with private local state.
 sidebar:
-  order: 13
+  order: 12
 ---
 
 The Terraform root pins `f5-sales-demo/xcsh` 15.0.0 and immutable commits of the [origin
@@ -70,6 +70,24 @@ For a first deployment, confirm that the hostname and named namespace objects ar
 
 A first deployment plan should contain only creates for the dedicated VMs, networking, namespace, health check, origin pool, blocking WAF, HTTPS load balancer, and generator timer extension. Investigate any update, replacement, or deletion before applying. The origin module permits inbound ports 22, 80, 443, and 8888; the generator permits 22.
 
+## Check idempotence
+
+For a running deployment, use the same pinned configuration, subscription, credentials, and existing private state. A fresh read-only plan checks whether Terraform proposes any change:
+
+```bash
+XCSH_PLAN_EXIT=0
+terraform -chdir=terraform plan -input=false -detailed-exitcode \
+  -out="$XCSH_STATE_DIR/statistics-idempotence.tfplan" || XCSH_PLAN_EXIT=$?
+case "$XCSH_PLAN_EXIT" in
+  0) printf 'No changes; the deployment is idempotent.\n' ;;
+  2) printf 'Changes proposed; investigate before any apply.\n' ;;
+  1) printf 'Terraform plan failed; resolve the error.\n' ;;
+esac
+test "$XCSH_PLAN_EXIT" -eq 0
+```
+
+Exit 0 confirms no changes. Exit 2 requires investigation of the saved plan; exit 1 is an error. Retain plans and receipts outside Git. Running resource queries needs no infrastructure apply.
+
 ## Apply the reviewed plan
 
 Apply the saved plan:
@@ -78,7 +96,7 @@ Apply the saved plan:
 terraform -chdir=terraform apply -input=false "$XCSH_STATE_DIR/statistics.tfplan"
 ```
 
-Follow [verification](../verification/) after the origin and generator finish cloud-init. Keep the timer running so later API examples have fresh traffic.
+Follow [Demo readiness](../verification/) after the origin and generator finish cloud-init. Keep the timer running so later API examples have fresh traffic.
 
 ## Observed deployment output
 

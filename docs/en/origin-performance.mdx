@@ -12,7 +12,7 @@ transfer time help explain where time was spent.
 
 ## Match the origin graph identity
 
-Use `VHOST` and `SERVICE` grouping to discover both ends of the request edge. The demo pool contains one public-IP origin. Match its configured address exactly; a service label or the load-balancer name alone is insufficient.
+Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour `XCSH_START_TIME`–`XCSH_END_TIME` window with five-minute buckets. Use `VHOST` and `SERVICE` grouping to discover both ends of the request edge. The demo pool contains one public-IP origin. Match its configured address exactly; a service label or the load-balancer name alone is insufficient.
 
 1. Read the configured default pool and its unique public IP.
 
@@ -65,8 +65,6 @@ Use `VHOST` and `SERVICE` grouping to discover both ends of the request edge. Th
      '{source: $source, destination: $destination, configured_origin_match: true}'
    ```
 
-The origin address is returned as a service identity prefixed with `S:`. The source is the public network identity. These commands deliberately stop if the configured origin cannot be matched uniquely. Other pool types or multiple origins need their own matching procedure.
-
 ### Matched origin
 
 Captured 2026-10-06T03:13:41Z; HTTP 200.
@@ -78,6 +76,8 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
   "configured_origin_match": true
 }
 ```
+
+The origin address is returned as a service identity prefixed with `S:`. The source is the public network identity. These commands deliberately stop if the configured origin cannot be matched uniquely. Other pool types or multiple origins need their own matching procedure.
 
 ## Query origin metrics
 
@@ -127,8 +127,6 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
         | .data.metric.data[]? | summary] | sort_by(.type))}
    ' <<<"$XCSH_ORIGIN_JSON"
    ```
-
-Both arrays must contain metric points before interpreting origin performance. An absent error series is unavailable telemetry, not proof of zero errors. Rate units are per second, throughput is bits per second, and returned latency, RTT, and transfer-time units are preserved. A measured transfer time of `"0"` is a returned value; it does not mean the field was absent.
 
 ## Measured response
 
@@ -345,3 +343,7 @@ Captured 2026-10-06T03:13:42Z; HTTP 200.
   ]
 }
 ```
+
+## Interpret origin metrics
+
+Both arrays must contain metric points before interpreting origin performance. An absent error series is unavailable telemetry, not proof of zero errors. Rate units are per second, throughput is bits per second, and returned latency, RTT, and transfer-time units are preserved. A measured transfer time of `"0"` is a returned value; it does not mean the field was absent.

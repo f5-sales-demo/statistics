@@ -1,12 +1,12 @@
 ---
-title: HTTP traffic statistics
-description: Answer traffic, request failure, origin latency, and API activity questions with live statistics.
+title: Statistics
+description: Retrieve statistics from the F5 Distributed Cloud API across resource types.
 sidebar:
   order: 1
   label: Overview
 ---
 
-Use F5 Distributed Cloud statistics to answer questions about HTTP traffic, request failures, origin performance, and security. Choose a guide, then set up cURL below before running its query.
+Statistics retrieves statistics from the F5 Distributed Cloud API across resource types. The current HTTP deployment demonstrates access logs, load balancer and origin metrics, application health, API activity, and security telemetry. Choose a resource guide, then set up cURL below before running its query.
 
 | Question | Guide | What you can learn |
 | --- | --- | --- |
@@ -47,6 +47,10 @@ test "$XCSH_START_TIME" -lt "$XCSH_END_TIME"
 
 The existing demo owns the `statistics` namespace, a blocking WAF, API discovery, and an HTTPS load balancer at `statistics.f5-sales-demo.com`. Its dedicated Azure origin serves health and HTTP API routes. The running generator sends three marked requests each minute and one WAF probe every fifth minute. Query this deployment directly; no persistent metrics collector is needed.
 
-[Verification](./verification/) shows a bounded request sequence and measured telemetry after rollup. Use [troubleshooting](./troubleshooting/) for authentication, identity, and delay problems. [Statistics APIs](./api-catalog/) separates currently empty HTTP metrics from families requiring future resources.
+[Demo readiness](./verification/) checks the deployment. [HTTP access
+logs](./access-logs/#run-the-bounded-request-sequence) includes an optional bounded sequence for known response codes,
+and [Load balancer metrics](./service-graph/#baseline-and-later-rollup) preserves its measured rollup comparison. Use
+[troubleshooting](./troubleshooting/) for authentication, identity, and delay problems. [Statistics
+APIs](./api-catalog/) separates currently empty HTTP metrics from families requiring future resources.
 
 For infrastructure ownership, pinned resources, local state, plan/apply, and teardown, use the [Terraform reference](./deployment/). A running deployment needs no infrastructure change to follow these queries.

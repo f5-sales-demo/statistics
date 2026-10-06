@@ -7,6 +7,12 @@ sidebar:
 
 Security events confirm web application firewall (WAF) actions for the selected virtual host. The API returns events as JSON-encoded strings; decode each string to read the event fields.
 
+## Query scope
+
+Query `XCSH_NAMESPACE` and the discovered `XCSH_VIRTUAL_HOST` over the 24-hour `XCSH_START_24H`–`XCSH_END_TIME` window. Select `action="block"` and at most three events; the current demo requires its WAF and rejection traffic.
+
+## Request procedure
+
 1. Build a virtual-host and block-action query.
 
    ```bash
@@ -36,8 +42,6 @@ Security events confirm web application firewall (WAF) actions for the selected 
           sec_event_name, rsp_code, app_firewall_name}]
    }'
    ```
-
-Expect `total_hits` and matching events with `action: "block"` and an application firewall name. `total_hits` can exceed the first three returned events; use the scroll API for complete exports.
 
 ## Observed response
 
@@ -81,3 +85,44 @@ Captured 2026-10-06T03:13:55Z; HTTP 200.
   ]
 }
 ```
+
+Expect `total_hits` and matching events with `action: "block"` and an application firewall name. `total_hits` can exceed the first three returned events; use the scroll API for complete exports.
+
+## Empty security-event metric response
+
+Security-event metrics aggregate counters separately from the event-log API above. Select `XCSH_NAMESPACE` and `XCSH_VIRTUAL_HOST` over the fixed two-hour window, grouped by `VH_NAME` and `SEC_EVENT_TYPE`.
+
+1. Build a namespace and virtual-host metrics selector for the fixed two-hour window.
+
+   ```bash
+   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+     --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
+       namespace: $ns, start_time: $start, end_time: $end,
+       step: "5m", group_by: ["VH_NAME", "SEC_EVENT_TYPE"],
+       label_filter: [{label: "VH_NAME", op: "EQ", value: $vh}]
+     }')"
+   ```
+
+2. Query security-event metrics.
+
+   ```bash
+   curl --silent --show-error --fail-with-body --max-time 60 --request POST \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Content-Type: application/json' \
+     --data-binary "$XCSH_REQUEST" \
+     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_security/metrics" |
+   jq -er '{data, step}'
+   ```
+
+### Measured metrics response
+
+The namespace security-event metrics query at 2026-10-06T03:12:47Z returned HTTP 200 with no counters. Its two-hour selector used `group_by: ["VH_NAME", "SEC_EVENT_TYPE"]` and filtered `VH_NAME` to the discovered virtual host.
+
+```json
+{
+  "data": [],
+  "step": "5m"
+}
+```
+
+This empty metric response does not contradict populated WAF counters or authoritative block-event logs. Treat it and the empty connection series as unavailable telemetry until meaningful points are captured.

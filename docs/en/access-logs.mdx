@@ -7,7 +7,47 @@ sidebar:
 
 Access logs show HTTP status codes, response classes, and methods for requests in a fixed window. A response class groups status codes such as 4xx for client errors and 5xx for server errors. Counts cover the logs returned by the query; logging, sampling, and ingestion can differ from API activity counters.
 
+## Run the bounded request sequence
+
+This optional procedure produces known status codes on the authorized current demo. Skip it when reading existing telemetry.
+
+Record a baseline with [Load balancer metrics](../service-graph/). This sequence sends 30 requests: 20 health requests, five explicit 404 responses, and five explicit 503 responses. Each request has a ten-second timeout and a unique marker. The origin stays online. A status mismatch stops the sequence.
+
+1. Send the bounded sequence and stop on any status mismatch.
+
+   ```bash
+   export XCSH_RUN_MARKER="statistics-outcomes-$(date -u +%Y%m%dT%H%M%SZ)"
+   export XCSH_BURST_START="$(date -u +%s)"
+   for XCSH_SEQUENCE in $(seq 1 30); do
+     if [ "$XCSH_SEQUENCE" -le 20 ]; then
+       XCSH_PATH=/health
+       XCSH_EXPECTED=200
+     elif [ "$XCSH_SEQUENCE" -le 25 ]; then
+       XCSH_PATH=/httpbin/status/404
+       XCSH_EXPECTED=404
+     else
+       XCSH_PATH=/httpbin/status/503
+       XCSH_EXPECTED=503
+     fi
+     XCSH_STATUS="$(curl --silent --show-error --max-time 10 --output /dev/null \
+       --write-out '%{http_code}' --get \
+       --data-urlencode "statistics_probe=$XCSH_RUN_MARKER-$XCSH_SEQUENCE" \
+       "https://$XCSH_DEMO_HOST$XCSH_PATH")"
+     printf 'sequence=%s expected=%s status=%s\n' "$XCSH_SEQUENCE" "$XCSH_EXPECTED" "$XCSH_STATUS"
+     test "$XCSH_STATUS" = "$XCSH_EXPECTED"
+   done
+   export XCSH_BURST_END="$(date -u +%s)"
+   ```
+
+After telemetry rollup, [refresh the query window](../setup/#refresh-the-time-window) and compare [complete log counts](#count-all-matching-logs), [API activity](../api-discovery/), and load balancer metrics. Allow up to ten minutes for a new five-minute metric bucket.
+
+## Measured request results
+
+The sequence ran from 2026-10-06T03:09:40Z to 2026-10-06T03:10:01Z. All 30 statuses matched: 20 × 200, five × 404, and five × 503. The timer continued to send traffic, so window-wide counts include background requests.
+
 ## Count requests by status code
+
+Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour `XCSH_START_TIME`–`XCSH_END_TIME` window. This query counts one page of at most 100 matching logs.
 
 1. Build a virtual-host query capped at 100 records.
 
@@ -51,8 +91,6 @@ Access logs show HTTP status codes, response classes, and methods for requests i
         | map({method: .[0].method, count: length}))}
    ' <<<"$XCSH_LOG_ROWS"
    ```
-
-`total_hits` is the API's matching-log count; `counted` and the grouped counts cover only this page. When `total_hits` exceeds `counted`, these are incomplete counts for the window.
 
 ## Measured first-page response
 
@@ -103,9 +141,14 @@ Captured 2026-10-06T03:13:43Z; HTTP 200 for all pages.
 }
 ```
 
+`total_hits` is the API's matching-log count; `counted` and the grouped counts cover only this page. When `total_hits` exceeds `counted`, these are incomplete counts for the window.
+
 ## Count all matching logs
 
-Reissue the same fixed-window query with `scroll: true`. Retrieve every page promptly: each cursor is valid for two minutes. The loop caps the export at 100 pages and stops on a scope mismatch or a count mismatch rather than publishing an incomplete total. Increase that bound deliberately for a larger authorized export.
+Use the same `XCSH_NAMESPACE`, `XCSH_VIRTUAL_HOST`, `XCSH_LOG_QUERY`, and fixed two-hour window as the first-page query.
+Reissue it with `scroll: true`. Retrieve every page promptly: each cursor is valid for two minutes. The loop caps the
+export at 100 pages and stops on a scope mismatch or a count mismatch rather than publishing an incomplete total.
+Increase that bound deliberately for a larger authorized export.
 
 1. Start a fresh scroll snapshot.
 
@@ -169,8 +212,6 @@ Reissue the same fixed-window query with `scroll: true`. Retrieve every page pro
    ' <<<"$XCSH_LOG_ROWS"
    ```
 
-The API can return a nonempty cursor on an empty final page, so the loop also stops on an empty page. A successful equality check verifies that all matching logs in this snapshot were counted. It does not guarantee all real requests were logged or that late telemetry had arrived. Requery after ingestion delay when verifying a new sequence.
-
 ## Measured complete-window response
 
 Captured 2026-10-06T03:13:47Z; HTTP 200 for all pages.
@@ -220,6 +261,10 @@ Captured 2026-10-06T03:13:47Z; HTTP 200 for all pages.
 }
 ```
 
+The API can return a nonempty cursor on an empty final page, so the loop also stops on an empty page. A successful equality check verifies that all matching logs in this snapshot were counted. It does not guarantee all real requests were logged or that late telemetry had arrived. Requery after ingestion delay when verifying a new sequence.
+
+The log snapshot at 2026-10-06T03:13:40Z contained 430 logs across five populated pages and an empty final page. All returned methods were GET.
+
 ## Find failed requests
 
 For a later query, change the matcher to response codes in the 4xx or 5xx classes. To filter a method, add an exact `method="GET"` matcher. Rebuild the request and run the pagination procedure for complete filtered counts.
@@ -229,4 +274,4 @@ XCSH_LOG_QUERY="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
   '"{vh_name=" + ($vh | tojson) + ",rsp_code=~\"[45].*\",method=\"GET\"}"')"
 ```
 
-The [bounded verification sequence](../verification/) produces explicit 404 and 503 responses without taking the origin offline. An HTTP status does not identify WAF action: the demo rejection page can return 200, so confirm blocks with [security events](../security-events/).
+The [bounded request sequence](#run-the-bounded-request-sequence) produces explicit 404 and 503 responses without taking the origin offline. An HTTP status does not identify WAF action: the demo rejection page can return 200, so confirm blocks with [security events](../security-events/).

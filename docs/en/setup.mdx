@@ -2,7 +2,7 @@
 title: Query reference
 description: Discover shared identifiers, refresh query times, and interpret statistics responses.
 sidebar:
-  order: 12
+  order: 11
 ---
 
 The configuration and telemetry APIs use different identifiers for the same load balancer. Run identifier discovery in the Bash session prepared in [Set up cURL](../#set-up-curl).
@@ -115,7 +115,7 @@ A reversed window can return HTTP 500.
 The examples use `--fail-with-body` so HTTP errors stop the command while preserving the error body.
 Some counts and point values are JSON strings; convert them with `tonumber` only when present. A
 missing metric series means no data for that selector and window. Service graph points can arrive
-several minutes after requests; the measured verification returned a new five-minute bucket about six minutes
+several minutes after requests; the [measured graph comparison](../service-graph/#baseline-and-later-rollup) returned a new five-minute bucket about six minutes
 after the request sequence. Allow up to ten minutes before investigating a missing new sample. Logs and discovery
 can have different delays.
 

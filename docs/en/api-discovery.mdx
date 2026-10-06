@@ -9,7 +9,7 @@ API activity shows call counts by response class, the busiest discovered endpoin
 
 ## Count calls by response class
 
-API discovery must be enabled (`XCSH_API_DISCOVERY_ENABLED=true`) for these queries. Summary queries use `XCSH_VIRTUAL_HOST` and the time window in `apiep_summary_filter`; the end time is exclusive. Counts cover API endpoints and can differ from HTTP access logs.
+API discovery must be enabled (`XCSH_API_DISCOVERY_ENABLED=true`) for these queries. Summary queries select `XCSH_NAMESPACE`, `XCSH_VIRTUAL_HOST`, and the fixed two-hour `XCSH_START_TIME`–`XCSH_END_TIME` window in `apiep_summary_filter`; the end time is exclusive. Counts cover API endpoints and can differ from HTTP access logs.
 
 1. Build a fixed-window summary request.
 
@@ -36,8 +36,6 @@ API discovery must be enabled (`XCSH_API_DISCOVERY_ENABLED=true`) for these quer
    }' <<<"$XCSH_API_CALLS_JSON"
    ```
 
-The response fields are `total_calls` and `request_count_per_rsp_code`, whose entries contain `rsp_code_class` and `count`. `total_calls` is a JSON string while class counts are numbers. These are request counts, not sampled rates. A missing class is not a measured zero. Keep the API population and window with the output when comparing it to logs.
-
 ## Measured call summary
 
 Captured 2026-10-06T03:13:52Z; HTTP 200.
@@ -54,28 +52,32 @@ Captured 2026-10-06T03:13:52Z; HTTP 200.
 }
 ```
 
+The response fields are `total_calls` and `request_count_per_rsp_code`, whose entries contain `rsp_code_class` and `count`. `total_calls` is a JSON string while class counts are numbers. These are request counts, not sampled rates. A missing class is not a measured zero. Keep the API population and window with the output when comparing it to logs.
+
+The status routes from the [bounded request sequence](../access-logs/#run-the-bounded-request-sequence) appeared in access logs but not in this discovered-endpoint population. Compare each count within its query scope.
+
 ## Find the busiest endpoints
 
-Request the top five endpoints by request percentage:
+Use the same namespace, virtual host, discovery requirement, and fixed two-hour summary window; the end time is exclusive.
 
-```bash
-XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" \
-  --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" '{
-    namespace: $ns, name: $vh,
-    apiep_summary_filter: {start_time: $start, end_time: $end},
-    topk: 5, top_by_metric: "ACTIVITY_METRIC_TYPE_REQ_PERCENTAGE"
-  }')"
-XCSH_API_TOP_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
-  --request POST \
-  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
-  --header 'Content-Type: application/json' \
-  --data-binary "$XCSH_REQUEST" \
-  "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/top_active")"
-jq -er '{top_apieps: [.top_apieps[]? | {apiep_url, method, top_by_metric_value}]}
-' <<<"$XCSH_API_TOP_JSON"
-```
+1. Build the top-five request-percentage selector and query the endpoint summary.
 
-`top_by_metric_value` is the integer percentage of requests to that endpoint relative to all API endpoints for this selector. It is not a call count. The default selector ranks endpoints by security-event percentage; set the request-percentage selector explicitly. Do not assume backend array order is a descending ranking, and do not expect rounded percentages or a top-five subset to sum to 100.
+   ```bash
+   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" \
+     --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" '{
+       namespace: $ns, name: $vh,
+       apiep_summary_filter: {start_time: $start, end_time: $end},
+       topk: 5, top_by_metric: "ACTIVITY_METRIC_TYPE_REQ_PERCENTAGE"
+     }')"
+   XCSH_API_TOP_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+     --request POST \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Content-Type: application/json' \
+     --data-binary "$XCSH_REQUEST" \
+     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/top_active")"
+   jq -er '{top_apieps: [.top_apieps[]? | {apiep_url, method, top_by_metric_value}]}
+   ' <<<"$XCSH_API_TOP_JSON"
+   ```
 
 ## Measured endpoint activity
 
@@ -103,21 +105,26 @@ Captured 2026-10-06T03:13:53Z; HTTP 200.
 }
 ```
 
+`top_by_metric_value` is the integer percentage of requests to that endpoint relative to all API endpoints for this
+selector. It is not a call count. The default selector ranks endpoints by security-event percentage; set the
+request-percentage selector explicitly. Do not assume backend array order is a descending ranking, and do not expect
+rounded percentages or a top-five subset to sum to 100.
+
 ## Read endpoint statistics
 
-Query the telemetry virtual host:
+This discovery snapshot uses the namespace and telemetry virtual host without a time-window selector.
 
-```bash
-test "$XCSH_API_DISCOVERY_ENABLED" = true
-test -n "$XCSH_VIRTUAL_HOST"
-curl --silent --show-error --fail-with-body \
-  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
-  --header 'Accept: application/json' \
-  "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/stats" |
-jq -er '{total_endpoints, inventory, discovered, shadow, pii_detected}'
-```
+1. Query the telemetry virtual host and summarize category counts.
 
-Expect `total_endpoints`, `inventory`, `discovered`, `shadow`, and `pii_detected`. Categories can overlap, so their sum need not equal the total.
+   ```bash
+   test "$XCSH_API_DISCOVERY_ENABLED" = true
+   test -n "$XCSH_VIRTUAL_HOST"
+   curl --silent --show-error --fail-with-body \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Accept: application/json' \
+     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/stats" |
+   jq -er '{total_endpoints, inventory, discovered, shadow, pii_detected}'
+   ```
 
 ### Observed endpoint statistics
 
@@ -133,28 +140,28 @@ Captured 2026-10-06 02:14:32 UTC; HTTP 200. These are category counts, not a sum
 }
 ```
 
+Expect `total_endpoints`, `inventory`, `discovered`, `shadow`, and `pii_detected`. Categories can overlap, so their sum need not equal the total.
+
 ## Read endpoint inventory
 
-Use the exact `XCSH_APP_TYPE` label from the load balancer configuration. If it is empty, wait for configuration to settle and repeat identifier discovery. Query the app type:
+Use the exact `XCSH_APP_TYPE` label from the load balancer configuration. If it is empty, wait for configuration to settle and repeat identifier discovery. This inventory snapshot uses the namespace and app type without a time-window selector.
 
-```bash
-test "$XCSH_API_DISCOVERY_ENABLED" = true
-test -n "$XCSH_APP_TYPE"
-curl --silent --show-error --fail-with-body \
-  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
-  --header 'Accept: application/json' \
-  "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/app_types/${XCSH_APP_TYPE}/api_endpoints" |
-jq -er '{
-  last_update,
-  count: (.apiep_list | length),
-  categories: ([.apiep_list[]?.category] | group_by(.) |
-    map({category: .[0], count: length}))
-}'
-```
+1. Query the app type and summarize its inventory.
 
-The summary contains `last_update`, `count`, and category counts. A new API route can take time to appear.
-
-The measured inventory contains three entries. Its `last_update` is null, so it does not provide a refresh time.
+   ```bash
+   test "$XCSH_API_DISCOVERY_ENABLED" = true
+   test -n "$XCSH_APP_TYPE"
+   curl --silent --show-error --fail-with-body \
+     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header 'Accept: application/json' \
+     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/app_types/${XCSH_APP_TYPE}/api_endpoints" |
+   jq -er '{
+     last_update,
+     count: (.apiep_list | length),
+     categories: ([.apiep_list[]?.category] | group_by(.) |
+       map({category: .[0], count: length}))
+   }'
+   ```
 
 ### Observed endpoint inventory
 
@@ -172,3 +179,7 @@ Captured 2026-10-06 02:14:32 UTC; HTTP 200.
   ]
 }
 ```
+
+The summary contains `last_update`, `count`, and category counts. A new API route can take time to appear.
+
+The measured inventory contains three entries. Its `last_update` is null, so it does not provide a refresh time.
