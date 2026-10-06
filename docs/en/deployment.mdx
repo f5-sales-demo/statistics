@@ -16,7 +16,7 @@ subscription, sets `deployer=statistics`, and stores local state under
 
 **1. Sign in to the approved Azure sales-demo subscription with the Azure CLI.**
 
-**2. Create an ignored `.env` file in the repository root with `XCSH_API_URL` and `XCSH_API_TOKEN`.**
+**2. Create an ignored `.env` file in the repository root with `XCSH_API_URL`, `XCSH_API_TOKEN`, and `XCSH_NAMESPACE`.**
 
 **3. Restrict the file to your user.**
 
@@ -27,9 +27,8 @@ chmod 0600 .env
 **4. Export the credentials without printing them.**
 
 ```bash
-set -a
 source .env
-set +a
+export XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE
 ```
 
 **5. Bind Terraform to the signed-in subscription.**

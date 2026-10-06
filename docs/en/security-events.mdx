@@ -10,10 +10,10 @@ Complete [shared cURL setup](../setup/) first. The event API returns JSON-encode
 **1. Build a virtual-host and block-action query.**
 
 ```bash
-event_query="$(jq -nr --arg vh "$VIRTUAL_HOST" \
+event_query="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
   '"{vh_name=\"" + $vh + "\",action=\"block\"}"')"
-request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_24H" \
-  --arg end "$END_TIME" --arg query "$event_query" '{
+request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_24H" \
+  --arg end "$XCSH_END_TIME" --arg query "$event_query" '{
     namespace: $ns, start_time: $start, end_time: $end,
     limit: 100, sort: "DESCENDING", query: $query
   }')"
@@ -23,11 +23,11 @@ request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_24H" \
 
 ```bash
 curl --silent --show-error --fail-with-body --request POST \
-  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Content-Type: application/json' \
   --data-binary "$request" \
-  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/app_security/events" |
-jq -er --arg ns "$NAMESPACE" --arg vh "$VIRTUAL_HOST" '{
+  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_security/events" |
+jq -er --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" '{
   total_hits: (.total_hits | tonumber),
   events: [.events[]? | (if type == "string" then fromjson else . end)
     | select(.namespace == $ns and .vh_name == $vh)

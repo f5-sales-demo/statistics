@@ -5,15 +5,15 @@ sidebar:
   order: 8
 ---
 
-Complete [shared cURL setup](../setup/) first. This query uses the namespace-scoped Access Log Query V2 operation and filters by `VIRTUAL_HOST`. The summary excludes client addresses, headers, and raw log messages.
+Complete [shared cURL setup](../setup/) first. This query uses the namespace-scoped Access Log Query V2 operation and filters by `XCSH_VIRTUAL_HOST`. The summary excludes client addresses, headers, and raw log messages.
 
 **1. Build the log request.**
 
 ```bash
-log_query="$(jq -nr --arg vh "$VIRTUAL_HOST" \
+log_query="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
   '"{vh_name=\"" + $vh + "\"}"')"
-request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
-  --arg end "$END_TIME" --arg query "$log_query" '{
+request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+  --arg end "$XCSH_END_TIME" --arg query "$log_query" '{
     namespace: $ns, start_time: $start, end_time: $end,
     limit: 100, sort: "DESCENDING", query: $query
   }')"
@@ -23,11 +23,11 @@ request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
 
 ```bash
 curl --silent --show-error --fail-with-body --request POST \
-  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Content-Type: application/json' \
   --data-binary "$request" \
-  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/access_logs" |
-jq -er --arg ns "$NAMESPACE" --arg vh "$VIRTUAL_HOST" '{
+  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/access_logs" |
+jq -er --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" '{
   total_hits: (.total_hits | tonumber),
   returned: ([.logs[]? | (if type == "string" then fromjson else . end)
     | select(.namespace == $ns and .vh_name == $vh)] | length),

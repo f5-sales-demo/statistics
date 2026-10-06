@@ -12,7 +12,7 @@ Complete [deployment](../deployment/) and [shared cURL setup](../setup/) first. 
 **2. Resolve the demo hostname.**
 
 ```bash
-dig +short "$DEMO_HOST" A
+dig +short "$XCSH_DEMO_HOST" A
 ```
 
 **3. Check the public HTTPS health route and certificate.**
@@ -20,7 +20,7 @@ dig +short "$DEMO_HOST" A
 ```bash
 curl --silent --show-error --fail-with-body --output /dev/null \
   --write-out 'status=%{http_code} tls=%{ssl_verify_result}\n' \
-  "https://$DEMO_HOST/health"
+  "https://$XCSH_DEMO_HOST/health"
 ```
 
 Expect `status=200 tls=0`. Do not use `-k`.
@@ -30,7 +30,7 @@ Expect `status=200 tls=0`. Do not use `-k`.
 ```bash
 curl --silent --show-error --fail-with-body --output /dev/null \
   --write-out 'status=%{http_code}\n' \
-  "https://$DEMO_HOST/httpbin/get?statistics_probe=$(date -u +%s)"
+  "https://$XCSH_DEMO_HOST/httpbin/get?statistics_probe=$(date -u +%s)"
 ```
 
 **5. Send one authorized WAF probe to this F5-owned demo.**
@@ -40,7 +40,7 @@ waf_body="$(mktemp)"
 trap 'rm -f "$waf_body"' EXIT
 curl --silent --show-error --output "$waf_body" --write-out 'status=%{http_code}\n' \
   --get --data-urlencode "q=' OR 1=1--" \
-  "https://$DEMO_HOST/httpbin/get"
+  "https://$XCSH_DEMO_HOST/httpbin/get"
 ```
 
 **6. Confirm the rejection page.**

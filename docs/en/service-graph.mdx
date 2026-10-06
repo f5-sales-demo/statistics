@@ -5,13 +5,13 @@ sidebar:
   order: 4
 ---
 
-Complete [shared cURL setup](../setup/) first. This request reads only the `statistics` namespace and filters the response to its discovered `VIRTUAL_HOST`.
+Complete [shared cURL setup](../setup/) first. This request reads only the `statistics` namespace and filters the response to its discovered `XCSH_VIRTUAL_HOST`.
 
 **1. Build a five-minute service graph request.**
 
 ```bash
-request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
-  --arg end "$END_TIME" '{
+request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+  --arg end "$XCSH_END_TIME" '{
     namespace: $ns, start_time: $start, end_time: $end,
     step: "5m", range: "5m", group_by: ["VHOST"],
     field_selector: {node: {metric: {upstream: [
@@ -28,11 +28,11 @@ request="$(jq -nc --arg ns "$NAMESPACE" --arg start "$START_TIME" \
 
 ```bash
 curl --silent --show-error --fail-with-body --request POST \
-  --header "Authorization: APIToken ${XC_TOKEN}" \
+  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Content-Type: application/json' \
   --data-binary "$request" \
-  "${TENANT_URL}/api/data/namespaces/${NAMESPACE}/graph/service" |
-jq -er --arg vh "$VIRTUAL_HOST" '{
+  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service" |
+jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
   step,
   virtual_host: $vh,
   metrics: [.data.nodes[]? | select(.id.vhost == $vh)
