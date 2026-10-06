@@ -54,7 +54,7 @@ elif "access_logs" in url:
         rows, total = [row], 101
     elif scenario == "cap_complete":
         rows, total = ([row] if page < 100 else []), 100
-    elif scenario == "empty":
+    elif scenario in ["empty", "empty_logs"]:
         rows, total = [], 0
     else:
         rows, total = ([row]*100 if page == 0 else [row]*2 if page == 1 else []), 102
@@ -214,6 +214,13 @@ class ShellExamples(unittest.TestCase):
             if "access_logs" in call["url"] and not call["url"].endswith("scroll"):
                 assert call["request"]["limit"] == 100
                 assert call["request"]["scroll"]
+
+    def test_empty_log_snapshot(self):
+        result, _ = self.run_script(scenario="empty_logs")
+        assert result.returncode == 0, result.stderr
+        logs = json.loads(result.stdout)["http_access_logs"]
+        assert logs["counted"] == logs["total_hits"] == 0
+        assert logs["response_codes"] == logs["methods"] == []
 
     def test_nonfinite_waf(self):
         result, _ = self.run_script(scenario="nonfinite")
