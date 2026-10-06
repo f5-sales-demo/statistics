@@ -93,8 +93,21 @@ These observations are from 5 October 2026 UTC. Re-run the checks for current va
 | Service graph | The 21:45 five-minute bucket had `HTTP_REQUEST_RATE=0.0236054167`; the 21:50 bucket had `0.0192674306`. Both followed timer traffic. |
 | Firewall counters | A five-minute request returned `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQUESTS`, and `BOT_DETECTION` series. |
 | Access logs | The namespace query returned 185 hits in the 21:48 replay. |
-| API discovery | The statistics and inventory reads returned HTTP 200, but both showed zero endpoints 20 minutes after a 90-request JSON API burst. The inventory had no update timestamp. |
+| API discovery | The first read showed zero endpoints after the burst; the 6 October 02:14 UTC read returned three discovered endpoints and three inventory entries. |
 
 The pinned origin VM finished its application bootstrap but cloud-init reported an error installing
 the optional `dool` package. The requested routes passed direct and protected health checks; use
 those checks as the application readiness gate.
+
+## Observed command output
+
+Captured 2026-10-06 02:14:35 UTC through 2026-10-06 02:15:08 UTC. These are selected command-output lines in order; the DNS address and Azure wrapper are omitted.
+
+```text
+status=200 tls=0
+status=200
+status=200
+<title>Request Rejected</title>
+active
+312
+```

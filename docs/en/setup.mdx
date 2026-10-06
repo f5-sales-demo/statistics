@@ -76,6 +76,19 @@ jq -er '{name: .metadata.name, namespace: .metadata.namespace,
   api_discovery_enabled: (.spec.enable_api_discovery != null)}' <<<"$lb_json"
 ```
 
+### Observed load balancer response
+
+Captured 2026-10-06 02:14:27 UTC; HTTP 200. The demo namespace is replaced with its XCSH placeholder.
+
+```json
+{
+  "name": "statistics",
+  "namespace": "<XCSH_NAMESPACE>",
+  "waf": "statistics-waf",
+  "api_discovery_enabled": true
+}
+```
+
 If discovery is enabled but `XCSH_APP_TYPE` is empty, wait for configuration to settle and retry before querying inventory.
 
 ## Find the telemetry virtual host
@@ -106,6 +119,20 @@ XCSH_VIRTUAL_HOST="$(jq -er --arg suffix "-$XCSH_LOAD_BALANCER" '
   | if length == 1 then .[0] else error("Expected one demo VHOST") end
 ' <<<"$graph_json")"
 export XCSH_VIRTUAL_HOST
+```
+
+**3. Print the selected virtual host.**
+
+```bash
+printf 'XCSH_VIRTUAL_HOST=%s\n' "$XCSH_VIRTUAL_HOST"
+```
+
+### Observed virtual-host selection
+
+Captured 2026-10-06 02:22:43 UTC; the service graph request returned HTTP 200. The internal identifier is replaced with its XCSH placeholder.
+
+```text
+XCSH_VIRTUAL_HOST=<XCSH_VIRTUAL_HOST>
 ```
 
 The configuration name, telemetry `XCSH_VIRTUAL_HOST`, and `XCSH_APP_TYPE` serve different APIs. Generate demo traffic and wait for telemetry if the graph has no matching node.

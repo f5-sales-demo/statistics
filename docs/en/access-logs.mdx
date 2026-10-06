@@ -39,3 +39,24 @@ jq -er --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" '{
 ```
 
 Expect `total_hits`, `returned`, and response-code counts. `total_hits` can exceed the first page. The request caps output at 100 logs; use the documented scroll operation for a complete export.
+
+## Observed response
+
+Captured 2026-10-06 02:14:33 UTC; HTTP 200. The response shows counts only; raw log records and client identifiers are omitted.
+
+```json
+{
+  "total_hits": 406,
+  "returned": 100,
+  "response_codes": [
+    {
+      "code": "200",
+      "count": 93
+    },
+    {
+      "code": "404",
+      "count": 7
+    }
+  ]
+}
+```

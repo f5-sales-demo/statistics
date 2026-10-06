@@ -43,3 +43,86 @@ jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
 ```
 
 Expect `step`, the selected `virtual_host`, and available metric entries with `type`, `unit`, `points`, and `latest`. A new traffic burst can take about six minutes to appear in a five-minute bucket. See [verification](../verification/) for the acceptance sample.
+
+## Observed response
+
+Captured 2026-10-06 02:14:28 UTC; HTTP 200. The internal virtual-host value is replaced with its XCSH placeholder; metric values and point times are measured.
+
+```json
+{
+  "step": "5m",
+  "virtual_host": "<XCSH_VIRTUAL_HOST>",
+  "metrics": [
+    {
+      "type": "HTTP_REQUEST_RATE",
+      "unit": "UNIT_REQUESTS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791252600,
+        "value": "0.02011736111111111",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_ERROR_RATE",
+      "unit": "UNIT_ERRORS_PER_SECOND",
+      "points": 4,
+      "latest": {
+        "timestamp": 1791252300,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_ERROR_RATE_4XX",
+      "unit": "UNIT_ERRORS_PER_SECOND",
+      "points": 4,
+      "latest": {
+        "timestamp": 1791252300,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_RESPONSE_LATENCY_PERCENTILE_99",
+      "unit": "UNIT_SECONDS",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791252600,
+        "value": "0.9910000000000001",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_RESPONSE_LATENCY",
+      "unit": "UNIT_SECONDS",
+      "points": 15,
+      "latest": {
+        "timestamp": 1791252600,
+        "value": "0.885",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_RESPONSE_LATENCY_PERCENTILE_50",
+      "unit": "UNIT_SECONDS",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791252600,
+        "value": "0.55",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_RESPONSE_LATENCY_PERCENTILE_90",
+      "unit": "UNIT_MILLISECONDS",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791252600,
+        "value": "0.91",
+        "trend_value": null
+      }
+    }
+  ]
+}
+```
