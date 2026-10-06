@@ -1,25 +1,24 @@
 ---
-title: Statistics API demo
-description: Query live F5 Distributed Cloud statistics for a dedicated HTTP demo.
+title: Understand HTTP traffic
+description: Answer traffic, request failure, origin latency, and API activity questions with live statistics.
 sidebar:
   order: 1
   label: Overview
 ---
 
-Use this learning path to deploy a continuously active HTTP demo with bounded traffic and query its
-F5 Distributed Cloud statistics with cURL. The demo owns the `statistics` namespace, a blocking application
-firewall, API discovery, and an HTTPS load balancer at `statistics.f5-sales-demo.com`. A dedicated
-Azure origin serves health and API routes. A dedicated generator sends three marked requests each
-minute and one WAF probe every fifth minute.
+Start with [shared cURL setup](./setup/) to authenticate and select the running HTTP demo. Then choose the question you need to answer.
 
-Start with [prerequisites and shared cURL setup](./setup/). Then follow [deployment](./deployment/) and query the resource you need:
+| Question | Guide | What you can learn |
+| --- | --- | --- |
+| How much traffic arrived? | [Load-balancer traffic](./service-graph/) | Request rate, throughput, ingress/egress, requests to origin, and client/server RTT |
+| Which requests failed? | [Request outcomes](./access-logs/) | Response codes, classes, and methods from a first page or a complete paginated window |
+| Is the origin slow? | [Origin performance](./origin-performance/) | Rates, errors, latency, throughput, server RTT, and transfer time on the matched origin node and edge |
+| Is the application healthy? | [Application health](./application-health/) | Calculated graph health scores with their returned timestamps |
+| Which APIs are busiest? | [API activity](./api-discovery/) | Calls by response class, top active endpoints, and discovery inventory |
+| Did the WAF act? | [Firewall counters](./firewall-metrics/) and [security events](./security-events/) | Measured counters and authoritative block events |
 
-1. [Service graph metrics](./service-graph/)
-2. [Application firewall counters](./firewall-metrics/)
-3. [Security events](./security-events/)
-4. [API discovery statistics and inventory](./api-discovery/)
-5. [HTTP access logs](./access-logs/)
+The existing demo owns the `statistics` namespace, a blocking WAF, API discovery, and an HTTPS load balancer at `statistics.f5-sales-demo.com`. Its dedicated Azure origin serves health and HTTP API routes. The running generator sends three marked requests each minute and one WAF probe every fifth minute. Query this deployment directly; no persistent metrics collector is needed.
 
-Use [verification](./verification/) to compare live samples, [troubleshooting](./troubleshooting/) for common responses, and [cleanup](./cleanup/) when the demo is no longer needed. The [API family catalog](./api-catalog/) lists other telemetry surfaces and their required resources.
+[Verification](./verification/) shows a bounded request sequence and measured telemetry after rollup. Use [troubleshooting](./troubleshooting/) for authentication, identity, and delay problems. The [API family catalog](./api-catalog/) separates currently empty HTTP metrics from families requiring future resources.
 
-The historical prototype informed the request shapes. This guide reports acceptance only from this deployment; historical counts are not reused.
+For infrastructure ownership, pinned resources, local state, plan/apply, and teardown, use the [Terraform reference](./deployment/). A running deployment needs no infrastructure change to follow these queries.

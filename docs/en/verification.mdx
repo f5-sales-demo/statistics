@@ -2,10 +2,10 @@
 title: Verify the live demo
 description: Check the origin, HTTPS route, WAF, generator, and two fresh telemetry samples.
 sidebar:
-  order: 9
+  order: 10
 ---
 
-Complete [deployment](../deployment/) and [shared cURL setup](../setup/) first. Keep the timer enabled after acceptance.
+Use the existing demo and complete [shared cURL setup](../setup/) first. For a new deployment, use the [Terraform reference](../deployment/). Keep the timer enabled after acceptance.
 
 **1. Wait for both Azure VMs to finish application provisioning.**
 
@@ -36,9 +36,9 @@ curl --silent --show-error --fail-with-body --output /dev/null \
 **5. Send one authorized WAF probe to this F5-owned demo.**
 
 ```bash
-waf_body="$(mktemp)"
-trap 'rm -f "$waf_body"' EXIT
-curl --silent --show-error --output "$waf_body" --write-out 'status=%{http_code}\n' \
+XCSH_WAF_BODY="$(mktemp)"
+trap 'rm -f "$XCSH_WAF_BODY"' EXIT
+curl --silent --show-error --output "$XCSH_WAF_BODY" --write-out 'status=%{http_code}\n' \
   --get --data-urlencode "q=' OR 1=1--" \
   "https://$XCSH_DEMO_HOST/httpbin/get"
 ```
@@ -46,7 +46,7 @@ curl --silent --show-error --output "$waf_body" --write-out 'status=%{http_code}
 **6. Confirm the rejection page.**
 
 ```bash
-grep -i '<title>Request Rejected</title>' "$waf_body"
+grep -i '<title>Request Rejected</title>' "$XCSH_WAF_BODY"
 ```
 
 The current F5 rejection page can return HTTP 200. Confirm the page title and a matching
@@ -111,3 +111,84 @@ status=200
 active
 312
 ```
+
+## Verify request outcomes without stopping the origin
+
+Capture baseline statistics before generating requests. The following sequence sends 30 requests sequentially: 20 health requests, five explicit 404 responses, and five explicit 503 responses. Each request has a ten-second timeout and a unique marker. It uses the origin's status routes, so the origin stays online. A status mismatch stops the sequence.
+
+```bash
+export XCSH_RUN_MARKER="statistics-outcomes-$(date -u +%Y%m%dT%H%M%SZ)"
+export XCSH_BURST_START="$(date -u +%s)"
+for XCSH_SEQUENCE in $(seq 1 30); do
+  if [ "$XCSH_SEQUENCE" -le 20 ]; then
+    XCSH_PATH=/health
+    XCSH_EXPECTED=200
+  elif [ "$XCSH_SEQUENCE" -le 25 ]; then
+    XCSH_PATH=/httpbin/status/404
+    XCSH_EXPECTED=404
+  else
+    XCSH_PATH=/httpbin/status/503
+    XCSH_EXPECTED=503
+  fi
+  XCSH_STATUS="$(curl --silent --show-error --max-time 10 --output /dev/null \
+    --write-out '%{http_code}' --get \
+    --data-urlencode "statistics_probe=$XCSH_RUN_MARKER-$XCSH_SEQUENCE" \
+    "https://$XCSH_DEMO_HOST$XCSH_PATH")"
+  printf 'sequence=%s expected=%s status=%s\n' "$XCSH_SEQUENCE" "$XCSH_EXPECTED" "$XCSH_STATUS"
+  test "$XCSH_STATUS" = "$XCSH_EXPECTED"
+done
+export XCSH_BURST_END="$(date -u +%s)"
+```
+
+The measured sequence ran from 2026-10-06T03:09:40Z to 2026-10-06T03:10:01Z. All 30 statuses matched: 20 × 200, five × 404, and five × 503. The existing timer continued to generate its normal traffic, so window-wide counts include background requests.
+
+After rollup, refresh the shared query window and replay the guides. Keep receipts private with owner-only permissions,
+including the UTC capture time, HTTP status, original response, request selector, and sanitized summary. Compare
+published output to that summary; replace identifiers without changing measured values. Do not publish raw receipts,
+headers, credentials, addresses, or captured bodies.
+
+The first post-sequence log snapshot at 03:13:40 UTC counted 430 logs across five populated pages and an empty final
+page. The complete window contained 413 responses with code 200, 12 with code 404, and five with code 503. The first
+page contained 100 logs: 90 with code 200, five with code 404, and five with code 503. The discrepancy illustrates why
+first-page class counts are not complete-window totals. All returned methods were GET.
+
+The API-call summary from the same replay reported 378 calls, all in its returned 2xx class. Its top-active list covered three discovered endpoints. The explicit status routes were present in access logs but absent from that discovered-endpoint population. Compare these surfaces within their own scope rather than equating API calls with all HTTP requests.
+
+## Empty security-event metric response
+
+The namespace security-event metrics query at 2026-10-06T03:12:47Z returned HTTP 200 with no counters. Its two-hour selector used `group_by: ["VH_NAME", "SEC_EVENT_TYPE"]` and filtered `VH_NAME` to the discovered virtual host.
+
+```json
+{
+  "data": [],
+  "step": "5m"
+}
+```
+
+This empty metric response does not contradict populated WAF counters or authoritative block-event logs. Treat it and the empty connection series as unavailable telemetry until meaningful points are captured.
+
+## Baseline and later rollup
+
+Both graph queries returned HTTP 200. The baseline was captured at 2026-10-06T03:09:23Z,
+before the sequence; the later query was captured at 2026-10-06T03:15:53Z. Each cell preserves
+the latest returned Unix timestamp and string value. The later request-rate point advanced from
+03:05 to 03:15 UTC; a later bucket proves available telemetry, not attribution of every request.
+
+| Metric | Returned unit | Baseline timestamp and value | Later timestamp and value |
+| --- | --- | --- | --- |
+| `HTTP_REQUEST_RATE` | `UNIT_REQUESTS_PER_SECOND` | `1791255900`: `0.03850083333333333` | `1791256500`: `0.019619002305555557` |
+| `REQUEST_THROUGHPUT` | `UNIT_BITS_PER_SECOND` | `1791255900`: `110.52240666666667` | `1791256500`: `55.61405410244444` |
+| `RESPONSE_THROUGHPUT` | `UNIT_BITS_PER_SECOND` | `1791255900`: `200.54142015488893` | `1791256500`: `53.68032719333334` |
+| `HTTP_INGRESS_REQUEST_RATE` | `UNIT_REQUESTS_PER_SECOND` | `1791255900`: `0.05` | `1791256500`: `0.016666666666666666` |
+| `HTTP_EGRESS_REQUEST_RATE` | `UNIT_REQUESTS_PER_SECOND` | `1791255900`: `0.041666666666666664` | `1791256500`: `0.0231765` |
+| `REQUEST_TO_ORIGIN_RATE` | `UNIT_REQUESTS_PER_SECOND` | `1791255900`: `0.03850083333333333` | `1791256500`: `0.019619002305555557` |
+| `CLIENT_RTT` | `UNIT_SECONDS` | `1791255900`: `0.0010500000000000002` | `1791256500`: `0.0010500000000000002` |
+| `SERVER_RTT` | `UNIT_SECONDS` | `1791255900`: `0.43500000000000005` | `1791255900`: `0.43500000000000005` |
+| `HTTP_SERVER_DATA_TRANSFER_TIME` | `UNIT_SECONDS` | `1791255900`: `0` | `1791255900`: `0` |
+| `HTTP_ERROR_RATE_4XX` | `UNIT_ERRORS_PER_SECOND` | `1791253200`: `0` | `1791253200`: `0` |
+| `HTTP_ERROR_RATE_5XX` | No returned unit | No returned series | No returned series |
+
+The latest 4xx error point remained at 02:20 UTC and the 5xx error series was absent, even though
+access logs contained the explicit 404 and 503 responses. Those graph error metrics had not supplied
+meaningful points for the sequence at this capture. Do not turn a stale zero or an absent series into
+proof of successful requests. Use the complete log counts above for observed outcomes.

@@ -5,17 +5,27 @@ sidebar:
   order: 12
 ---
 
-This release verifies statistics produced by the HTTP demo. The following families need their own deployed responder and a separate live query before they become runnable guides.
+This guide verifies statistics produced by the current HTTP demo. The following families need their own deployed responder and a separate live query before they become runnable guides.
 
 | API family | Required demo resource |
 | --- | --- |
 | Bot defense | Bot defense policy and traffic that exercises its detection paths |
 | Client-side defense | Protected browser application with client-side telemetry enabled |
 | DDoS | L3/L4 or L7 protection and authorized load or attack simulation |
+| TCP | TCP load balancer, origin listener, and connection traffic |
 | DNS | Managed DNS zone, records, and query traffic |
 | CDN/cache | CDN load balancer or cache policy with hit and miss traffic |
 | Multi-cloud networking | Connected sites, routes, and cross-site flows |
 | Kubernetes | Registered cluster or virtual Kubernetes workload |
 | Audit logs | Authorized configuration or account activity |
 
-Use the [service graph](../service-graph/), [firewall counters](../firewall-metrics/), [security events](../security-events/), [API discovery](../api-discovery/), and [access logs](../access-logs/) for this HTTP demo.
+Use [origin performance](../origin-performance/), [application health](../application-health/), and the [service graph](../service-graph/), [firewall counters](../firewall-metrics/), [security events](../security-events/), [API discovery](../api-discovery/), and [access logs](../access-logs/) for this HTTP demo.
+
+## Supported HTTP metrics with no current points
+
+| Surface | Current evidence | Next step |
+| --- | --- | --- |
+| Graph `ACTIVE_CONNECTIONS` and `NEW_CONNECTION_RATE` | Requested with VHOST traffic metrics; no returned series in the measured window | Capture meaningful connection telemetry before adding a populated example |
+| `/api/data/namespaces/{namespace}/app_security/metrics` | Namespace and `VH_NAME` query returned HTTP 200 with empty counters | Retain WAF counters and authoritative event logs; capture meaningful metric points before presenting counts |
+
+These are unavailable telemetry for the measured selector and window. HTTP 200 does not make an empty response a populated result. See [verification](../verification/) for timestamps and the empty security-metric response. DNS, cache/CDN, TCP, sites, and Kubernetes need their own future resources and acceptance.
