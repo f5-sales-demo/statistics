@@ -15,7 +15,7 @@ event_query="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
 request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_24H" \
   --arg end "$XCSH_END_TIME" --arg query "$event_query" '{
     namespace: $ns, start_time: $start, end_time: $end,
-    limit: 100, sort: "DESCENDING", query: $query
+    limit: 3, sort: "DESCENDING", query: $query
   }')"
 ```
 
@@ -29,6 +29,7 @@ curl --silent --show-error --fail-with-body --request POST \
   "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_security/events" |
 jq -er --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" '{
   total_hits: (.total_hits | tonumber),
+  returned: (.events | length),
   events: [.events[]? | (if type == "string" then fromjson else . end)
     | select(.namespace == $ns and .vh_name == $vh)
     | {time, namespace, vh_name, action, sec_event_type,
@@ -36,4 +37,47 @@ jq -er --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" '{
 }'
 ```
 
-Expect `total_hits` and matching events with `action: "block"` and an application firewall name. This guide does not print client addresses, headers, or raw event bodies. `total_hits` can exceed the first 100 returned events; use the scroll API for complete exports.
+Expect `total_hits` and matching events with `action: "block"` and an application firewall name. This guide does not print client addresses, headers, or raw event bodies. `total_hits` can exceed the first three returned events; use the scroll API for complete exports.
+
+## Observed response
+
+Captured 2026-10-06 02:14:30 UTC; HTTP 200. The namespace and virtual-host values are replaced with XCSH placeholders; the event times, actions, and counts are measured.
+
+```json
+{
+  "total_hits": 121,
+  "returned": 3,
+  "events": [
+    {
+      "time": "2026-10-06T02:12:02.318Z",
+      "namespace": "<XCSH_NAMESPACE>",
+      "vh_name": "<XCSH_VIRTUAL_HOST>",
+      "action": "block",
+      "sec_event_type": "waf_sec_event",
+      "sec_event_name": "WAF",
+      "rsp_code": "200",
+      "app_firewall_name": "statistics-waf"
+    },
+    {
+      "time": "2026-10-06T02:07:02.630Z",
+      "namespace": "<XCSH_NAMESPACE>",
+      "vh_name": "<XCSH_VIRTUAL_HOST>",
+      "action": "block",
+      "sec_event_type": "waf_sec_event",
+      "sec_event_name": "WAF",
+      "rsp_code": "200",
+      "app_firewall_name": "statistics-waf"
+    },
+    {
+      "time": "2026-10-06T02:02:02.069Z",
+      "namespace": "<XCSH_NAMESPACE>",
+      "vh_name": "<XCSH_VIRTUAL_HOST>",
+      "action": "block",
+      "sec_event_type": "waf_sec_event",
+      "sec_event_name": "WAF",
+      "rsp_code": "200",
+      "app_firewall_name": "statistics-waf"
+    }
+  ]
+}
+```

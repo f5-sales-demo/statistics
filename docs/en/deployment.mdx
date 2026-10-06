@@ -87,3 +87,17 @@ terraform -chdir=terraform apply -input=false "$state_dir/statistics.tfplan"
 ```
 
 **2. Follow [verification](../verification/) after the origin and generator finish cloud-init. Keep the timer running so later API examples have fresh traffic.**
+
+## Observed deployment output
+
+The first reviewed apply completed on 5 October 2026. The local receipt reported:
+
+```text
+Apply complete! Resources: 22 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+demo_hostname = "statistics.f5-sales-demo.com"
+generator_vm_name = "vm-traffic-generator-statistics"
+origin_vm_name = "vm-origin-server-statistics"
+```
