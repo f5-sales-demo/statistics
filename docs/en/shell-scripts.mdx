@@ -1,0 +1,121 @@
+---
+title: Shell Scripts
+description: Download two Bash examples for a request-rate summary or seven resource queries.
+sidebar:
+  order: 12
+---
+
+Use these examples to repeat the resource queries from one Bash session. They read
+the exported `XCSH_*` values prepared in [Overview](../#set-up-curl) and
+[Query reference](../setup/). They make read-only API requests against the existing
+demo and use Bash, cURL, and jq.
+
+| Example | Output | Queries |
+| --- | --- | --- |
+| [simple-stats.sh](../../assets/scripts/simple-stats.sh) | One request-rate summary | One service graph request for the discovered virtual host |
+| [get-stats.sh](../../assets/scripts/get-stats.sh) | One JSON report with seven resource sections | Complete HTTP log counts, load balancer metrics, exact origin discovery and metrics, application health, four API activity queries, WAF counters, and separate security-event logs and metrics |
+
+Both examples use the fixed query times from Query reference. They do not load
+`.env`; run the shared setup and discovery in the parent session first. The complete
+collector requires `XCSH_API_DISCOVERY_ENABLED=true` and the discovered
+`XCSH_APP_TYPE`. Its origin matching supports the current demo's single default
+pool with one public-IP origin and one graph source. Repeat
+[origin discovery](../origin-performance/#match-the-origin-graph-identity) if that
+identity is unavailable or ambiguous.
+
+## Download and run
+
+1. Complete [Overview setup](../#set-up-curl) and
+   [shared identifier discovery](../setup/#read-the-load-balancer-identifiers)
+   in one Bash session. Refresh all three query times for a later run.
+
+2. Download the examples into private local files. Keep output private using the
+   [shared response and privacy conventions](../setup/#read-responses-consistently).
+
+   ```bash
+   mkdir -p statistics-output
+   chmod 700 statistics-output
+   cd statistics-output
+   curl --silent --show-error --fail --connect-timeout 10 --max-time 60 \
+     --output simple-stats.sh \
+     https://f5-sales-demo.github.io/statistics/assets/scripts/simple-stats.sh
+   curl --silent --show-error --fail --connect-timeout 10 --max-time 60 \
+     --output get-stats.sh \
+     https://f5-sales-demo.github.io/statistics/assets/scripts/get-stats.sh
+   chmod 700 simple-stats.sh get-stats.sh
+   ```
+
+3. Run the request-rate example and inspect its JSON summary.
+
+   ```bash
+   ./simple-stats.sh > simple-stats.json
+   jq . simple-stats.json
+   ```
+
+4. Run the complete collector with the same exported window and inspect a section.
+
+   ```bash
+   ./get-stats.sh > get-stats.json
+   jq .http_access_logs get-stats.json
+   jq .origin_performance get-stats.json
+   ```
+
+An unsuccessful run returns nonzero and writes a concise section-specific error to
+standard error. It emits no partial report or raw error body. A redirected output
+file can therefore be empty after failure; check the command's exit status before
+reading or using it. Follow [Troubleshooting](../troubleshooting/) for access,
+identity, and telemetry delays.
+
+## Request-rate source
+
+The expanded source below is imported from the same executable file as the
+download. It requests only `HTTP_REQUEST_RATE` and selects the exact discovered
+virtual host.
+
+```bash file=../assets/scripts/simple-stats.sh
+```
+
+## Complete collector source
+
+The seven labeled sections follow the resource guides sequentially. HTTP logs use
+a scroll snapshot with 100 records per page and a 100-page cap. Every record must
+match the selected namespace and virtual host, and `counted` must equal
+`total_hits`. The script retains only response codes, classes, and methods from
+logs. Narrow the window if the page cap prevents a complete count.
+
+```bash file=../assets/scripts/get-stats.sh
+```
+
+## Interpret the output
+
+`simple-stats.sh` prints `metric`, the returned `unit`, sample count `points`, the
+latest timestamp and string value, and `maximum`. The maximum uses only finite
+numeric samples; `"NaN"`, infinite values, and other nonnumeric values do not
+contribute. With no finite samples, `maximum` is `null`. With no returned series,
+`points` is zero and `unit` and `latest` are `null`. A sample count is not a request
+count.
+
+`get-stats.sh` emits `context` with the namespace, discovered identifiers, fixed
+two-hour window, five-minute buckets, and the start of the 24-hour security-log
+window. Its seven named sections map to the resource guides:
+
+| JSON section | Interpretation |
+| --- | --- |
+| `http_access_logs` | Complete logged-request counts for the fixed snapshot; late ingestion and logging coverage still apply |
+| `load_balancer_metrics` | Returned units, samples, latest points, finite maxima, and requested types with no returned series in `unavailable` |
+| `origin_performance` | Exact configured destination and source, with separate node and edge summaries |
+| `application_health` | Returned health-score samples and unavailable score types; the API supplies no unit field |
+| `api_activity` | Calls by response class and top-five activity for the exclusive-end summary window, plus current statistics and inventory snapshots |
+| `waf_metrics` | Matching counter buckets and totals; a total is `null` when samples are absent or any sample is nonnumeric |
+| `security_events` | At most three block-event logs over 24 hours, and separate metrics over the two-hour window; `total_hits` can exceed the returned logs |
+
+Values, units, and timestamps remain as returned. Missing series, empty arrays,
+`null`, and nonnumeric samples represent unavailable telemetry rather than
+measured zero. API activity counts cover discovered endpoints and can differ from
+HTTP log counts. Security-event metrics can be empty while block logs and WAF
+counters are populated.
+
+Script reports belong in private local files. Sanitize any sample before
+publication using the shared privacy conventions. Existing measured JSON and
+capture dates on the resource pages remain historical evidence; a new script run
+does not replace them.
