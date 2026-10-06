@@ -2,7 +2,7 @@
 title: Query security events
 description: Read WAF block events for the statistics virtual host without exposing request data.
 sidebar:
-  order: 6
+  order: 9
 ---
 
 Complete [shared cURL setup](../setup/) first. The event API returns JSON-encoded strings. Decode them and select only fields needed to confirm WAF action.
@@ -10,10 +10,10 @@ Complete [shared cURL setup](../setup/) first. The event API returns JSON-encode
 **1. Build a virtual-host and block-action query.**
 
 ```bash
-event_query="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
+XCSH_EVENT_QUERY="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
   '"{vh_name=\"" + $vh + "\",action=\"block\"}"')"
-request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_24H" \
-  --arg end "$XCSH_END_TIME" --arg query "$event_query" '{
+XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_24H" \
+  --arg end "$XCSH_END_TIME" --arg query "$XCSH_EVENT_QUERY" '{
     namespace: $ns, start_time: $start, end_time: $end,
     limit: 3, sort: "DESCENDING", query: $query
   }')"
@@ -25,7 +25,7 @@ request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_24H" \
 curl --silent --show-error --fail-with-body --request POST \
   --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Content-Type: application/json' \
-  --data-binary "$request" \
+  --data-binary "$XCSH_REQUEST" \
   "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_security/events" |
 jq -er --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" '{
   total_hits: (.total_hits | tonumber),
@@ -41,15 +41,15 @@ Expect `total_hits` and matching events with `action: "block"` and an applicatio
 
 ## Observed response
 
-Captured 2026-10-06 02:14:30 UTC; HTTP 200. The namespace and virtual-host values are replaced with XCSH placeholders; the event times, actions, and counts are measured.
+Captured 2026-10-06T03:13:55Z; HTTP 200. The namespace and virtual-host values are replaced with XCSH placeholders; the event times, actions, and counts are measured.
 
 ```json
 {
-  "total_hits": 121,
+  "total_hits": 135,
   "returned": 3,
   "events": [
     {
-      "time": "2026-10-06T02:12:02.318Z",
+      "time": "2026-10-06T03:12:02.413Z",
       "namespace": "<XCSH_NAMESPACE>",
       "vh_name": "<XCSH_VIRTUAL_HOST>",
       "action": "block",
@@ -59,7 +59,7 @@ Captured 2026-10-06 02:14:30 UTC; HTTP 200. The namespace and virtual-host value
       "app_firewall_name": "statistics-waf"
     },
     {
-      "time": "2026-10-06T02:07:02.630Z",
+      "time": "2026-10-06T03:07:02.531Z",
       "namespace": "<XCSH_NAMESPACE>",
       "vh_name": "<XCSH_VIRTUAL_HOST>",
       "action": "block",
@@ -69,7 +69,7 @@ Captured 2026-10-06 02:14:30 UTC; HTTP 200. The namespace and virtual-host value
       "app_firewall_name": "statistics-waf"
     },
     {
-      "time": "2026-10-06T02:02:02.069Z",
+      "time": "2026-10-06T03:02:03.054Z",
       "namespace": "<XCSH_NAMESPACE>",
       "vh_name": "<XCSH_VIRTUAL_HOST>",
       "action": "block",

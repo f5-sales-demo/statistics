@@ -7,7 +7,7 @@ sidebar:
 
 ## Check prerequisites
 
-Use Bash, cURL 7.76 or later, and `jq` 1.7 or later. Obtain an F5 Distributed Cloud API token with read access to the `statistics` namespace. Do not put the token in a command line, URL, document, or Git file. Tenant-wide queries require separate `system` namespace access and are outside this learning path.
+Use Bash with `set -euo pipefail`, cURL 7.76 or later, and `jq` 1.7 or later. Obtain an F5 Distributed Cloud API token with read access to the `statistics` namespace. Do not put the token in a command line, URL, document, or Git file. Tenant-wide queries require separate `system` namespace access and are outside this learning path.
 
 ## Set shared variables
 
@@ -17,6 +17,8 @@ Run these steps in one Bash session from the repository root. Keep the ignored
 **1. Load your private environment.**
 
 ```bash
+set -euo pipefail
+umask 077
 source .env
 ```
 
@@ -59,7 +61,7 @@ The API accepts Unix epoch seconds as strings. Refresh all three times before a 
 **1. Fetch the load balancer configuration.**
 
 ```bash
-lb_json="$(curl --silent --show-error --fail-with-body \
+XCSH_LB_JSON="$(curl --silent --show-error --fail-with-body \
   --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Accept: application/json' \
   "${XCSH_API_URL}/api/config/namespaces/${XCSH_NAMESPACE}/http_loadbalancers/${XCSH_LOAD_BALANCER}")"
@@ -68,17 +70,17 @@ lb_json="$(curl --silent --show-error --fail-with-body \
 **2. Read its API discovery state and app type.**
 
 ```bash
-XCSH_API_DISCOVERY_ENABLED="$(jq -er '(.spec.enable_api_discovery != null)' <<<"$lb_json")"
-XCSH_APP_TYPE="$(jq -r '.metadata.labels["ves.io/app_type"] // empty' <<<"$lb_json")"
+XCSH_API_DISCOVERY_ENABLED="$(jq -er '(.spec.enable_api_discovery != null)' <<<"$XCSH_LB_JSON")"
+XCSH_APP_TYPE="$(jq -r '.metadata.labels["ves.io/app_type"] // empty' <<<"$XCSH_LB_JSON")"
 export XCSH_API_DISCOVERY_ENABLED XCSH_APP_TYPE
 jq -er '{name: .metadata.name, namespace: .metadata.namespace,
   waf: .spec.app_firewall.name,
-  api_discovery_enabled: (.spec.enable_api_discovery != null)}' <<<"$lb_json"
+  api_discovery_enabled: (.spec.enable_api_discovery != null)}' <<<"$XCSH_LB_JSON"
 ```
 
 ### Observed load balancer response
 
-Captured 2026-10-06 02:14:27 UTC; HTTP 200. The demo namespace is replaced with its XCSH placeholder.
+Captured 2026-10-06T03:13:41Z; HTTP 200. The demo namespace is replaced with its XCSH placeholder.
 
 ```json
 {
@@ -96,17 +98,17 @@ If discovery is enabled but `XCSH_APP_TYPE` is empty, wait for configuration to 
 **1. Request active service graph nodes in the current window.**
 
 ```bash
-request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
   --arg end "$XCSH_END_TIME" '{
     namespace: $ns, start_time: $start, end_time: $end,
     step: "5m", range: "5m", group_by: ["VHOST"],
     field_selector: {node: {metric: {upstream: ["HTTP_REQUEST_RATE"]}}}
   }')"
-graph_json="$(curl --silent --show-error --fail-with-body \
+XCSH_GRAPH_JSON="$(curl --silent --show-error --fail-with-body \
   --request POST \
   --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Content-Type: application/json' \
-  --data-binary "$request" \
+  --data-binary "$XCSH_REQUEST" \
   "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
 ```
 
@@ -117,11 +119,11 @@ XCSH_VIRTUAL_HOST="$(jq -er --arg suffix "-$XCSH_LOAD_BALANCER" '
   [.data.nodes[]?.id.vhost // empty | select(endswith($suffix))]
   | unique
   | if length == 1 then .[0] else error("Expected one demo VHOST") end
-' <<<"$graph_json")"
+' <<<"$XCSH_GRAPH_JSON")"
 export XCSH_VIRTUAL_HOST
 ```
 
-**3. Print the selected virtual host.**
+**3. Keep the selected identity private.**
 
 ```bash
 printf 'XCSH_VIRTUAL_HOST=%s\n' "$XCSH_VIRTUAL_HOST"
@@ -137,6 +139,75 @@ XCSH_VIRTUAL_HOST=<XCSH_VIRTUAL_HOST>
 
 The configuration name, telemetry `XCSH_VIRTUAL_HOST`, and `XCSH_APP_TYPE` serve different APIs. Generate demo traffic and wait for telemetry if the graph has no matching node.
 
+## Match the origin graph identity
+
+Use `VHOST` and `SERVICE` grouping to discover both ends of the request edge. The demo pool contains one public-IP origin. Match its configured address exactly; a service label or the load-balancer name alone is insufficient. Keep the address and graph identities in XCSH variables and private receipts.
+
+**1. Read the configured default pool and its unique public IP.**
+
+```bash
+XCSH_ORIGIN_POOL="$(jq -er '
+  [.spec.default_route_pools[]?.pool.name] | unique
+  | if length == 1 then .[0] else error("Expected one origin pool") end
+' <<<"$XCSH_LB_JSON")"
+XCSH_POOL_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+  "${XCSH_API_URL}/api/config/namespaces/${XCSH_NAMESPACE}/origin_pools/${XCSH_ORIGIN_POOL}")"
+XCSH_ORIGIN_IP="$(jq -er '
+  [.spec.origin_servers[]?.public_ip.ip // empty] | unique
+  | if length == 1 then .[0] else error("Expected one public-IP origin") end
+' <<<"$XCSH_POOL_JSON")"
+```
+
+**2. Discover the source and destination services.**
+
+```bash
+XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" \
+  --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" \
+  --arg vh "$XCSH_VIRTUAL_HOST" '{
+    namespace: $ns, start_time: $start, end_time: $end,
+    step: "5m", range: "5m", group_by: ["VHOST", "SERVICE"],
+    label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
+    field_selector: {node: {metric: {upstream: ["HTTP_REQUEST_RATE"]}},
+                     edge: {metric: {types: ["HTTP_REQUEST_RATE"]}}}
+  }')"
+XCSH_GRAPH_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+  --request POST \
+  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+  --header 'Content-Type: application/json' \
+  --data-binary "$XCSH_REQUEST" \
+  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
+XCSH_GRAPH_DESTINATION="$(jq -er --arg vh "$XCSH_VIRTUAL_HOST" \
+  --arg ip "$XCSH_ORIGIN_IP" '
+  [.data.edges[]? | select(.dst_id.vhost == $vh)
+    | .dst_id.service | select(. == ("S:" + $ip))] | unique
+  | if length == 1 then .[0] else error("No unique configured origin edge") end
+' <<<"$XCSH_GRAPH_JSON")"
+XCSH_GRAPH_SOURCE="$(jq -er --arg vh "$XCSH_VIRTUAL_HOST" \
+  --arg dst "$XCSH_GRAPH_DESTINATION" '
+  [.data.edges[]? | select(.dst_id.vhost == $vh and .dst_id.service == $dst)
+    | .src_id.service] | unique
+  | if length == 1 then .[0] else error("Expected one source service") end
+' <<<"$XCSH_GRAPH_JSON")"
+export XCSH_ORIGIN_POOL XCSH_ORIGIN_IP XCSH_GRAPH_SOURCE XCSH_GRAPH_DESTINATION
+jq -n --arg source "$XCSH_GRAPH_SOURCE" --arg destination "$XCSH_GRAPH_DESTINATION" \
+  '{source: $source, destination: $destination, configured_origin_match: true}'
+```
+
+The origin address is returned as a service identity prefixed with `S:`. The source is the public network identity. These commands deliberately stop if the configured origin cannot be matched uniquely. Other pool types or multiple origins need their own matching procedure.
+
+## Measured response
+
+Captured 2026-10-06T03:13:41Z; HTTP 200 for the query and every required page. Identifiers are replaced with XCSH placeholders; values, units, counts, and point timestamps are preserved.
+
+```json
+{
+  "source": "<XCSH_GRAPH_SOURCE>",
+  "destination": "<XCSH_GRAPH_DESTINATION>",
+  "configured_origin_match": true
+}
+```
+
 ## Read responses consistently
 
 The examples use `--fail-with-body` so HTTP errors stop the command while preserving the error body.
@@ -145,3 +216,13 @@ missing metric series means no data for that selector and window. Service graph 
 several minutes after requests; the prototype observed a new five-minute bucket about six minutes
 after a burst. Allow up to ten minutes before investigating a missing new sample. Logs and discovery
 can have different delays.
+
+Keep `set -o pipefail` enabled so a failed cURL request cannot be hidden by a successful `jq` filter. Published outputs
+are allowlisted summaries: identifiers become `<XCSH_...>` placeholders, and credentials, client addresses, headers, raw
+logs, and captured request/response bodies are omitted. JSON code blocks show measured values, including string-valued
+numbers and the API's own units. Output order is sorted where useful for comparison.
+
+A rate in requests per second is a sampled metric, not an exact request count. Do not sum rate samples to count
+requests. Use paginated access logs for complete logged-request totals, and keep API activity totals scoped to their
+endpoint population. Missing series are unavailable telemetry, while a returned point with value `"0"` is a measured
+zero. HTTP 200 proves that the query succeeded; it does not prove that data is populated.

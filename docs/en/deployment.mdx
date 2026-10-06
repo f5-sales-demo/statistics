@@ -1,8 +1,8 @@
 ---
-title: Deploy the demo
+title: Terraform reference
 description: Review and apply the pinned Terraform root with private local state.
 sidebar:
-  order: 3
+  order: 99
 ---
 
 The Terraform root pins `f5-sales-demo/xcsh` 15.0.0 and immutable commits of the [origin
@@ -12,7 +12,9 @@ subscription, sets `deployer=statistics`, and stores local state under
 `$HOME/.local/state/statistics`. The two default East US 2 VMs are `Standard_D16s_v3` and
 `Standard_F16s_v2`.
 
-## Prepare the operator shell
+## Prerequisites and operator shell
+
+Use Terraform 1.8 or later, the Azure CLI, Bash, cURL, and `jq`. Authenticate to the approved demo subscription and complete [shared cURL setup](../setup/). An existing deployment uses its existing local state; do not re-create its resources or initialize a different state path.
 
 **1. Sign in to the approved Azure sales-demo subscription with the Azure CLI.**
 
@@ -27,6 +29,8 @@ chmod 0600 .env
 **4. Export the credentials without printing them.**
 
 ```bash
+set -euo pipefail
+umask 077
 source .env
 export XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE
 ```
@@ -40,20 +44,20 @@ export TF_CLI_CONFIG_FILE=/dev/null
 
 ## Review the plan
 
-**1. Confirm that `statistics.f5-sales-demo.com` has no existing DNS answer and the `statistics` namespace and named objects are unowned.**
+**1. For a first deployment, confirm that the hostname and named namespace objects are unowned. For this running demo, use the owner’s existing private state.**
 
 **2. Create the private state directory.**
 
 ```bash
-state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/statistics"
-install -d -m 0700 "$state_dir"
+XCSH_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/statistics"
+install -d -m 0700 "$XCSH_STATE_DIR"
 ```
 
 **3. Initialize the local backend.**
 
 ```bash
 terraform -chdir=terraform init -input=false \
-  -backend-config="path=$state_dir/terraform.tfstate"
+  -backend-config="path=$XCSH_STATE_DIR/terraform.tfstate"
 ```
 
 **4. Validate the configuration.**
@@ -66,24 +70,24 @@ terraform -chdir=terraform validate
 
 ```bash
 terraform -chdir=terraform plan -input=false \
-  -out="$state_dir/statistics.tfplan"
+  -out="$XCSH_STATE_DIR/statistics.tfplan"
 ```
 
 **6. Inspect the planned resource actions.**
 
 ```bash
-terraform -chdir=terraform show -json "$state_dir/statistics.tfplan" |
+terraform -chdir=terraform show -json "$XCSH_STATE_DIR/statistics.tfplan" |
   jq -r '.resource_changes[] | [.address, (.change.actions | join(","))] | @tsv'
 ```
 
-The first plan should contain only creates for the dedicated VMs, networking, namespace, health check, origin pool, blocking WAF, HTTPS load balancer, and generator timer extension. Investigate any update, replacement, or deletion before applying. The origin module permits inbound ports 22, 80, 443, and 8888; the generator permits 22.
+A first deployment plan should contain only creates for the dedicated VMs, networking, namespace, health check, origin pool, blocking WAF, HTTPS load balancer, and generator timer extension. Investigate any update, replacement, or deletion before applying. The origin module permits inbound ports 22, 80, 443, and 8888; the generator permits 22.
 
 ## Apply the reviewed plan
 
 **1. Apply the saved plan.**
 
 ```bash
-terraform -chdir=terraform apply -input=false "$state_dir/statistics.tfplan"
+terraform -chdir=terraform apply -input=false "$XCSH_STATE_DIR/statistics.tfplan"
 ```
 
 **2. Follow [verification](../verification/) after the origin and generator finish cloud-init. Keep the timer running so later API examples have fresh traffic.**
@@ -101,3 +105,23 @@ demo_hostname = "statistics.f5-sales-demo.com"
 generator_vm_name = "vm-traffic-generator-statistics"
 origin_vm_name = "vm-origin-server-statistics"
 ```
+
+## Teardown
+
+Keep the current demo running. Execute these commands only when its owner decides to retire the infrastructure. Use the same credentials, subscription, backend, and state as deployment.
+
+```bash
+test -f "$XCSH_STATE_DIR/terraform.tfstate"
+terraform -chdir=terraform plan -destroy -input=false \
+  -out="$XCSH_STATE_DIR/statistics-destroy.tfplan"
+terraform -chdir=terraform show -json "$XCSH_STATE_DIR/statistics-destroy.tfplan" |
+  jq -r '.resource_changes[] | [.address, (.change.actions | join(","))] | @tsv'
+```
+
+Review every resource address and deletion before applying that exact saved plan.
+
+```bash
+terraform -chdir=terraform apply -input=false "$XCSH_STATE_DIR/statistics-destroy.tfplan"
+```
+
+Verify that the owned namespace objects and demo DNS answer are absent. Retain the protected local state and ignored `.env` until the owner separately decides to remove them. State, saved plans, and cloud command output may contain credentials or infrastructure identities; keep them outside Git with owner-only permissions.

@@ -2,7 +2,7 @@
 title: Query firewall counters
 description: Read five-minute request and block counts for the statistics application firewall.
 sidebar:
-  order: 5
+  order: 8
 ---
 
 Complete [shared cURL setup](../setup/) first. Equal `step` and `range` values produce nonoverlapping five-minute count buckets.
@@ -10,7 +10,7 @@ Complete [shared cURL setup](../setup/) first. Equal `step` and `range` values p
 **1. Build the firewall request.**
 
 ```bash
-request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
   --arg end "$XCSH_END_TIME" '{
     namespace: $ns, start_time: $start, end_time: $end,
     step: "5m", range: "5m",
@@ -26,7 +26,7 @@ request="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
 curl --silent --show-error --fail-with-body --request POST \
   --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
   --header 'Content-Type: application/json' \
-  --data-binary "$request" \
+  --data-binary "$XCSH_REQUEST" \
   "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_firewall/metrics" |
 jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
   step,
@@ -42,27 +42,27 @@ Expect `step` and available `TOTAL_REQUESTS`, `ATTACKED_REQUESTS`, `BLOCKED_REQU
 
 ## Observed response
 
-Captured 2026-10-06 02:14:29 UTC; HTTP 200. Totals cover the two-hour window selected in shared setup.
+Captured 2026-10-06T03:13:55Z; HTTP 200. Totals cover the two-hour window selected in shared setup.
 
 ```json
 {
   "step": "5m",
   "metrics": [
     {
-      "type": "BLOCKED_REQUESTS",
-      "total": 22
+      "type": "BOT_DETECTION",
+      "total": 26
     },
     {
       "type": "ATTACKED_REQUESTS",
-      "total": 22
+      "total": 26
+    },
+    {
+      "type": "BLOCKED_REQUESTS",
+      "total": 26
     },
     {
       "type": "TOTAL_REQUESTS",
-      "total": 897
-    },
-    {
-      "type": "BOT_DETECTION",
-      "total": 22
+      "total": 832
     }
   ]
 }

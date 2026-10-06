@@ -1,0 +1,278 @@
+---
+title: Origin performance
+description: Match the configured origin and compare its node and edge metrics.
+sidebar:
+  order: 5
+---
+
+Complete [shared cURL setup](../setup/) to match `XCSH_GRAPH_DESTINATION` to the configured origin pool and discover `XCSH_GRAPH_SOURCE`.
+
+Use the destination node's `upstream` metrics for the service receiving requests. The edge's `data.metric.data`
+describes the path from the selected source to that destination. Compare rates and errors with response latency, server
+RTT, and data transfer time. A high response latency alone does not identify an application bottleneck; server RTT and
+transfer time help explain where time was spent.
+
+**1. Request node and edge metrics with service identities retained.**
+
+```bash
+XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+  --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
+    namespace: $ns, start_time: $start, end_time: $end,
+    step: "5m", range: "5m", group_by: ["VHOST", "SERVICE"],
+    label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
+    field_selector: {
+      node: {metric: {upstream: [
+        "HTTP_REQUEST_RATE", "HTTP_ERROR_RATE", "HTTP_ERROR_RATE_4XX",
+      "HTTP_ERROR_RATE_5XX", "HTTP_RESPONSE_LATENCY",
+      "REQUEST_THROUGHPUT", "RESPONSE_THROUGHPUT", "REQUEST_TO_ORIGIN_RATE",
+      "CLIENT_RTT", "SERVER_RTT", "HTTP_SERVER_DATA_TRANSFER_TIME"
+      ]}},
+      edge: {metric: {types: [
+        "HTTP_REQUEST_RATE", "HTTP_ERROR_RATE", "HTTP_ERROR_RATE_4XX",
+        "HTTP_ERROR_RATE_5XX", "HTTP_RESPONSE_LATENCY",
+        "REQUEST_THROUGHPUT", "RESPONSE_THROUGHPUT", "REQUEST_TO_ORIGIN_RATE",
+        "CLIENT_RTT", "SERVER_RTT", "HTTP_SERVER_DATA_TRANSFER_TIME"
+      ]}}
+    }
+  }')"
+```
+
+**2. Query the matched node and edge.**
+
+```bash
+XCSH_ORIGIN_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
+  --request POST \
+  --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+  --header 'Content-Type: application/json' \
+  --data-binary "$XCSH_REQUEST" \
+  "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
+jq -er --arg vh "$XCSH_VIRTUAL_HOST" --arg src "$XCSH_GRAPH_SOURCE" \
+  --arg dst "$XCSH_GRAPH_DESTINATION" '
+  def summary: {type, unit, points: (.value.raw | length),
+                latest: (.value.raw[-1] // null)};
+  {step, source: $src, destination: $dst,
+   node: ([.data.nodes[]? | select(.id.vhost == $vh and .id.service == $dst)
+     | .data.metric.upstream[]? | summary] | sort_by(.type)),
+   edge: ([.data.edges[]? | select(.dst_id.vhost == $vh and
+     .src_id.service == $src and .dst_id.service == $dst)
+     | .data.metric.data[]? | summary] | sort_by(.type))}
+' <<<"$XCSH_ORIGIN_JSON"
+```
+
+Both arrays must contain metric points before interpreting origin performance. An absent error series is unavailable telemetry, not proof of zero errors. Rate units are per second, throughput is bits per second, and returned latency, RTT, and transfer-time units are preserved. A measured transfer time of `"0"` is a returned value; it does not mean the field was absent.
+
+## Measured response
+
+Captured 2026-10-06T03:13:42Z; HTTP 200 for the query and every required page. Identifiers are replaced with XCSH placeholders; values, units, counts, and point timestamps are preserved.
+
+```json
+{
+  "step": "5m",
+  "source": "<XCSH_GRAPH_SOURCE>",
+  "destination": "<XCSH_GRAPH_DESTINATION>",
+  "node": [
+    {
+      "type": "CLIENT_RTT",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0.0010500000000000002",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_ERROR_RATE",
+      "unit": "UNIT_ERRORS_PER_SECOND",
+      "points": 5,
+      "latest": {
+        "timestamp": 1791253200,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_ERROR_RATE_4XX",
+      "unit": "UNIT_ERRORS_PER_SECOND",
+      "points": 5,
+      "latest": {
+        "timestamp": 1791253200,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_REQUEST_RATE",
+      "unit": "UNIT_REQUESTS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "0.02860921837322622",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_RESPONSE_LATENCY",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0.8850000000000001",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_SERVER_DATA_TRANSFER_TIME",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "REQUEST_THROUGHPUT",
+      "unit": "UNIT_BITS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "82.46763041554156",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "REQUEST_TO_ORIGIN_RATE",
+      "unit": "UNIT_REQUESTS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "0.02860921837322622",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "RESPONSE_THROUGHPUT",
+      "unit": "UNIT_BITS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "153.03037615105956",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "SERVER_RTT",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0.43500000000000005",
+        "trend_value": null
+      }
+    }
+  ],
+  "edge": [
+    {
+      "type": "CLIENT_RTT",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0.0010500000000000002",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_ERROR_RATE",
+      "unit": "UNIT_ERRORS_PER_SECOND",
+      "points": 5,
+      "latest": {
+        "timestamp": 1791253200,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_ERROR_RATE_4XX",
+      "unit": "UNIT_ERRORS_PER_SECOND",
+      "points": 5,
+      "latest": {
+        "timestamp": 1791253200,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_REQUEST_RATE",
+      "unit": "UNIT_REQUESTS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "0.02860921837322622",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_RESPONSE_LATENCY",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0.8850000000000001",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "HTTP_SERVER_DATA_TRANSFER_TIME",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "REQUEST_THROUGHPUT",
+      "unit": "UNIT_BITS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "82.46763041554156",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "REQUEST_TO_ORIGIN_RATE",
+      "unit": "UNIT_REQUESTS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "0.02860921837322622",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "RESPONSE_THROUGHPUT",
+      "unit": "UNIT_BITS_PER_SECOND",
+      "points": 25,
+      "latest": {
+        "timestamp": 1791256200,
+        "value": "153.03037615105956",
+        "trend_value": null
+      }
+    },
+    {
+      "type": "SERVER_RTT",
+      "unit": "UNIT_SECONDS",
+      "points": 12,
+      "latest": {
+        "timestamp": 1791255900,
+        "value": "0.43500000000000005",
+        "trend_value": null
+      }
+    }
+  ]
+}
+```
