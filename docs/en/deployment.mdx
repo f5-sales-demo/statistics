@@ -18,17 +18,25 @@ Use Terraform 1.8 or later and the Azure CLI in your prepared Bash session. For 
 
 1. Sign in to Azure and select the approved demo subscription:
 
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_AZURE_SUBSCRIPTION_ID">
+
    ```bash
    az login
    az account set --subscription '<XCSH_AZURE_SUBSCRIPTION_ID>'
    ```
 
+   </div>
+
 2. Bind Terraform to that subscription:
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_AZURE_SUBSCRIPTION_ID">
 
    ```bash
    export TF_VAR_subscription_id="$XCSH_AZURE_SUBSCRIPTION_ID"
    export TF_CLI_CONFIG_FILE=/dev/null
    ```
+
+   </div>
 
 ## Select the deployment inputs
 
