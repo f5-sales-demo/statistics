@@ -9,7 +9,7 @@ Use the symptom table to check authentication, identifiers, query times, and tel
 
 | Symptom | Check |
 | --- | --- |
-| HTTP 401 or 403 from the API | Confirm the token is current and has read access to the `statistics` namespace. A `system` query needs separate tenant-wide access. |
+| HTTP 401 or 403 from the API | Confirm the token is current and has read access to the selected namespace. A `system` query needs separate tenant-wide access. |
 | HTTP 404 from API inventory | Confirm discovery is enabled and use the load balancer's `ves.io/app_type` label. |
 | HTTP 404 from API statistics | Use the telemetry `XCSH_VIRTUAL_HOST` returned by the service graph. |
 | HTTP 500 from service graph | Regenerate ordered Unix time values. A reversed window can return HTTP 500. |

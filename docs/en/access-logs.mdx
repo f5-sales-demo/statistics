@@ -15,6 +15,8 @@ Record a baseline with [Load balancer metrics](../service-graph/). This sequence
 
 1. Send the bounded sequence and stop on any status mismatch.
 
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME">
+
    ```bash
    export XCSH_RUN_MARKER="statistics-outcomes-$(date -u +%Y%m%dT%H%M%SZ)"
    export XCSH_BURST_START="$(date -u +%s)"
@@ -32,12 +34,14 @@ Record a baseline with [Load balancer metrics](../service-graph/). This sequence
      XCSH_STATUS="$(curl --silent --show-error --max-time 10 --output /dev/null \
        --write-out '%{http_code}' --get \
        --data-urlencode "statistics_probe=$XCSH_RUN_MARKER-$XCSH_SEQUENCE" \
-       "https://$XCSH_DEMO_HOST$XCSH_PATH")"
+       "https://$XCSH_DOMAINNAME$XCSH_PATH")"
      printf 'sequence=%s expected=%s status=%s\n' "$XCSH_SEQUENCE" "$XCSH_EXPECTED" "$XCSH_STATUS"
      test "$XCSH_STATUS" = "$XCSH_EXPECTED"
    done
    export XCSH_BURST_END="$(date -u +%s)"
    ```
+
+   </div>
 
 After telemetry rollup, [refresh the query window](../setup/#refresh-the-time-window) and compare [complete log counts](#count-all-matching-logs), [API activity](../api-discovery/), and load balancer metrics. Allow up to ten minutes for a new five-minute metric bucket.
 
@@ -51,6 +55,8 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 1. Build a virtual-host query capped at 100 records.
 
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE">
+
    ```bash
    XCSH_LOG_QUERY="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
      '"{vh_name=" + ($vh | tojson) + "}"')"
@@ -61,7 +67,11 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
      }')"
    ```
 
+   </div>
+
 2. Fetch a page and retain only outcome fields.
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
 
    ```bash
    XCSH_LOG_PAGE="$(curl --silent --show-error --fail-with-body --max-time 60 \
@@ -92,9 +102,13 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
    ' <<<"$XCSH_LOG_ROWS"
    ```
 
+   </div>
+
 ## Measured first-page response
 
 Captured 2026-10-06T03:13:43Z; HTTP 200 for all pages.
+
+<div data-personalize="off">
 
 ```json
 {
@@ -141,6 +155,8 @@ Captured 2026-10-06T03:13:43Z; HTTP 200 for all pages.
 }
 ```
 
+</div>
+
 `total_hits` is the API's matching-log count; `counted` and the grouped counts cover only this page. When `total_hits` exceeds `counted`, these are incomplete counts for the window.
 
 ## Count all matching logs
@@ -151,6 +167,8 @@ export at 100 pages and stops on a scope mismatch or a count mismatch rather tha
 Increase that bound deliberately for a larger authorized export.
 
 1. Start a fresh scroll snapshot.
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
@@ -169,7 +187,11 @@ Increase that bound deliberately for a larger authorized export.
    XCSH_PAGES=0
    ```
 
+   </div>
+
 2. Collect only response codes, classes, and methods from every page.
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
 
    ```bash
    while :; do
@@ -212,9 +234,13 @@ Increase that bound deliberately for a larger authorized export.
    ' <<<"$XCSH_LOG_ROWS"
    ```
 
+   </div>
+
 ## Measured complete-window response
 
 Captured 2026-10-06T03:13:47Z; HTTP 200 for all pages.
+
+<div data-personalize="off">
 
 ```json
 {
@@ -260,6 +286,8 @@ Captured 2026-10-06T03:13:47Z; HTTP 200 for all pages.
   ]
 }
 ```
+
+</div>
 
 The API can return a nonempty cursor on an empty final page, so the loop also stops on an empty page. A successful equality check verifies that all matching logs in this snapshot were counted. It does not guarantee all real requests were logged or that late telemetry had arrived. Requery after ingestion delay when verifying a new sequence.
 

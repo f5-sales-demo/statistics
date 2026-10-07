@@ -16,6 +16,8 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 1. Read the configured default pool and its unique public IP.
 
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_ORIGIN_POOL">
+
    ```bash
    XCSH_ORIGIN_POOL="$(jq -er '
      [.spec.default_route_pools[]?.pool.name] | unique
@@ -30,7 +32,11 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
    ' <<<"$XCSH_POOL_JSON")"
    ```
 
+   </div>
+
 2. Discover the source and destination services.
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_ORIGIN_POOL">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" \
@@ -65,9 +71,13 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
      '{source: $source, destination: $destination, configured_origin_match: true}'
    ```
 
+   </div>
+
 ### Matched origin
 
 Captured 2026-10-06T03:13:41Z; HTTP 200.
+
+<div data-personalize="off">
 
 ```json
 {
@@ -77,11 +87,15 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
 }
 ```
 
+</div>
+
 The origin address is returned as a service identity prefixed with `S:`. The source is the public network identity. These commands deliberately stop if the configured origin cannot be matched uniquely. Other pool types or multiple origins need their own matching procedure.
 
 ## Query origin metrics
 
 1. Request node and edge metrics with service identities retained.
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
@@ -106,7 +120,11 @@ The origin address is returned as a service identity prefixed with `S:`. The sou
      }')"
    ```
 
+   </div>
+
 2. Query the matched node and edge.
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
 
    ```bash
    XCSH_ORIGIN_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
@@ -128,9 +146,13 @@ The origin address is returned as a service identity prefixed with `S:`. The sou
    ' <<<"$XCSH_ORIGIN_JSON"
    ```
 
+   </div>
+
 ## Measured response
 
 Captured 2026-10-06T03:13:42Z; HTTP 200.
+
+<div data-personalize="off">
 
 ```json
 {
@@ -343,6 +365,8 @@ Captured 2026-10-06T03:13:42Z; HTTP 200.
   ]
 }
 ```
+
+</div>
 
 ## Interpret origin metrics
 

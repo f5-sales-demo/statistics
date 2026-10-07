@@ -8,7 +8,7 @@ sidebar:
 The Terraform root pins `f5-sales-demo/xcsh` 15.0.0 and immutable commits of the [origin
 server](https://github.com/f5-sales-demo/origin-server) and [traffic
 generator](https://github.com/f5-sales-demo/traffic-generator). It uses the signed-in Azure
-subscription, sets `deployer=statistics`, and stores local state under
+subscription, uses the selected deployer and environment, and stores local state under
 `$HOME/.local/state/statistics`. The two default East US 2 VMs are `Standard_D16s_v3` and
 `Standard_F16s_v2`.
 
@@ -20,15 +20,61 @@ Use Terraform 1.8 or later and the Azure CLI in your prepared Bash session. For 
 
    ```bash
    az login
-   az account set --subscription '<AZURE_SUBSCRIPTION_ID>'
+   az account set --subscription '<XCSH_AZURE_SUBSCRIPTION_ID>'
    ```
 
 2. Bind Terraform to that subscription:
 
    ```bash
-   export TF_VAR_subscription_id="$(az account show --query id --output tsv)"
+   export TF_VAR_subscription_id="$XCSH_AZURE_SUBSCRIPTION_ID"
    export TF_CLI_CONFIG_FILE=/dev/null
    ```
+
+## Select the deployment inputs
+
+Use the form values with the native Terraform environment interface. Keep credentials in `XCSH_API_TOKEN`; tfvars must contain no credentials. For an existing deployment, load its private identity overrides before planning.
+
+<div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_LB_NAME XCSH_DOMAINNAME XCSH_ORIGIN_POOL_NAME XCSH_HC_NAME XCSH_WAF_NAME XCSH_DEPLOYER XCSH_ENVIRONMENT XCSH_OWNER XCSH_PURPOSE XCSH_TIMER_NAME XCSH_AZURE_REGION XCSH_SSH_PUBLIC_KEY_PATH">
+
+```bash
+export TF_VAR_namespace="$XCSH_NAMESPACE"
+export TF_VAR_domainname="$XCSH_DOMAINNAME"
+export TF_VAR_lb_name="$XCSH_LB_NAME"
+export TF_VAR_origin_pool_name="$XCSH_ORIGIN_POOL_NAME"
+export TF_VAR_healthcheck_name="$XCSH_HC_NAME"
+export TF_VAR_waf_name="$XCSH_WAF_NAME"
+export TF_VAR_deployer="$XCSH_DEPLOYER"
+export TF_VAR_environment="$XCSH_ENVIRONMENT"
+export TF_VAR_owner="$XCSH_OWNER"
+export TF_VAR_purpose="$XCSH_PURPOSE"
+export TF_VAR_timer_name="$XCSH_TIMER_NAME"
+export TF_VAR_location="$XCSH_AZURE_REGION"
+export TF_VAR_ssh_public_key_path="$XCSH_SSH_PUBLIC_KEY_PATH"
+```
+
+</div>
+
+A sanitized [example tfvars file](https://github.com/f5-sales-demo/statistics/blob/main/terraform/terraform.tfvars.example) provides the same inputs. Copy the personalized block below to a private tfvars file; `TF_VAR_subscription_id` stays in the environment.
+
+<div data-xcsh-context="hcl">
+
+```hcl
+namespace = "<XCSH_NAMESPACE>"
+domainname = "<XCSH_DOMAINNAME>"
+lb_name = "<XCSH_LB_NAME>"
+origin_pool_name = "<XCSH_ORIGIN_POOL_NAME>"
+healthcheck_name = "<XCSH_HC_NAME>"
+waf_name = "<XCSH_WAF_NAME>"
+deployer = "<XCSH_DEPLOYER>"
+environment = "<XCSH_ENVIRONMENT>"
+owner = "<XCSH_OWNER>"
+purpose = "<XCSH_PURPOSE>"
+timer_name = "<XCSH_TIMER_NAME>"
+location = "<XCSH_AZURE_REGION>"
+ssh_public_key_path = "<XCSH_SSH_PUBLIC_KEY_PATH>"
+```
+
+</div>
 
 ## Review the plan
 
@@ -102,15 +148,19 @@ Follow [Demo readiness](../verification/) after the origin and generator finish 
 
 The first reviewed apply completed on 5 October 2026. The local receipt reported:
 
+<div data-personalize="off">
+
 ```text
 Apply complete! Resources: 22 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-demo_hostname = "statistics.f5-sales-demo.com"
-generator_vm_name = "vm-traffic-generator-statistics"
-origin_vm_name = "vm-origin-server-statistics"
+demo_hostname = "<XCSH_DOMAINNAME>"
+generator_vm_name = "<XCSH_GENERATOR_VM_NAME>"
+origin_vm_name = "<XCSH_ORIGIN_VM_NAME>"
 ```
+
+</div>
 
 ## Teardown
 
