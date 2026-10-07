@@ -72,8 +72,12 @@ The expanded source below is imported from the same executable file as the
 download. It requests only `HTTP_REQUEST_RATE` and selects the exact discovered
 virtual host.
 
+<div data-xcsh-context="shell" data-xcsh-fields="">
+
 ```bash file=../assets/scripts/simple-stats.sh
 ```
+
+</div>
 
 ## Complete collector source
 
@@ -83,8 +87,12 @@ match the selected namespace and virtual host, and `counted` must equal
 `total_hits`. The script retains only response codes, classes, and methods from
 logs. Narrow the window if the page cap prevents a complete count.
 
+<div data-xcsh-context="shell" data-xcsh-fields="">
+
 ```bash file=../assets/scripts/get-stats.sh
 ```
+
+</div>
 
 ## Interpret the output
 

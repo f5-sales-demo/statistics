@@ -11,9 +11,9 @@ The configuration and telemetry APIs use different identifiers for the same load
 
 | Variable | Meaning | Source |
 | --- | --- | --- |
-| `XCSH_NAMESPACE` | Demo namespace | Private environment; must be `statistics` |
-| `XCSH_LOAD_BALANCER` | Configuration object name | Landing setup; `statistics` |
-| `XCSH_DEMO_HOST` | Public HTTPS hostname | Landing setup; `statistics.f5-sales-demo.com` |
+| `XCSH_NAMESPACE` | Demo namespace | Selected namespace |
+| `XCSH_LB_NAME` | Configuration object name | Selected load balancer name |
+| `XCSH_DOMAINNAME` | Public HTTPS hostname | Selected application hostname |
 | `XCSH_VIRTUAL_HOST` | Telemetry virtual host | Unique service graph match below |
 | `XCSH_API_DISCOVERY_ENABLED` | Whether API discovery is enabled | Load balancer configuration below |
 | `XCSH_APP_TYPE` | App type used by API inventory | Exact `ves.io/app_type` label below |
@@ -24,12 +24,16 @@ The configuration and telemetry APIs use different identifiers for the same load
 
 1. Fetch the load balancer configuration.
 
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME">
+
    ```bash
    XCSH_LB_JSON="$(curl --silent --show-error --fail-with-body \
      --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
      --header 'Accept: application/json' \
-     "${XCSH_API_URL}/api/config/namespaces/${XCSH_NAMESPACE}/http_loadbalancers/${XCSH_LOAD_BALANCER}")"
+     "${XCSH_API_URL}/api/config/namespaces/${XCSH_NAMESPACE}/http_loadbalancers/${XCSH_LB_NAME}")"
    ```
+
+   </div>
 
 2. Read its API discovery state and app type.
 
@@ -46,6 +50,8 @@ The configuration and telemetry APIs use different identifiers for the same load
 
 Captured 2026-10-06T03:13:41Z; HTTP 200.
 
+<div data-personalize="off">
+
 ```json
 {
   "name": "statistics",
@@ -55,9 +61,13 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
 }
 ```
 
+</div>
+
 ## Find the telemetry virtual host
 
 1. Request active service graph nodes in the current window.
+
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
@@ -74,10 +84,14 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
      "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
    ```
 
+   </div>
+
 2. Select this load balancer's unique virtual host.
 
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_LB_NAME">
+
    ```bash
-   XCSH_VIRTUAL_HOST="$(jq -er --arg suffix "-$XCSH_LOAD_BALANCER" '
+   XCSH_VIRTUAL_HOST="$(jq -er --arg suffix "-$XCSH_LB_NAME" '
      [.data.nodes[]?.id.vhost // empty | select(endswith($suffix))]
      | unique
      | if length == 1 then .[0] else error("Expected one demo VHOST") end
@@ -86,13 +100,19 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
    printf 'XCSH_VIRTUAL_HOST=%s\n' "$XCSH_VIRTUAL_HOST"
    ```
 
+   </div>
+
 ### Observed virtual-host selection
 
 Captured 2026-10-06 02:22:43 UTC; the service graph request returned HTTP 200.
 
+<div data-personalize="off">
+
 ```text
 XCSH_VIRTUAL_HOST=<XCSH_VIRTUAL_HOST>
 ```
+
+</div>
 
 The configuration name, telemetry `XCSH_VIRTUAL_HOST`, and `XCSH_APP_TYPE` serve different APIs. Check the generator timer and allow for telemetry delay if the graph has no matching node.
 

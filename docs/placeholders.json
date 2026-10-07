@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "fields": [
+    "XCSH_API_URL",
+    "XCSH_API_TOKEN",
+    "XCSH_NAMESPACE",
+    "XCSH_LB_NAME",
+    "XCSH_DOMAINNAME",
+    "XCSH_ORIGIN_POOL_NAME",
+    "XCSH_HC_NAME",
+    "XCSH_WAF_NAME",
+    "XCSH_DEPLOYER",
+    "XCSH_ENVIRONMENT",
+    "XCSH_OWNER",
+    "XCSH_PURPOSE",
+    "XCSH_TIMER_NAME",
+    "XCSH_AZURE_SUBSCRIPTION_ID",
+    "XCSH_AZURE_REGION",
+    "XCSH_SSH_PUBLIC_KEY_PATH"
+  ],
+  "groups": [
+    {
+      "label": "XC API and application",
+      "keys": ["XCSH_API_URL", "XCSH_API_TOKEN", "XCSH_NAMESPACE", "XCSH_LB_NAME", "XCSH_DOMAINNAME"]
+    },
+    {
+      "label": "Terraform resource names",
+      "keys": [
+        "XCSH_ORIGIN_POOL_NAME",
+        "XCSH_HC_NAME",
+        "XCSH_WAF_NAME",
+        "XCSH_DEPLOYER",
+        "XCSH_ENVIRONMENT",
+        "XCSH_OWNER",
+        "XCSH_PURPOSE",
+        "XCSH_TIMER_NAME"
+      ]
+    },
+    {
+      "label": "Azure",
+      "keys": ["XCSH_AZURE_SUBSCRIPTION_ID", "XCSH_AZURE_REGION", "XCSH_SSH_PUBLIC_KEY_PATH"]
+    }
+  ]
+}

@@ -44,11 +44,77 @@ variable "ssh_public_key_path" {
   default     = "~/.ssh/id_ed25519.pub"
 }
 
+variable "namespace" {
+  description = "Namespace for the owned deployment."
+  type        = string
+  default     = "demo-app"
+}
+
+variable "domainname" {
+  description = "Domainname for the owned deployment."
+  type        = string
+  default     = "app.example.com"
+}
+
+variable "lb_name" {
+  description = "Lb name for the owned deployment."
+  type        = string
+  default     = "demo-app"
+}
+
+variable "origin_pool_name" {
+  description = "Origin pool name for the owned deployment."
+  type        = string
+  default     = "demo-app-origin"
+}
+
+variable "healthcheck_name" {
+  description = "Healthcheck name for the owned deployment."
+  type        = string
+  default     = "demo-app-health"
+}
+
+variable "waf_name" {
+  description = "Waf name for the owned deployment."
+  type        = string
+  default     = "demo-app-waf"
+}
+
+variable "deployer" {
+  description = "Deployer for the owned deployment."
+  type        = string
+  default     = "demo-app"
+}
+
+variable "environment" {
+  description = "Environment for the owned deployment."
+  type        = string
+  default     = "lab"
+}
+
+variable "owner" {
+  description = "Owner for the owned deployment."
+  type        = string
+  default     = "demo-app"
+}
+
+variable "purpose" {
+  description = "Purpose for the owned deployment."
+  type        = string
+  default     = "demo-app"
+}
+
+variable "timer_name" {
+  description = "Timer name for the owned deployment."
+  type        = string
+  default     = "demo-app-timer"
+}
+
 locals {
-  domain    = "statistics.f5-sales-demo.com"
-  namespace = split(".", local.domain)[0]
+  domain    = var.domainname
+  namespace = var.namespace
   labels = {
-    "f5-sales-demo/owner" = "statistics"
+    "f5-sales-demo/owner" = var.owner
   }
 }
 
@@ -57,23 +123,23 @@ module "origin" {
   source = "git::https://github.com/f5-sales-demo/origin-server.git//terraform?ref=58402bf63383d59df07cbf4dbb7e78ec0ab46b0f"
 
   subscription_id     = var.subscription_id
-  deployer            = "statistics"
-  environment         = "lab"
+  deployer            = var.deployer
+  environment         = var.environment
   location            = var.location
   ssh_public_key_path = var.ssh_public_key_path
-  tags                = { purpose = "statistics-demo" }
+  tags                = { purpose = var.purpose }
 }
 
 module "generator" {
   source = "git::https://github.com/f5-sales-demo/traffic-generator.git//terraform?ref=b212c0d1db14c654ccddc260a7bc2efa486cfae3"
 
   subscription_id     = var.subscription_id
-  deployer            = "statistics"
-  environment         = "lab"
+  deployer            = var.deployer
+  environment         = var.environment
   location            = var.location
   ssh_public_key_path = var.ssh_public_key_path
   target_fqdn         = local.domain
-  tags                = { purpose = "statistics-demo" }
+  tags                = { purpose = var.purpose }
 }
 
 resource "xcsh_namespace" "statistics" {
@@ -81,7 +147,7 @@ resource "xcsh_namespace" "statistics" {
 }
 
 resource "xcsh_healthcheck" "origin" {
-  name      = "statistics-health"
+  name      = var.healthcheck_name
   namespace = xcsh_namespace.statistics.name
   labels    = local.labels
 
@@ -97,7 +163,7 @@ resource "xcsh_healthcheck" "origin" {
 }
 
 resource "xcsh_origin_pool" "origin" {
-  name      = "statistics-origin"
+  name      = var.origin_pool_name
   namespace = xcsh_namespace.statistics.name
   labels    = local.labels
   port      = 80
@@ -118,7 +184,7 @@ resource "xcsh_origin_pool" "origin" {
 }
 
 resource "xcsh_app_firewall" "statistics" {
-  name      = "statistics-waf"
+  name      = var.waf_name
   namespace = xcsh_namespace.statistics.name
   labels    = local.labels
 
@@ -127,7 +193,7 @@ resource "xcsh_app_firewall" "statistics" {
 }
 
 resource "xcsh_http_loadbalancer" "statistics" {
-  name      = "statistics"
+  name      = var.lb_name
   namespace = xcsh_namespace.statistics.name
   labels    = local.labels
   domains   = [local.domain]
@@ -158,7 +224,7 @@ resource "xcsh_http_loadbalancer" "statistics" {
 
 # The extension installs a persistent, bounded timer after the LB exists.
 resource "azurerm_virtual_machine_extension" "generator_timer" {
-  name                       = "statistics-demo-timer"
+  name                       = var.timer_name
   virtual_machine_id         = module.generator.vm_id
   publisher                  = "Microsoft.Azure.Extensions"
   type                       = "CustomScript"

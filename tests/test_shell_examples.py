@@ -113,7 +113,7 @@ class ShellExamples(unittest.TestCase):
                 "XCSH_API_URL": "https://console.example.com",
                 "XCSH_API_TOKEN": "SECRET_SENTINEL",
                 "XCSH_NAMESPACE": "example",
-                "XCSH_LOAD_BALANCER": "example",
+                "XCSH_LB_NAME": "example",
                 "XCSH_VIRTUAL_HOST": "telemetry-example",
                 "XCSH_API_DISCOVERY_ENABLED": "true",
                 "XCSH_APP_TYPE": "example-app",

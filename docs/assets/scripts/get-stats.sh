@@ -7,7 +7,7 @@ fail() {
   printf '%s: %s\n' "$section" "$1" >&2
   exit 1
 }
-for name in XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LOAD_BALANCER \
+for name in XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME \
   XCSH_VIRTUAL_HOST XCSH_START_TIME XCSH_END_TIME XCSH_START_24H; do
   [[ -n "${!name:-}" ]] || fail "export $name using Overview and Query reference."
 done
@@ -132,7 +132,7 @@ traffic="$(graph_summary "$metrics")"
 
 # 3. Origin performance: require one configured public-IP origin and one exact edge.
 section='Origin performance'
-api GET "/api/config/namespaces/${XCSH_NAMESPACE}/http_loadbalancers/${XCSH_LOAD_BALANCER}"
+api GET "/api/config/namespaces/${XCSH_NAMESPACE}/http_loadbalancers/${XCSH_LB_NAME}"
 pool="$(jq -er --arg ns "$XCSH_NAMESPACE" '
   [.spec.default_route_pools[]?.pool] | unique
   | if length == 1 and ((.[0].namespace // $ns) == $ns) and
@@ -243,7 +243,7 @@ security_metrics="$(jq -c '{data, step}' <<<"$body")"
 # Print only after every query and completeness check succeeds.
 section='Report'
 report="$(jq -n --argjson context "$base" --arg vh "$XCSH_VIRTUAL_HOST" \
-  --arg lb "$XCSH_LOAD_BALANCER" --arg app "$XCSH_APP_TYPE" --arg day "$XCSH_START_24H" \
+  --arg lb "$XCSH_LB_NAME" --arg app "$XCSH_APP_TYPE" --arg day "$XCSH_START_24H" \
   --argjson logs "$logs" --argjson traffic "$traffic" --argjson origin "$origin_metrics" \
   --argjson health "$health" --argjson calls "$calls" --argjson top "$top" \
   --argjson stats "$stats" --argjson inventory "$inventory" --argjson waf "$waf" \
