@@ -2,9 +2,12 @@
 
 import copy
 import importlib.util
+import shutil
+import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, ClassVar
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
@@ -32,7 +35,57 @@ class CatalogTests(unittest.TestCase):
 
     def test_coverage_and_generated_page(self):
         CATALOG.validate(self.inventory)
-        CATALOG.check_page(self.inventory, ROOT / "docs/en/api-catalog.mdx")
+        CATALOG.check_pages(self.inventory, ROOT / "docs/en/api-catalog")
+
+    def test_split_catalog_coverage_and_overview(self):
+        directory = ROOT / "docs/en/api-catalog"
+        CATALOG.check_pages(self.inventory, directory)
+        assert len(self.inventory["endpoints"]) == 443
+        assert len(list(directory.glob("*.mdx"))) == 16
+        assert "| Method and exact path |" not in (directory / "index.mdx").read_text()
+
+    def test_missing_stale_duplicate_and_extra_pages_fail(self):
+        directory = ROOT / "docs/en/api-catalog"
+        for mutation in ["missing", "stale", "duplicate", "extra", "marker"]:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as tmp:
+                pages = Path(tmp) / "catalog"
+                shutil.copytree(directory, pages)
+                page = pages / "application-traffic.mdx"
+                if mutation == "missing":
+                    page.unlink()
+                elif mutation == "stale":
+                    page.write_text(
+                        page.read_text().replace(
+                            "Tenant service graph", "Changed service graph"
+                        )
+                    )
+                elif mutation == "duplicate":
+                    row = next(
+                        line
+                        for line in page.read_text().splitlines()
+                        if line.startswith("| `POST")
+                    )
+                    page.write_text(page.read_text() + "\n" + row + "\n")
+                elif mutation == "extra":
+                    (pages / "unmapped.mdx").write_text("Unmapped page")
+                else:
+                    page.write_text(page.read_text().replace(CATALOG.START, ""))
+                try:
+                    CATALOG.check_pages(self.inventory, pages)
+                except ValueError:
+                    continue
+                message = f"Catalog accepted {mutation}"
+                raise AssertionError(message)
+
+    def test_unmapped_primary_group_fails(self):
+        with patch.dict(CATALOG.GROUP_SLUGS):
+            del CATALOG.GROUP_SLUGS["bot"]
+            try:
+                CATALOG.validate(self.inventory)
+            except ValueError:
+                return
+            message = "Catalog accepted an unmapped primary group"
+            raise AssertionError(message)
 
     def test_read_only_post_and_neighboring_mutations(self):
         prefix = "/api/shape/csd/namespaces/{namespace}"

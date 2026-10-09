@@ -4,6 +4,7 @@ import argparse
 import gzip
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any, NoReturn
@@ -11,7 +12,8 @@ from typing import Any, NoReturn
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "engineering/api-reference"
 INVENTORY = EVIDENCE / "inventory.json"
-PAGE = ROOT / "docs/en/api-catalog.mdx"
+PAGES = ROOT / "docs/en/api-catalog"
+ENDPOINT_ROW = re.compile(r"^\| `(GET|POST) ([^\n`]+)` \|", re.MULTILINE)
 START = "{/*BEGIN GENERATED API CATALOG*/}"
 END = "{/*END GENERATED API CATALOG*/}"
 GROUPS = [
@@ -30,6 +32,23 @@ GROUPS = [
     ("synthetic", "Synthetic monitoring"),
     ("billing", "Billing, consumption, and quota usage"),
 ]
+
+GROUP_SLUGS = {
+    "traffic": "application-traffic",
+    "api": "api-analytics",
+    "waf": "application-security",
+    "bot": "bot-defense",
+    "csd": "client-side-defense",
+    "intelligence": "device-data-intelligence",
+    "ddos": "ddos-protection",
+    "dns": "dns",
+    "cdn": "cdn",
+    "network": "networking",
+    "kubernetes": "kubernetes-storage",
+    "logs": "logs-events-alerts",
+    "synthetic": "synthetic-monitoring",
+    "billing": "billing-usage",
+}
 
 
 def fail(message: str) -> NoReturn:
@@ -57,6 +76,8 @@ def validate(
     projection = load_projection() if projection is None else projection
     expected = {(item["method"], item["path"]): item for item in projection}
     groups = dict(GROUPS)
+    if set(GROUP_SLUGS) != set(groups) or len(set(GROUP_SLUGS.values())) != len(groups):
+        fail("Unmapped or duplicate resource-group page")
     observed = set()
     for section in ["endpoints", "excluded"]:
         for entry in inventory[section]:
@@ -102,62 +123,99 @@ def cell(value: str) -> str:
     return value.replace("|", "&#124;").replace("\n", " ")
 
 
-def render(inventory: dict[str, Any]) -> str:
+def render(inventory: dict[str, Any], group: str) -> str:
     """Produce every exact method/path once, grouped by query purpose."""
     lines = [START, ""]
-    for group, title in GROUPS:
-        lines += [f"## {title}", ""]
-        for kind, label in [
-            ("query", "Statistics and analytics queries"),
-            ("discovery", "Related discovery and status"),
-            ("report", "Existing reports and artifacts"),
-        ]:
-            entries = sorted(
-                (
-                    entry
-                    for entry in inventory["endpoints"]
-                    if entry["group"] == group and entry["kind"] == kind
-                ),
-                key=lambda entry: (entry["path"], entry["method"]),
+    for kind, label in [
+        ("query", "Statistics and analytics queries"),
+        ("discovery", "Related discovery and status"),
+        ("report", "Existing reports and artifacts"),
+    ]:
+        entries = sorted(
+            (
+                entry
+                for entry in inventory["endpoints"]
+                if entry["group"] == group and entry["kind"] == kind
+            ),
+            key=lambda entry: (entry["path"], entry["method"]),
+        )
+        if not entries:
+            continue
+        lines += [
+            f"## {label}",
+            "",
+            "| Method and exact path | Information returned | Scope and principal filters | Specification reference |",
+            "| --- | --- | --- | --- |",
+        ]
+        for entry in entries:
+            refs = entry["references"]
+            reference = (
+                f"[Operation]({refs['operation']}) · "
+                f"[Request schema]({refs['request']}) · "
+                f"[Response schema]({refs['response']})"
             )
-            if not entries:
-                continue
-            lines += [
-                f"### {title}: {label[0].lower() + label[1:]}",
-                "",
-                "| Method and exact path | Information returned | Scope and principal filters | Specification reference |",
-                "| --- | --- | --- | --- |",
+            if entry["source_only"]:
+                reference += "; corrected source"
+            information = entry["information"]
+            if entry["deprecated"]:
+                information += "; source marks deprecated"
+            values = [
+                f"`{entry['method']} {entry['path']}`",
+                information,
+                entry["scope"] + "; " + entry["filters"],
+                reference,
             ]
-            for entry in entries:
-                refs = entry["references"]
-                reference = (
-                    f"[Operation]({refs['operation']}) · "
-                    f"[Request schema]({refs['request']}) · "
-                    f"[Response schema]({refs['response']})"
-                )
-                if entry["source_only"]:
-                    reference += "; corrected source"
-                information = entry["information"]
-                if entry["deprecated"]:
-                    information += "; source marks deprecated"
-                values = [
-                    f"`{entry['method']} {entry['path']}`",
-                    information,
-                    entry["scope"] + "; " + entry["filters"],
-                    reference,
-                ]
-                lines.append("| " + " | ".join(cell(value) for value in values) + " |")
-            lines += [""]
+            lines.append("| " + " | ".join(cell(value) for value in values) + " |")
+        lines += [""]
     lines.append(END)
     return "\n".join(lines)
 
 
-def check_page(inventory: dict[str, Any], page: Path) -> None:
-    """Reject handwritten drift in generated tables."""
-    text = page.read_text()
-    actual = text[text.index(START) : text.index(END) + len(END)]
-    if actual != render(inventory):
-        fail("Generated catalog is stale; run scripts/api_catalog.py --write")
+def generated_region(text: str, page: Path) -> str:
+    """Require one complete generated region with ordered markers."""
+    if text.count(START) != 1 or text.count(END) != 1:
+        fail(f"Missing or duplicate generated markers: {page.name}")
+    if text.index(START) >= text.index(END):
+        fail(f"Reversed generated markers: {page.name}")
+    return text[text.index(START) : text.index(END) + len(END)]
+
+
+def check_pages(inventory: dict[str, Any], directory: Path) -> None:
+    """Verify the complete page set and exactly-once primary-group coverage."""
+    expected_pages = {"index.mdx", "query-concepts.mdx"} | {
+        slug + ".mdx" for slug in GROUP_SLUGS.values()
+    }
+    actual_pages = {
+        str(page.relative_to(directory)) for page in directory.rglob("*.mdx")
+    }
+    if actual_pages != expected_pages:
+        fail(f"Catalog page set differs: {sorted(actual_pages ^ expected_pages)}")
+    observed: Counter[tuple[str, str]] = Counter()
+    for page in sorted(directory.glob("*.mdx")):
+        text = page.read_text()
+        rows = ENDPOINT_ROW.findall(text)
+        if page.stem in {"index", "query-concepts"}:
+            if rows or "| Method and exact path |" in text or START in text:
+                fail(f"Endpoint tables outside resource groups: {page.name}")
+            continue
+        group = next(key for key, slug in GROUP_SLUGS.items() if slug == page.stem)
+        if generated_region(text, page) != render(inventory, group):
+            fail(
+                f"Generated catalog is stale: {page.name}; run scripts/api_catalog.py --write"
+            )
+        expected = Counter(
+            (entry["method"], entry["path"])
+            for entry in inventory["endpoints"]
+            if entry["group"] == group
+        )
+        if Counter(rows) != expected:
+            fail(f"Duplicate or misplaced endpoint rows: {page.name}")
+        observed.update(rows)
+    expected = Counter(
+        (entry["method"], entry["path"]) for entry in inventory["endpoints"]
+    )
+    if observed != expected or any(count != 1 for count in observed.values()):
+        fail("Missing or duplicate endpoints across the catalog")
 
 
 def resolve_reference(source: dict[str, Any], value: dict[str, Any]) -> dict[str, Any]:
@@ -244,13 +302,16 @@ def main() -> None:
     if args.sources:
         verify_sources(inventory, args.sources)
     if args.write:
-        text = PAGE.read_text()
-        PAGE.write_text(
-            text[: text.index(START)]
-            + render(inventory)
-            + text[text.index(END) + len(END) :]
-        )
-    check_page(inventory, PAGE)
+        for group, slug in GROUP_SLUGS.items():
+            page = PAGES / (slug + ".mdx")
+            text = page.read_text()
+            generated_region(text, page)
+            page.write_text(
+                text[: text.index(START)]
+                + render(inventory, group)
+                + text[text.index(END) + len(END) :]
+            )
+    check_pages(inventory, PAGES)
     print(
         json.dumps(
             {
@@ -263,7 +324,13 @@ def main() -> None:
                 "source_only": sum(
                     entry["source_only"] for entry in inventory["endpoints"]
                 ),
-                "page_sha256": hashlib.sha256(PAGE.read_bytes()).hexdigest(),
+                "pages_sha256": [
+                    {
+                        "path": str(page.relative_to(ROOT)),
+                        "sha256": hashlib.sha256(page.read_bytes()).hexdigest(),
+                    }
+                    for page in sorted(PAGES.glob("*.mdx"))
+                ],
             },
             sort_keys=True,
         )

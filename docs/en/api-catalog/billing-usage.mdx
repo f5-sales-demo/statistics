@@ -1,0 +1,36 @@
+---
+title: Billing, consumption, and quota usage
+description: Feature usage, consumption, resource limits, and current quota use.
+sidebar:
+  order: 16
+---
+
+Feature usage, consumption, resource limits, and current quota use. Required resource or feature: Billing, Bot Defense reporting, or quota access.
+
+## Metric families and dimensions
+
+Feature/stock keeping unit (SKU) usage details and summaries, Bot Defense transaction consumption, and resource quota limits/current use. Availability and time granularity follow the billing or reporting contract. |
+
+Use [Query concepts](../query-concepts/) for shared request guidance and table conventions.
+
+{/*BEGIN GENERATED API CATALOG*/}
+
+## Statistics and analytics queries
+
+| Method and exact path | Information returned | Scope and principal filters | Specification reference |
+| --- | --- | --- | --- |
+| `POST /api/data/namespaces/system/billing/usage_details` | Telemetry Data Metrics; returns `step`, `usage_data` | Tenant; `system` only; `end_time`, `filters`, `start_time`, `step` | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-billing-custompublicapi-billingusagedetails) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0035.public.ves.io.schema.billing.ves-swagger.json#L298) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0035.public.ves.io.schema.billing.ves-swagger.json#L350) |
+| `POST /api/data/namespaces/system/billing/usage_summary` | Billing Usage Summary; returns `usage_summary_items` | Tenant; `system` only; `end_time`, `start_time` | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-billing-custompublicapi-billingusagesummary) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0035.public.ves.io.schema.billing.ves-swagger.json#L378) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0035.public.ves.io.schema.billing.ves-swagger.json#L407) |
+| `GET /api/shape/bot/namespaces/{namespace}/reporting/consumption/summary` | Consumption Summary; returns `sums` | Selected namespace; `start`, `end` | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-consumptionsummary) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0225.public.ves.io.schema.shape.bot_defense.reporting.ves-swagger.json#L547) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0225.public.ves.io.schema.shape.bot_defense.reporting.ves-swagger.json#L17349) |
+| `GET /api/shape/bot/namespaces/{namespace}/reporting/usage/summary` | Usage Summary; returns `records` | Selected namespace; `start`, `end` | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-reporting-customapi-transactionusagesummary) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0225.public.ves.io.schema.shape.bot_defense.reporting.ves-swagger.json#L8017) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0225.public.ves.io.schema.shape.bot_defense.reporting.ves-swagger.json#L22936) |
+| `GET /api/web/namespaces/{namespace}/quota/usage` | Quota Usage; returns `api_limits`, `apis`, `float_quota_usage`, `objects`, `quota_usage` | Selected namespace; No additional selector | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-quota-customapi-getquotausage) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0200.public.ves.io.schema.quota.ves-swagger.json#L434) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0200.public.ves.io.schema.quota.ves-swagger.json#L1219) |
+
+## Related discovery and status
+
+| Method and exact path | Information returned | Scope and principal filters | Specification reference |
+| --- | --- | --- | --- |
+| `GET /api/web/namespaces/system/usage_plans/current` | current usage plan; returns `locale`, `plans` | Tenant; `system` only; No additional selector | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-plan-customapi-getcurrentplan) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0261.public.ves.io.schema.usage.plan.ves-swagger.json#L14) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0261.public.ves.io.schema.usage.plan.ves-swagger.json#L296) |
+| `GET /api/web/namespaces/system/usage_plans/custom_list` | Usage Plans; returns `usage_plans` | Tenant; `system` only; No additional selector | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-usage-plan-customapi-listusageplans) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0261.public.ves.io.schema.usage.plan.ves-swagger.json#L132) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0261.public.ves.io.schema.usage.plan.ves-swagger.json#L278) |
+| `GET /api/web/namespaces/{namespace}/quota/limits` | Custom Get Quota Limits; returns `api_limits`, `apis`, `float_quota_usage`, `objects`, `quota_usage` | Selected namespace; No additional selector | [Operation](https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-quota-customapi-customgetquotalimits) · [Request schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0200.public.ves.io.schema.quota.ves-swagger.json#L304) · [Response schema](https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0200.public.ves.io.schema.quota.ves-swagger.json#L1114) |
+
+{/*END GENERATED API CATALOG*/}

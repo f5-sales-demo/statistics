@@ -1,0 +1,40 @@
+---
+title: Statistics APIs
+description: Find statistics, analytics, logs, health, and usage queries across F5 Distributed Cloud resources.
+sidebar:
+  label: Overview
+  order: 1
+---
+
+Use this application programming interface (API) reference to find the statistics and analytics available for
+your F5 Distributed Cloud resources. The tables cover specification-defined queries, related discovery, and
+retrieval of existing reports. Feature entitlement, resource configuration, access, and telemetry determine
+which queries return data in your account.
+
+| Resource group | Available information | Required resource or feature |
+| --- | --- | --- |
+| <span id="application-traffic-origins-and-service-health"></span>[Application traffic, origins, and service health](application-traffic/) | Traffic rates, errors, latency, throughput, connections, service graphs, and health scores | Load balancer, origin, discovered service, or service mesh with telemetry |
+| <span id="api-activity-discovery-and-security-analytics"></span>[API activity, discovery, and security analytics](api-analytics/) | Endpoint inventory, calls, activity rankings, sensitive data, schemas, and vulnerabilities | API discovery or imported API definitions on a virtual host |
+| <span id="waf-and-application-security"></span>[WAF and application security](application-security/) | Request and rule-hit counters, events, incidents, suspicious users, and security evidence | Web application firewall (WAF) or application security feature |
+| <span id="bot-defense"></span>[Bot defense](bot-defense/) | Traffic classification, actions, attacked endpoints, automation, known bots, and peer comparisons | Bot Defense protected application and reporting entitlement |
+| <span id="client-side-defense"></span>[Client-side defense](client-side-defense/) | Scripts, behaviors, form fields, network interactions, affected users, and summaries | Client-Side Defense protected browser application |
+| <span id="device-and-data-intelligence"></span>[Device and data intelligence](device-data-intelligence/) | Device risk, transaction trends, linked accounts, device history, and data summaries | Device Intelligence, Data Intelligence, or Application Traffic Insights |
+| <span id="ddos-protection"></span>[DDoS protection](ddos-protection/) | Traffic, top talkers, attacks, alerts, events, mitigations, and transit use | Distributed denial of service (DDoS) protection and protected network |
+| <span id="dns"></span>[DNS](dns/) | Query metrics and logs, load balancer/pool health, and health changes | Domain Name System (DNS) zone or DNS load balancer |
+| <span id="cdn"></span>[CDN](cdn/) | Traffic, cache metrics, cacheability, access logs, and operation status | Content delivery network (CDN) distribution or caching-enabled load balancer |
+| <span id="sites-connectivity-cloud-networking-and-policy-counters"></span>[Sites, connectivity, cloud networking, and policy counters](networking/) | Site/node metrics, topology, flows, cloud-connect bytes, policy hits, and session decisions | Connected sites, cloud networks, policy evaluation, or flow collection |
+| <span id="kubernetes-workloads-and-storage"></span>[Kubernetes, workloads, and storage](kubernetes-storage/) | Workload use, packet/byte metrics, storage capacity, inventory, audit logs, and events | Site Kubernetes cluster or virtual Kubernetes workload |
+| <span id="logs-audit-activity-alerts-and-platform-events"></span>[Logs, audit activity, alerts, and platform events](logs-events-alerts/) | Access/firewall logs, audit records, alerts, login events, platform activity, and log-delivery status | Resource logging and access to the relevant namespace or tenant |
+| <span id="synthetic-monitoring"></span>[Synthetic monitoring](synthetic-monitoring/) | Monitor health, latency, regional history, events, certificates, and security reports | Configured synthetic HTTP or DNS monitor |
+| <span id="billing-consumption-and-quota-usage"></span>[Billing, consumption, and quota usage](billing-usage/) | Feature usage, consumption, resource limits, and current quota use | Billing, Bot Defense reporting, or quota access |
+
+## Query concepts and measured guides
+
+Use [Query concepts](query-concepts/) for authentication, identifiers, time windows, rollups, filters,
+aggregation, pagination, access restrictions, and table conventions.
+
+For measured queries, use [HTTP access logs](../access-logs/), [Load balancer metrics](../service-graph/),
+[Origin performance](../origin-performance/), [Application health](../application-health/),
+[API activity](../api-discovery/), [WAF metrics](../firewall-metrics/), and
+[Security events](../security-events/). Each resource page describes specification-defined capabilities;
+available telemetry depends on your resources, configuration, and access.

@@ -1,0 +1,44 @@
+---
+title: Statistics API query concepts
+description: Authenticate and select identifiers, windows, filters, grouping, and pagination for Statistics APIs.
+sidebar:
+  label: Query concepts
+  order: 2
+---
+
+Authenticate against your tenant API base URL using an API token with permission for the requested operation.
+For the shared token header and environment setup, use [Overview](../../#set-up-curl); keep credentials
+private. Send a JSON request body for POST queries. The method is part of each contract: POST can retrieve
+analytics without changing a resource.
+
+Replace path parameters such as `{namespace}`, `{name}`, `{site}`, and `{network_id}` with the identifiers of
+the selected resource. The paths on resource pages are complete API paths relative to the tenant base URL. [Query
+reference](../../setup/#read-the-load-balancer-identifiers) shows how to discover load balancer and virtual host
+identities. A configuration object name, graph node identity, API endpoint path, and site name serve different
+purposes; use the identifier required by the linked request schema.
+
+| Query concept | How to use it |
+| --- | --- |
+| Namespace and tenant access | A namespace query normally selects that namespace. Use tenant-wide queries only when the operation documents them and your account has access. A literal `system` path, or a row marked `system` only, requires that reserved namespace. Some DDoS and site APIs use `{namespace}` in the path but accept only `system`. |
+| Time window | Set the endpoint's start and end fields explicitly. Many metrics and log APIs accept Unix timestamps or RFC 3339 timestamps; other contracts use `timeRange`, `timestamp`, `period_in_days`, or nested time filters. Consult the schema for defaults and supported formats. |
+| Resolution and rollups | `step` or `step_size` controls point spacing. `range` controls the lookback used to evaluate each point. They serve different purposes. Stored rollups can increase the effective step; use the returned step and timestamps. [Load balancer metrics](../../service-graph/#baseline-and-later-rollup) shows the measured effect. |
+| Metric selection | `field_selector`, `metric_selector`, or `metrics` selects returned measurements. Graph APIs separate node and edge metrics and health scores. Select a meaningful family and supported dimensions; the schema defines allowed combinations. |
+| Filtering | Contracts use different selectors: `label_filter`, a matcher string `filter`, structured `filters`, or log `query` expressions. These are endpoint-specific formats. A virtual host filter accepted by one API does not automatically apply to another. |
+| Grouping and aggregation | `group_by` determines dimensions; `aggs` requests named log/event aggregations. A top-N query returns a ranking, not every matching record. Choose supported grouping labels and aggregation types from the request schema. |
+| Pagination | Follow the endpoint's cursor, scroll, search-after, offset, or page contract. Several log and event APIs cap a batch at 500 records. An empty returned `scroll_id` ends scrolling. Compare collected records with `total_hits` where supplied; a first page is not a complete window. |
+| Responses and empty data | Inspect the successful response schema, units, labels, timestamps, and returned resolution. HTTP 200 with no series means the selected window has no returned points. It does not establish zero traffic or populated telemetry. |
+
+## Reading the endpoint tables
+
+Each method/path appears once under its primary resource group. Statistics and analytics queries retrieve
+measurements, logs, events, or analytical summaries. Related discovery and status queries help identify
+resources, supported data, and current state. Existing reports and artifacts retrieve previously available
+output. Configuration creation/replacement/deletion, enable/disable operations, credential retrieval, traffic
+generation, and report-generation requests are outside this reference.
+
+The operation link explains the query, and the schema links define its request and successful response. Routes
+marked **corrected source** are documented in the corrected specifications but absent from the merged enriched
+specification. The three cloud-connect metric queries are retained with direct source links. A newer version
+does not imply deprecation of an older route; a deprecation label appears only when the source declares it.
+
+For API endpoint paths ending in `/pdf`, the response is a **probability density function** of sizes or latency, not a PDF document download. Report download routes are listed separately.

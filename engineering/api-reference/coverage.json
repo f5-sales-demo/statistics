@@ -17,7 +17,72 @@
     "waf": 32
   },
   "included": 443,
-  "page_sha256": "c64027e0247237d8ab824b3560ac8d746349a229d8a252a311c3ab6bc80b5575",
+  "pages_sha256": [
+    {
+      "path": "docs/en/api-catalog/api-analytics.mdx",
+      "sha256": "ef4430d2d25ff1d9531b86d8f8fbfe692ceced86da0c3d12ae71d93ffd2d9dab"
+    },
+    {
+      "path": "docs/en/api-catalog/application-security.mdx",
+      "sha256": "727851d71eec075dcada4629bbd3abd4418e717af3612de91214aa2a69c262f1"
+    },
+    {
+      "path": "docs/en/api-catalog/application-traffic.mdx",
+      "sha256": "98524e7dc529ba89f747dc436d9a579d2548a085d98d2d34b03a3b06d6b1bdc3"
+    },
+    {
+      "path": "docs/en/api-catalog/billing-usage.mdx",
+      "sha256": "fcf598fee2b90352204582d29fdc5b4500fdfb50faa8bf90f9b3eb68b67d0e3b"
+    },
+    {
+      "path": "docs/en/api-catalog/bot-defense.mdx",
+      "sha256": "9164d25c9a5a68e35bf4855b4ee46b27f7b23b9132e297df59efd81a7b98d3b9"
+    },
+    {
+      "path": "docs/en/api-catalog/cdn.mdx",
+      "sha256": "10812fc8f58b31c8370c9ab4e0c89baa142970a0239f44c1beeccb47664365a1"
+    },
+    {
+      "path": "docs/en/api-catalog/client-side-defense.mdx",
+      "sha256": "29fa2f035fe1a16a45d32ec4b0518e4da123232fefb778fbcea70c060df1a2f2"
+    },
+    {
+      "path": "docs/en/api-catalog/ddos-protection.mdx",
+      "sha256": "eee7bf079ca8be13a38a39adca0c575d2a22ddb12a02ec2671a2e5ec364382ff"
+    },
+    {
+      "path": "docs/en/api-catalog/device-data-intelligence.mdx",
+      "sha256": "20430e40bb0842c18e96c97dcae1c0718dbdb84a019ff1e19a0fb5c34dc358c6"
+    },
+    {
+      "path": "docs/en/api-catalog/dns.mdx",
+      "sha256": "d586e7bd2790cb163724dec8e9aececd5dce491b8ad7eeff09754d13cf512e5a"
+    },
+    {
+      "path": "docs/en/api-catalog/index.mdx",
+      "sha256": "61dc906eb4b54634bdd9f995d3af978a1d5f6bb3b01590b52ddbf309323ca2ba"
+    },
+    {
+      "path": "docs/en/api-catalog/kubernetes-storage.mdx",
+      "sha256": "9066c7c902fbb0d2309d486e29330cb0eef284cd14ee5ae479c7f9c5b8dabde3"
+    },
+    {
+      "path": "docs/en/api-catalog/logs-events-alerts.mdx",
+      "sha256": "98a09d74edc393484916211daf73576ddc04cb38b9d5b352ad23afd5544a2a06"
+    },
+    {
+      "path": "docs/en/api-catalog/networking.mdx",
+      "sha256": "dc9e8fdd9857a931bf43cb9bf50acd00529b19234df00bcbc38055158aa9d215"
+    },
+    {
+      "path": "docs/en/api-catalog/query-concepts.mdx",
+      "sha256": "6bdddbebb903051084b3438ea4a7a39eeae7a02278504536df9425cff238a9ae"
+    },
+    {
+      "path": "docs/en/api-catalog/synthetic-monitoring.mdx",
+      "sha256": "d77da83cbda0d0c6b825de1e18c27e6722e6b3bb0990d30bdd170db3aa485b3d"
+    }
+  ],
   "source_only": 7,
   "status": "pass"
 }
