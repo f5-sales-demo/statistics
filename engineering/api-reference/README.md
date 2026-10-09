@@ -1,6 +1,6 @@
 # Statistics API coverage evidence
 
-This directory owns the reviewed inventory that generates `docs/en/api-catalog.mdx`.
+This directory owns the reviewed inventory that generates the resource pages in `docs/en/api-catalog/`.
 The public reference describes specification-defined capabilities. This audit makes no tenant
 queries, provisioning calls, report-generation requests, or traffic-generation calls.
 
@@ -40,7 +40,7 @@ python3 scripts/api_catalog.py
 python3 tests/test_api_catalog.py
 ```
 
-After editing reviewed inventory text, regenerate only the marked endpoint-table region:
+After editing reviewed inventory text, regenerate the marked endpoint-table region on each resource page:
 
 ```bash
 python3 scripts/api_catalog.py --write
@@ -59,3 +59,7 @@ unknown groups, unsupported methods, stale occurrence evidence, missing restrict
 drift fail validation. Regression tests cover nearby reporting mutations, read-only POST queries,
 repeated domains, route versions, method variants, system restrictions, source-only cloud metrics,
 and probability density responses. The repository shell test entrypoint runs these checks in CI.
+
+The catalog contains an overview, query concepts, and fourteen resource pages. Coverage checks validate the
+complete page set and exactly-once endpoint rows in their unchanged primary groups. The checker reports
+SHA-256 hashes for all sixteen pages; endpoint tables belong only on resource pages.
