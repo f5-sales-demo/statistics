@@ -20,7 +20,20 @@ The configuration and telemetry APIs use different identifiers for the same load
 | `XCSH_ORIGIN_POOL`, `XCSH_ORIGIN_IP` | Configured pool and public-IP origin | [Origin performance](../origin-performance/#match-the-origin-graph-identity) |
 | `XCSH_GRAPH_SOURCE`, `XCSH_GRAPH_DESTINATION` | Services at each end of the origin request edge | Origin performance; exact configured address match |
 
-In **Customize examples → Discovered identifiers**, paste the exact values returned by discovery. Blank fields keep their `<XCSH_...>` placeholders. Recorded response identifiers follow the form; captured times, counts, and metric values stay unchanged.
+In **Customize examples → Telemetry and deployment examples**, replace the illustrative defaults with exact
+values returned by discovery. Each field is independent: editing the load balancer never infers its telemetry
+identity. Clearing a noncredential field immediately restores its default in examples; leaving the field
+repopulates the input. Reset shared values restores all noncredential defaults. Account identifiers retain
+angle-bracket placeholders until you supply them.
+
+The synthetic example uses virtual host `telemetry-demo-app`, application type `demo-app`, origin address
+`198.51.100.10`, graph source `public`, destination `S:198.51.100.10`, and endpoints `/health`,
+`/httpbin/get`, and `/vampi`. Origin and generator VM names are `vm-origin-server-demoapp` and
+`vm-traffic-generator-demoapp`; the pinned Terraform modules normalize deployer `demo-app` to `demoapp`.
+Replace these with discovered values before querying your deployment. Recorded response identifiers follow the
+form; captured times, counts, and metric values stay unchanged.
+
+Leave the token field empty to render `$XCSH_API_TOKEN` in shell commands. An entered token stays in this tab's session and appears in copied inline commands. Clear credentials restores the environment reference. Downloadable scripts keep runtime credentials in the environment.
 
 Selected namespace: `<XCSH_NAMESPACE>`; load balancer: `<XCSH_LB_NAME>`; telemetry virtual host: `<XCSH_VIRTUAL_HOST>`; application type: `<XCSH_APP_TYPE>`.
 

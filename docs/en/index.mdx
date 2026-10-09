@@ -21,13 +21,14 @@ Statistics retrieves statistics from the F5 Distributed Cloud API across resourc
 
 Use Bash, cURL 7.76 or later, and `jq` 1.7 or later. Obtain an F5 Distributed Cloud API token with read access to the selected namespace. Tenant-wide `system` queries need separate access and are outside this guide.
 
-Customize the form above, then copy this complete setup into a Bash session. Keep credentials in the environment and private browser session. Static Markdown shows sanitized templates.
+Examples start with illustrative defaults. Customize the form above with your environment values, then copy this complete setup into a Bash session. Leave the token field empty to use your existing `$XCSH_API_TOKEN`, or enter a token for inline commands. Keep credentials in the environment and private browser session. Static Markdown shows sanitized templates.
 
 <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME XCSH_DOMAINNAME" data-xcsh-render="inline">
 
 ```bash
 export XCSH_API_URL='<XCSH_API_URL>'
-export XCSH_API_TOKEN='<XCSH_API_TOKEN>'
+export XCSH_API_TOKEN="<XCSH_API_TOKEN>"
+: "${XCSH_API_TOKEN:?Set XCSH_API_TOKEN in your shell or enter a token in Customize examples}"
 export XCSH_NAMESPACE='<XCSH_NAMESPACE>'
 export XCSH_LB_NAME='<XCSH_LB_NAME>'
 export XCSH_DOMAINNAME='<XCSH_DOMAINNAME>'

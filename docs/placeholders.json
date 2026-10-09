@@ -34,8 +34,8 @@
       "keys": ["XCSH_API_URL", "XCSH_API_TOKEN", "XCSH_NAMESPACE", "XCSH_LB_NAME", "XCSH_DOMAINNAME"]
     },
     {
-      "label": "Discovered identifiers",
-      "description": "Run the linked discovery procedure, then paste its exact identifier here. Blank fields retain placeholders; identifiers are never inferred from other settings.",
+      "label": "Telemetry and deployment examples",
+      "description": "Illustrative defaults; replace them with exact identifiers from the linked discovery procedures. Clearing restores defaults. Fields are independent and never inferred from other settings.",
       "keys": [
         "XCSH_VIRTUAL_HOST",
         "XCSH_APP_TYPE",
@@ -68,7 +68,20 @@
     }
   ],
   "examples": {
-    "XCSH_ORIGIN_IP": ""
+    "XCSH_VIRTUAL_HOST": "telemetry-demo-app",
+    "XCSH_APP_TYPE": "demo-app",
+    "XCSH_ORIGIN_IP": "198.51.100.10",
+    "XCSH_GRAPH_SOURCE": "public",
+    "XCSH_GRAPH_DESTINATION": "S:198.51.100.10",
+    "XCSH_API_ENDPOINT_1": "/health",
+    "XCSH_API_ENDPOINT_2": "/httpbin/get",
+    "XCSH_API_ENDPOINT_3": "/vampi",
+    "XCSH_ORIGIN_VM_NAME": "vm-origin-server-demoapp",
+    "XCSH_GENERATOR_VM_NAME": "vm-traffic-generator-demoapp"
   },
-  "statisticsAuthoringVersion": 2
+  "statisticsAuthoringVersion": 2,
+  "behavior": {
+    "fallbackToDefaults": true,
+    "environmentToken": true
+  }
 }
