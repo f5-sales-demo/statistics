@@ -2400,7 +2400,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-maintenance_status-customapi-getupgradestatus",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0122.public.ves.io.schema.maintenance_status.ves-swagger.json#L13",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0122.public.ves.io.schema.maintenance_status.ves-swagger.json#L13",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0122.public.ves.io.schema.maintenance_status.ves-swagger.json#L136"
       },
@@ -3488,7 +3488,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customdataapi-discoveredservicehealthstatus",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L1089",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L1089",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L1643"
       },
@@ -3522,7 +3522,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_load_balancer-customdataapi-dnslbhealthstatuslist",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L600",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L600",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1648"
       },
@@ -3556,7 +3556,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_load_balancer-customdataapi-dnslbpoolmemberhealthstatuslist",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L730",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L730",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1848"
       },
@@ -3590,7 +3590,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_load_balancer-customdataapi-dnslbpoolhealthstatus",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L860",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L860",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1786"
       },
@@ -3624,7 +3624,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_load_balancer-customdataapi-dnslbpoolmemberhealthstatuschangeevents",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1010",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1010",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1954"
       },
@@ -3658,7 +3658,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-dns_load_balancer-customdataapi-dnslbhealthstatus",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1473",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1473",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json#L1718"
       },
@@ -3760,7 +3760,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-enhanced_firewall_policy-customdataapi-enhancedfirewallpolicyhits",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0115.public.ves.io.schema.enhanced_firewall_policy.ves-swagger.json#L304",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0115.public.ves.io.schema.enhanced_firewall_policy.ves-swagger.json#L1044",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0115.public.ves.io.schema.enhanced_firewall_policy.ves-swagger.json#L1108"
       },
@@ -4038,7 +4038,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-global_log_receiver-customdataapi-globallogreceiverstatus",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0134.public.ves.io.schema.global_log_receiver.ves-swagger.json#L304",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0134.public.ves.io.schema.global_log_receiver.ves-swagger.json#L1688",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0134.public.ves.io.schema.global_log_receiver.ves-swagger.json#L1760"
       },
@@ -4826,7 +4826,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-customdataapi-metrics",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0173.public.ves.io.schema.nfv_service.ves-swagger.json#L612",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0173.public.ves.io.schema.nfv_service.ves-swagger.json#L1670",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0173.public.ves.io.schema.nfv_service.ves-swagger.json#L1750"
       },
@@ -5036,7 +5036,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-segment-customdataapi-segmentsgraph",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0217.public.ves.io.schema.segment.ves-swagger.json#L472",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0217.public.ves.io.schema.segment.ves-swagger.json#L2171",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0217.public.ves.io.schema.segment.ves-swagger.json#L2238"
       },
@@ -5342,7 +5342,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_k8s-customdataapi-pvcmetrics",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0269.public.ves.io.schema.virtual_k8s.ves-swagger.json#L304",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0269.public.ves.io.schema.virtual_k8s.ves-swagger.json#L2076",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0269.public.ves.io.schema.virtual_k8s.ves-swagger.json#L2166"
       },
@@ -5376,7 +5376,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_network-customdataapi-sidcounters",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0270.public.ves.io.schema.virtual_network.ves-swagger.json#L304",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0270.public.ves.io.schema.virtual_network.ves-swagger.json#L2166",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0270.public.ves.io.schema.virtual_network.ves-swagger.json#L2256"
       },
@@ -5762,7 +5762,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf-wafmonitoringapi-clientrulehitsmetrics",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L14",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L736",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L810"
       },
@@ -5796,7 +5796,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf-wafmonitoringapi-clientsecurityeventsmetrics",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L154",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L952",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L1026"
       },
@@ -5830,7 +5830,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf-wafmonitoringapi-serverrulehitsmetrics",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L294",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L736",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L810"
       },
@@ -5864,7 +5864,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf-wafmonitoringapi-serversecurityeventsmetrics",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L434",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L952",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json#L1026"
       },
@@ -5898,7 +5898,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-workload-customdataapi-usage",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0279.public.ves.io.schema.views.workload.ves-swagger.json#L472",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0279.public.ves.io.schema.views.workload.ves-swagger.json#L4852",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0279.public.ves.io.schema.views.workload.ves-swagger.json#L4948"
       },
@@ -6243,7 +6243,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-api-list",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L164",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L164",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L1859"
       },
@@ -6282,7 +6282,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-api-get",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L332",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L332",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json#L1707"
       },
@@ -7137,7 +7137,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacemlcustomapi-getapiendpointsstatsallnamespaces",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0179.public.ves.io.schema.namespace.ves-swagger.json#L561",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0179.public.ves.io.schema.namespace.ves-swagger.json#L4194",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0179.public.ves.io.schema.namespace.ves-swagger.json#L4261"
       },
@@ -7171,7 +7171,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-namespace-namespacemlcustomapi-getapiendpointsstats",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0179.public.ves.io.schema.namespace.ves-swagger.json#L2520",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0179.public.ves.io.schema.namespace.ves-swagger.json#L4216",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0179.public.ves.io.schema.namespace.ves-swagger.json#L4261"
       },
@@ -7593,7 +7593,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpoint",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L925",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L7957",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8034"
       },
@@ -7627,7 +7627,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointlearntschema",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1075",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1075",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L7905"
       },
@@ -7661,7 +7661,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointpdf",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1264",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1264",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L7945"
       },
@@ -7695,7 +7695,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiepsourceopenapischema",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1424",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1424",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L7837"
       },
@@ -7763,7 +7763,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointsstats",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1945",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L1945",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8071"
       },
@@ -7797,7 +7797,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapicallsummary",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L2085",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8652",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8678"
       },
@@ -7831,7 +7831,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-gettopapiendpoints",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L2235",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8841",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8882"
       },
@@ -7865,7 +7865,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-gettopsensitivedata",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L2385",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8905",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8970"
       },
@@ -7899,7 +7899,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getswaggerspec",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L2535",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L2535",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L3734"
       },
@@ -7933,7 +7933,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getapiendpointsschemaupdates",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L2689",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8703",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8742"
       },
@@ -7967,7 +7967,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-virtual_host-apiepcustomapi-getvulnerabilities",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L3429",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L8988",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json#L9035"
       },
@@ -8001,7 +8001,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-signaturecustomapi-getstagedsignatures",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L676",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L1482",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L1519"
       },
@@ -9599,7 +9599,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-voltshareaccesscountquery",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L270",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1588",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1652"
       },
@@ -9633,7 +9633,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogquery",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L410",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1209",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1286"
       },
@@ -9667,7 +9667,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogaggregationquery",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L550",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1137",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1186"
       },
@@ -9701,7 +9701,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogscrollquery",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L690",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L690",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1286"
       },
@@ -9735,7 +9735,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-voltshare-monitoringapi-auditlogscrollquery",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L690",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1329",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json#L1286"
       },
@@ -9803,7 +9803,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-shape-bot_defense-protected_application-customapi-regionslist",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0196.public.ves.io.schema.shape.bot_defense.protected_application.ves-swagger.json#L132",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0196.public.ves.io.schema.shape.bot_defense.protected_application.ves-swagger.json#L132",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0196.public.ves.io.schema.shape.bot_defense.protected_application.ves-swagger.json#L2122"
       },
@@ -14757,7 +14757,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-securemesh_site_v2-managedsecuremeshsitev2customapi-listcloudresources",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0083.public.ves.io.schema.views.securemesh_site_v2.ves-swagger.json#L14",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0083.public.ves.io.schema.views.securemesh_site_v2.ves-swagger.json#L14",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0083.public.ves.io.schema.views.securemesh_site_v2.ves-swagger.json#L2911"
       },
@@ -14791,7 +14791,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-listattacksignatures",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L14",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L14",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L1191"
       },
@@ -14825,7 +14825,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-listbotsignatures",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L144",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L144",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L1218"
       },
@@ -14859,7 +14859,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-getlatestversion",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L274",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L274",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L1179"
       },
@@ -14893,7 +14893,7 @@
       "deprecated": false,
       "source_only": false,
       "references": {
-        "operation": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-waf_signatures_changelog-wafsignaturesapi-listthreatcampaigns",
+        "operation": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L826",
         "request": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L826",
         "response": "https://github.com/f5-sales-demo/api-specs/blob/b8c092ce96db45bdd489ff06067ca7b2864359ca/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json#L1245"
       },
