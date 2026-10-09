@@ -1,0 +1,23 @@
+{
+  "excluded": 1397,
+  "groups": {
+    "api": 26,
+    "billing": 8,
+    "bot": 113,
+    "cdn": 8,
+    "csd": 19,
+    "ddos": 26,
+    "dns": 7,
+    "intelligence": 25,
+    "kubernetes": 45,
+    "logs": 38,
+    "network": 55,
+    "synthetic": 24,
+    "traffic": 17,
+    "waf": 32
+  },
+  "included": 443,
+  "page_sha256": "f2bf0e323ea4a29c7457b3c9ac32dfaeeb483ecda93fcd7c6368b9c85d913e55",
+  "source_only": 7,
+  "status": "pass"
+}

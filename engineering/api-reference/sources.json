@@ -1,0 +1,1304 @@
+{
+  "corrected": {
+    "repository": "f5-sales-demo/api-specs",
+    "revision": "b8c092ce96db45bdd489ff06067ca7b2864359ca",
+    "path": "release/specs"
+  },
+  "enriched": {
+    "repository": "f5-sales-demo/api-specs-enriched",
+    "revision": "c5ce81d5fb15314a0f9398db954e0da111d89606",
+    "release": "v12.0.4",
+    "asset": "f5xc-api-specs-v12.0.4.zip",
+    "sha256": "aa4c48863d740b633a5ea29d7348a078627f511717b9783bf88513440bc7cb18"
+  },
+  "files": [
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0000.public.ves.io.schema.ai_assistant.ves-swagger.json",
+      "sha256": "c213398ad96d9c845b621bea0745be770ab8b9523042fdbf515fb7fc208103d1"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0001.public.ves.io.schema.api_sec.api_crawler.ves-swagger.json",
+      "sha256": "a4e755a34e63661e58c2817d8e218da6f3f5e8ab7ccd2858d51a24ba96559aaf"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0002.public.ves.io.schema.views.api_definition.ves-swagger.json",
+      "sha256": "10eadbbd5e57f86a33aa8d5ec5e1447c58a89fd69cad7c2d943119e09f318d26"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0003.public.ves.io.schema.api_sec.api_discovery.ves-swagger.json",
+      "sha256": "591f5be4685d6324736cc4fb7c34bb073c34c0ff44059493f837b04c6d8bb53a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0004.public.ves.io.schema.api_group.ves-swagger.json",
+      "sha256": "8d068a3c436d6f9eb1beeef8dd403c2fbf2ac736b88ef4c021d90a16d628f792"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0005.public.ves.io.schema.api_group_element.ves-swagger.json",
+      "sha256": "df713d99d234d91f067d4af2f115b361bc1cb3bb6ca3abfd57698aa635ab354b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0006.public.ves.io.schema.api_sec.api_testing.ves-swagger.json",
+      "sha256": "98ebbbb462fd486999bb2ea4bd3023f5a47be1356d6aca7a35d89c92d6804aed"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0007.public.ves.io.schema.api_credential.ves-swagger.json",
+      "sha256": "a88145c9296ef83b4ca162ccc37ded4e3a8cca7e52b516bfce7237878045c714"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0008.public.ves.io.schema.pbac.addon_service.ves-swagger.json",
+      "sha256": "52225bf040e00a8dc9fa40ce53cea3e5cfb57f1faadec887ad8951e7a56c5df4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0009.public.ves.io.schema.pbac.addon_subscription.ves-swagger.json",
+      "sha256": "24d6b803423375e711f1c9d8266a7c8090ba4f2c292d94b1b5fa5e4554e4b9b8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0010.public.ves.io.schema.address_allocator.ves-swagger.json",
+      "sha256": "9e9bc4602210b9ee03eaaa5c2e2da7dda80a3d78406b718c7da2e41f1c268ed3"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0011.public.ves.io.schema.advertise_policy.ves-swagger.json",
+      "sha256": "46ba768ac7dc7136516cefc62a3b4fc2a18fdc239e7dd3d1455c45c75198c60d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0012.public.ves.io.schema.alert_policy.ves-swagger.json",
+      "sha256": "7c15503049f4fbfda28e266e9104723285b108540f0078b0efb723cc891b2a6a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0013.public.ves.io.schema.alert_receiver.ves-swagger.json",
+      "sha256": "ad8e1287a629fba621bb36b5dfbd2f66c24a274f22895cd1edcff1eed5a6aea7"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0014.public.ves.io.schema.alert.ves-swagger.json",
+      "sha256": "3782fd8d6475f8ffd972f326c40947508c34783cd960473005a545f2636237f0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0015.public.ves.io.schema.tenant_management.allowed_tenant.ves-swagger.json",
+      "sha256": "0517480c664cd3b5d6aa176fe2d5e806d1f1ceda84dbba29e9fdf28215e8fed4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0016.public.ves.io.schema.views.app_api_group.ves-swagger.json",
+      "sha256": "dba0f94ab5889785fdedb0f8854d27e77a12f614b3a6953771ac1968f34b7f92"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0017.public.ves.io.schema.app_setting.ves-swagger.json",
+      "sha256": "919a47f02aca969e28b5a69b80e152653e4de4f24e3c1d9b467f28cc14d579e8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0018.public.ves.io.schema.app_type.ves-swagger.json",
+      "sha256": "1182fc9e5c39a27b16ae3ea246a40a1a442e8ef84c890314b6abb85545ca215f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0019.public.ves.io.schema.app_firewall.ves-swagger.json",
+      "sha256": "4c5b36341e5b1c4baea677db61713be4964f59354ed82baff31b0f92a89656a2"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0020.public.ves.io.schema.app_security.ves-swagger.json",
+      "sha256": "03db493fe753e942e6616bc2594cbacbd815beba2531f96aee47b59bd9953c10"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0021.public.ves.io.schema.api_sec.rule_suggestion.ves-swagger.json",
+      "sha256": "b77cefec4ab0be560f3943b0b5616fb667fbc4049da0496c15cccaf9c1f7ab30"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0022.public.ves.io.schema.shape.device_id.ves-swagger.json",
+      "sha256": "2070b1b10e9d77359a44bce1264d897ac0f96d2e75417503ffe85ab4f9beaf83"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0023.public.ves.io.schema.authentication.ves-swagger.json",
+      "sha256": "1e7ceb48c1f5fe2445dc1fd8d57a56e25f845b9b50a14773f6799541e08fef73"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0024.public.ves.io.schema.authorization_server.ves-swagger.json",
+      "sha256": "d1873c8dc5e6082fa395428622522aac48dda886fe343495270d4bf5f7244014"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0025.public.ves.io.schema.ai_data.bfdp.ves-swagger.json",
+      "sha256": "d754a2d9e7eb2b95816a135b6679d6ddf4459837cbbf90b0761f0d59a95e5e02"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0026.public.ves.io.schema.ai_data.bfdp.subscription.ves-swagger.json",
+      "sha256": "cf05f5a01144d97389c9ed833bc1c1780b9e2981de40f4f9cf08e799caac2706"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0027.public.ves.io.schema.bgp.ves-swagger.json",
+      "sha256": "9ae5e33a429af76c55a36e48f9b0bf251a9dba6b7062a493de4055c50bd5c993"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0028.public.ves.io.schema.bgp_asn_set.ves-swagger.json",
+      "sha256": "c7e339d30b6518cc7eec81adcadc750e56f3950f194f5216e0865e013ed49683"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0029.public.ves.io.schema.operate.bgp.ves-swagger.json",
+      "sha256": "d266a8a5b702acd8dc7c32ad95fe5da7dc28dc390ba06544ff3c5a859c577185"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0030.public.ves.io.schema.bgp_routing_policy.ves-swagger.json",
+      "sha256": "977ba463e11fb88a50979283f75b5bf0f63830b559469e6cee3dd7b223c8e5c0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0031.public.ves.io.schema.bigip_irule.ves-swagger.json",
+      "sha256": "e5c119321aec10ae7f75d965cec27bd46aeb7249dd66c906c2be7d960a94a8f4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0032.public.ves.io.schema.views.bigip_virtual_server.ves-swagger.json",
+      "sha256": "c272ae37867df31a63f988b95d457ff76b3780247105563ac96d84173afb1b87"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0033.public.ves.io.schema.shape.brmalerts.alert_gen_policy.ves-swagger.json",
+      "sha256": "5350b083c1fc6cd3db2b26684377e38b80b334c41530e4238fc4d23585790491"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0034.public.ves.io.schema.shape.brmalerts.alert_template.ves-swagger.json",
+      "sha256": "e44acc43eabf906496a0d53223b722550414969a89772e51d81aa27e4409df30"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0035.public.ves.io.schema.billing.ves-swagger.json",
+      "sha256": "aaf6db2d893b0dba58ca9378702cafa93b001c5934a3f5b15211977ee50ad7cf"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0036.public.ves.io.schema.shape.bot_defense.ves-swagger.json",
+      "sha256": "1a62bf17442c72a5e7619f143d06dbcd5de5bb352d735cb38f57d43c17f1ed59"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0037.public.ves.io.schema.views.bot_defense_app_infrastructure.ves-swagger.json",
+      "sha256": "80d3c8587a268e0b91de0fe8e5969d496f2694e3c71f931dfb40a44032929b9e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0038.public.ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_rule.ves-swagger.json",
+      "sha256": "a9264210d88233a19b66144c65c0e047a31b0aa6bd9800bae83f3339f7afa1d0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0039.public.ves.io.schema.shape.bot_defense.threat_intelligence.bot_detection_update.ves-swagger.json",
+      "sha256": "b8d562aacefef3f5a7abd30e37b69049962bf404cd26839086d6e667daa2492d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0040.public.ves.io.schema.shape.bot_defense.bot_endpoint_policy.ves-swagger.json",
+      "sha256": "90fb1260998d8fe7ac869963a383d808639662e4c864d0b771d4056c44189c00"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0041.public.ves.io.schema.shape.bot_defense.bot_infrastructure.ves-swagger.json",
+      "sha256": "64877e0ce36abecaf92336fb8d0b335f803f6f75eb78876663fd30c9b198f64d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0042.public.ves.io.schema.shape.bot_defense.threat_intelligence.ti_package.ves-swagger.json",
+      "sha256": "87baced7087be996d922ddfcf588a562f6f82811d3f75ab0a9d3ecb5c8325751"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0043.public.ves.io.schema.shape.bot_defense.bot_allowlist_policy.ves-swagger.json",
+      "sha256": "5db695de4885d36506979fa1293fb8c65ef79fd31569fdd414d4c07c2562524d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0044.public.ves.io.schema.shape.bot_defense.bot_network_policy.ves-swagger.json",
+      "sha256": "1041a0b2a17a2198c396d980316ee0657ba833b133d2cce02dcd8a8081f0c2e5"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0045.public.ves.io.schema.views.cdn_loadbalancer.ves-swagger.json",
+      "sha256": "3e346e5d794e1f142306d0f30d71ef18a4e3cfb487c4d3511dbbf7bfa258e068"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0046.public.ves.io.schema.cdn_purge_command.ves-swagger.json",
+      "sha256": "e4a86ac8cd1ce69e0351a61ede88517e39f86d2a548f049489dfa3fd5d480d77"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0047.public.ves.io.schema.cdn_cache_rule.ves-swagger.json",
+      "sha256": "571e8ae9068e1a672c94c06b9268c499e762bfb8dd91a0d0ebf657b8966fc438"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0048.public.ves.io.schema.crl.ves-swagger.json",
+      "sha256": "f9085da6c2cff01c8efe25b82f75c09af8c5e35dd304b33be812a8cd42e2a182"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0049.public.ves.io.schema.operate.crl.ves-swagger.json",
+      "sha256": "12362e6f8aa4dd66a544cf41c86cf36febb80d51dc9bdd18310d6f9b88171742"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0050.public.ves.io.schema.pbac.catalog.ves-swagger.json",
+      "sha256": "5d885aff67493a24a412d12817905d3c4568e2a8f61c91edde3cf42d975f89ad"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0051.public.ves.io.schema.cminstance.ves-swagger.json",
+      "sha256": "52b74f502efa2c41eae88de502ef085a2755fe322b19af32282ea84c88c41013"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0052.public.ves.io.schema.certificate.ves-swagger.json",
+      "sha256": "bcb87f1b13e95b1ca6d2f6fb94d5dedff63021d40eda99e2537e9ef0b9fac9a4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0053.public.ves.io.schema.certificate_chain.ves-swagger.json",
+      "sha256": "93738d7cedd95199f2a08486a11ebec47b88eb3cdd97b0df146b9c235d6af7df"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0054.public.ves.io.schema.certified_hardware.ves-swagger.json",
+      "sha256": "510165db49d5e0cd983819c79f2f2bf3b8c3a8ae803d7b12c0e51b261425bb26"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0055.public.ves.io.schema.tenant_management.child_tenant.ves-swagger.json",
+      "sha256": "e5eb8019ce4468e9326881b8ee3e9da2c9e9869bec6530430d876df8b60d49a1"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0056.public.ves.io.schema.tenant_management.child_tenant_manager.ves-swagger.json",
+      "sha256": "8eb7c24c98e7f30940a1ca0da594c71fbc76d7917166af7725b5e0bf69797318"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0057.public.ves.io.schema.shape.client_side_defense.ves-swagger.json",
+      "sha256": "c85c94916b309b8052a03629583adc628bfc9b323e0c88dcf7676ea61ee04393"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0058.public.ves.io.schema.shape.client_side_defense.allowed_domain.ves-swagger.json",
+      "sha256": "2c72687496e7aa42e89a1e0b9f38380a3fba12b76a51b2aea7ed72663b904741"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0059.public.ves.io.schema.shape.client_side_defense.protected_domain.ves-swagger.json",
+      "sha256": "26975c3e0f4e1dc756dae79bd94151422a008649f8ced76c3422bb561b5412e8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0060.public.ves.io.schema.shape.client_side_defense.mitigated_domain.ves-swagger.json",
+      "sha256": "098e9667229d70d52ea4088a8b41d89b0ace6988f0cad7e71ade590778bb4ca0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0061.public.ves.io.schema.shape.client_side_defense.subscription.ves-swagger.json",
+      "sha256": "fac4ff8089687ba9bcba6d4b9cd09d1eeaffab77f2c17ff6196975b5be9e9652"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0062.public.ves.io.schema.cloud_connect.ves-swagger.json",
+      "sha256": "713870dd3b94aa6be32b32d40af0a7285fd804c2905aa3fcf593acc0eb7e83b3"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0063.public.ves.io.schema.cloud_credentials.ves-swagger.json",
+      "sha256": "0a81f3c5f5dd27cb6050eddd477ddde0cbd0dd234167e3d447c07f1c61efbe9a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0064.public.ves.io.schema.cloud_elastic_ip.ves-swagger.json",
+      "sha256": "466c0c338ea53187b0c396f4d3a4034765362971565c0150819703dd35fa468f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0065.public.ves.io.schema.cloud_region.ves-swagger.json",
+      "sha256": "f2a0249d37d08fb154cc0808a17f3ad41ca9efcfce547cc96dfec12feb260289"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0066.public.ves.io.schema.cloud_user_account.ves-swagger.json",
+      "sha256": "e420971257fc7efa7e3a30f4959227af2b61c8a9b91f891311f957e8e49fe8eb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0067.public.ves.io.schema.cloud_link.ves-swagger.json",
+      "sha256": "fa56a5bb4cb6a868e5521e97a6258b4db84466966c3a660942985a425235f494"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0068.public.ves.io.schema.cluster.ves-swagger.json",
+      "sha256": "52377455c39eca88b450274b03d8baea370fce53c562afba4738f0e408196145"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0069.public.ves.io.schema.api_sec.code_base_integration.ves-swagger.json",
+      "sha256": "cfab288bb96bb0ebcc90596f7584fa67786a25fc6bb20e88be131a14c02819cb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0070.public.ves.io.schema.views.aws_tgw_site.ves-swagger.json",
+      "sha256": "1a546b8afdac14becb97dd2222fff9c66341b43b3e308479bfada7a364d44537"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0071.public.ves.io.schema.views.aws_vpc_site.ves-swagger.json",
+      "sha256": "d0e7514e88bcbe9db062707ee7433747ee9dc5d00b2c29ee775d03244201c01a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0072.public.ves.io.schema.views.voltstack_site.ves-swagger.json",
+      "sha256": "c3e9c914f47494a432b1c9ac9419f350cee9aeae1c1374f2348eed798d0c847f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0073.public.ves.io.schema.bigcne.application_profiles.ves-swagger.json",
+      "sha256": "cbc034f0643162b8f0fcb12336ad242e5f3fa1218f3f02f95f96910308ac53eb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0074.public.ves.io.schema.views.azure_vnet_site.ves-swagger.json",
+      "sha256": "062ff0e5ea9bf45cc86cf38a47ce10a3bcaa6c5aa93759fdfe1801aff1ac5517"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0075.public.ves.io.schema.views.bigip_http_proxy.ves-swagger.json",
+      "sha256": "1cf83291216fbdc0fe99d6b089fc39240a7907fc74f02433cf874a07b45883a3"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0076.public.ves.io.schema.dns_compliance_checks.ves-swagger.json",
+      "sha256": "07aec1a4cda16ff47cb78c7618f593010a7acb33d3654b358c29b10dc4aaea24"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0077.public.ves.io.schema.dns_proxy.ves-swagger.json",
+      "sha256": "4afcede58125a044e4b0b4dfff59746c85d4b8fbade417a07c106e5909398414"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0078.public.ves.io.schema.views.forward_proxy_policy.ves-swagger.json",
+      "sha256": "faef0945a6a755bbafff8938f8299ac9cf4c5d9b01de070ba604f86679ac1b29"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0079.public.ves.io.schema.views.gcp_vpc_site.ves-swagger.json",
+      "sha256": "55bddfdcdb7f92aab96708293fbd6b357c1371191e0ea3d7390013cb4ad56af5"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0080.public.ves.io.schema.views.http_loadbalancer.ves-swagger.json",
+      "sha256": "a73bd6fdf49d41a98929bd3482ff1997a2cc783432297392b7ed85360682f9ac"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0081.public.ves.io.schema.views.network_policy_view.ves-swagger.json",
+      "sha256": "a6569f7338919cc56a18b659b01a9a4c8630ae1a02ec0702d5bdd6efa2bea4ed"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0082.public.ves.io.schema.protocol_inspection.ves-swagger.json",
+      "sha256": "520b26ab34d4bc39f8c17d0c1020fc8d1e0020ddad4e64f3f26d99c54dc813eb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0083.public.ves.io.schema.views.securemesh_site_v2.ves-swagger.json",
+      "sha256": "4c671b1763c56a2944224164758a9bd9aa244b24cae6015c43182b1b219075cf"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0084.public.ves.io.schema.views.securemesh_site.ves-swagger.json",
+      "sha256": "06f1c19d75785b0885d86490663efb78e38d7deea6653ccef29f9cc51e7dd340"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0085.public.ves.io.schema.views.tcp_loadbalancer.ves-swagger.json",
+      "sha256": "3507b701d383d8589a193ed675c974dfa63826e7088a6ade2b315591e9e5e5a2"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0086.public.ves.io.schema.views.udp_loadbalancer.ves-swagger.json",
+      "sha256": "8b5cd3dd54469fbbafe9463a77dfed13348b0041c8909b949361ab4f0a51f380"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0087.public.ves.io.schema.bigcne.irule.ves-swagger.json",
+      "sha256": "11a5a2df41c230e84e46e3c3a4c5b82c822080f1b7864cec4ce0d7f312367518"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0088.public.ves.io.schema.graph.connectivity.ves-swagger.json",
+      "sha256": "3c6244868521a5ac824550aaff7791115a951ee2cc56ba08c35b6bb50719222c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0089.public.ves.io.schema.contact.ves-swagger.json",
+      "sha256": "a1a98cbc14df78e6d6ff7dd5434370c257fc1192ab31a5469ef174a9b76e59c8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0090.public.ves.io.schema.container_registry.ves-swagger.json",
+      "sha256": "b7a2be4dc96598c9e96a51b51e7a595b71e9ce82e96a9cc5e2c94805010ef41d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0091.public.ves.io.schema.shape.bot_defense.custom_certificate.ves-swagger.json",
+      "sha256": "f54ce0094d62d0abed55c5cfc34bf979adccba611b9a4246fcd46d3215f0a41f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0092.public.ves.io.schema.customer_support.ves-swagger.json",
+      "sha256": "2424eda3e8658cdad7fd3ce0ecbb7ffc8a6ae57587636c670fcaef59dce3043e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0093.public.ves.io.schema.dc_cluster_group.ves-swagger.json",
+      "sha256": "4c36f0c3658cc032a4c0d5e036889d07217bcb1f31ebe8f89fe0f1c80ec89d38"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0094.public.ves.io.schema.dns_domain.ves-swagger.json",
+      "sha256": "1380eec82d20f776fa0644d590acb8374234a6bdf6c28d2b78bc5bb454cd50ac"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0095.public.ves.io.schema.dns_load_balancer.ves-swagger.json",
+      "sha256": "25e1e2ee246220a2f10692f19f910c41ad37e8b723268c0eb923b035fb2351f6"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0096.public.ves.io.schema.dns_lb_health_check.ves-swagger.json",
+      "sha256": "e0ef815ead470c53399cdc0c0c3528418a24cf4f353e13f379d208d5c4a76495"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0097.public.ves.io.schema.dns_lb_pool.ves-swagger.json",
+      "sha256": "bf977b724e3032a49c94623be9603dbd4b1c816988043392d5d87adf284daa9d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0098.public.ves.io.schema.observability.synthetic_monitor.v1_dns_monitor.ves-swagger.json",
+      "sha256": "c5fd66af0e35740241e577c054a053eda2bec4ace499939533ae21ca931d400d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0099.public.ves.io.schema.dns_zone.ves-swagger.json",
+      "sha256": "686e4665aa6e086e522f27052a6b2246174d147cc74b33f5c81bc18fed52b838"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0100.public.ves.io.schema.ui.dashboard_layout.ves-swagger.json",
+      "sha256": "7177c2ff2be6e261a3c3a81c1d6f11643b423084bd9e67da1a9c478606a88dd0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0101.public.ves.io.schema.shape.data_delivery.receiver.ves-swagger.json",
+      "sha256": "cdcf3b8d824071d1b5e41e7f1c1a207091ca9edd63658d9824de8e42dcd03324"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0102.public.ves.io.schema.shape.data_delivery.ves-swagger.json",
+      "sha256": "cb80df8435897d29d23c26823a866422f7a096a3ae2c026333f702b5ac7fd579"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0103.public.ves.io.schema.bigcne.data_group.ves-swagger.json",
+      "sha256": "fb6a295ea480f3c13b3522ec850b42c1b06f2f2fdea307e7b037a89af6df559c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0104.public.ves.io.schema.shape.data_delivery.subscription.ves-swagger.json",
+      "sha256": "f0e8ae8c49bf81f9bea5dc2c16c417914dec7d3223b4167d56deb4c890fc0b5f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0105.public.ves.io.schema.data_type.ves-swagger.json",
+      "sha256": "5f8340ffb128f5bd7731998399feb13ae80f660093446de56d22d1db0a19fb12"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0106.public.ves.io.schema.operate.debug.ves-swagger.json",
+      "sha256": "b49a7b13e3524f0b81518b73e017e2be12f0dbbb5bd4d9df03867a87b63d8183"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0107.public.ves.io.schema.shape.device_intelligence.ves-swagger.json",
+      "sha256": "52ee057b050eb8d31a075394c34926116ee3083cd58ba26148841bd958e45441"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0108.public.ves.io.schema.shape.device_intelligence.subscription.ves-swagger.json",
+      "sha256": "87b1974bf8f36f85d3983646c408505c9612f0ffda0744b9fb59a86476dc298e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0109.public.ves.io.schema.operate.dhcp.ves-swagger.json",
+      "sha256": "f3f947363d6627fa2f30bbe7f31784a7a0772da48fa7611a0295145d233ef586"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0110.public.ves.io.schema.uztna.application.discovered.ves-swagger.json",
+      "sha256": "c9bd640c006b3afa05c47251ca2d29b484b75c460f639ae2d36eec21b42b965c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0111.public.ves.io.schema.discovered_service.ves-swagger.json",
+      "sha256": "5a0539ecc08697a97fb0e393fdb0079f366335b4683d0004da8eccf7ffc99732"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0112.public.ves.io.schema.discovery.ves-swagger.json",
+      "sha256": "3ee4872f5626eb1e6c1d4b830d40a2d4a621bf32a98c90af376dae301b389bf8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0113.public.ves.io.schema.discovery_cloud.ves-swagger.json",
+      "sha256": "c61e542642a0c187693b0208ef1fac8301931726a0235c803c6e40868cc8ca4a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0114.public.ves.io.schema.endpoint.ves-swagger.json",
+      "sha256": "304a1f55fd2a0185c2f875d6693c7e7f19f08d31ffca5a0b99a9cbb5eb5c83fd"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0115.public.ves.io.schema.enhanced_firewall_policy.ves-swagger.json",
+      "sha256": "42d8df7ee6d7db6ef11884d5706e0614d81375d213c9aee6a317528a56145a04"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0116.public.ves.io.schema.views.external_connector.ves-swagger.json",
+      "sha256": "40e8f6a15a7a93b48579a7ebb8522c5cd62ef694bec4873f70f651db4c5fd323"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0117.public.ves.io.schema.dns_zone.rrset.ves-swagger.json",
+      "sha256": "e9c2b8b5c48be0d3a42edfdbbcc2c4d6c1f02fe9f35602d63bb14d10c7f985c0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0118.public.ves.io.schema.dns_zone.subscription.ves-swagger.json",
+      "sha256": "76f79e2aa7af119d57398e89067853f7ffa429301ef066dfaf8eb48a012d5f67"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0119.public.ves.io.schema.malware_protection.subscription.ves-swagger.json",
+      "sha256": "273217b71c3cfc7c4a7bbee02904664e84d541e513156096dec0e0ace5d88fbd"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0120.public.ves.io.schema.secret_management.ves-swagger.json",
+      "sha256": "810a218e1a5b5a8d229783b7401d6f345f7bd61e2508904e854750e08302df80"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0121.public.ves.io.schema.voltshare.ves-swagger.json",
+      "sha256": "cc7f74cdd27c690d0ab044cbe1ebec9292d8dc3fc1f9727885d8888ffceb284c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0122.public.ves.io.schema.maintenance_status.ves-swagger.json",
+      "sha256": "7ff94ce76f77b656858f89f1493298e4153c2119d34d383f4c90e9025a454613"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0123.public.ves.io.schema.fast_acl.ves-swagger.json",
+      "sha256": "aad044cd9c4d13d880bc0964dd231ad6e4a0fb95851dcce515125b0f6f78477c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0124.public.ves.io.schema.fast_acl_rule.ves-swagger.json",
+      "sha256": "f5583af556309a5bd6eb4227ec02a65aee6645ba702c470681b65e1847c8e77e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0125.public.ves.io.schema.filter_set.ves-swagger.json",
+      "sha256": "f7cb46a76db351bf0d35be855a35a863097e6f97c61d98286c2063c465dee450"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0126.public.ves.io.schema.fleet.ves-swagger.json",
+      "sha256": "b1194d50c1ff80b30ce57a2fb94f8d893f6b36c311fb613e8154d9bb35bef11f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0127.public.ves.io.schema.flow_anomaly.ves-swagger.json",
+      "sha256": "fb9fb18d8a241f57235e788131b29e7e8484f1f6b2c91855a592d01f8b51047e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0128.public.ves.io.schema.operate.flow.ves-swagger.json",
+      "sha256": "70d8bba859669d517f2759222325e52053815a2d1cc1a19db72d5bb568a9c70e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0129.public.ves.io.schema.flow.ves-swagger.json",
+      "sha256": "08ea1c6e1aa5b6c0756949f7c1e61e4e8054b3f5c8c24d19bdd06c9cc64a6724"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0130.public.ves.io.schema.forwarding_class.ves-swagger.json",
+      "sha256": "3f7ae95e8dd8893cf2838108b3609939412428d1eb74b5f41438efb04ec7f5c7"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0131.public.ves.io.schema.data_privacy.geo_config.ves-swagger.json",
+      "sha256": "ed2183fc3032f4cdca1aaf0b6dfdbf7f1d18815254e15d342511e63967bb8256"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0132.public.ves.io.schema.geo_location_set.ves-swagger.json",
+      "sha256": "0715e276377752eef113b32ac60ac9a73c914c204b64d97955d1ecfa116750ce"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0133.public.ves.io.schema.gia.ves-swagger.json",
+      "sha256": "b96774f2d211697c472d76df441f05b3924d32eb81e0061adbd91fa739361f2b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0134.public.ves.io.schema.global_log_receiver.ves-swagger.json",
+      "sha256": "9caccc5c4b81e66a83eb5269147720cd8a2ad93df4e5ffd88226f822c5db5dbb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0135.public.ves.io.schema.observability.synthetic_monitor.v1_http_monitor.ves-swagger.json",
+      "sha256": "0e57b230abc71bd1a744bebdbb72805d13542b46991091700510240c49420f90"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0136.public.ves.io.schema.healthcheck.ves-swagger.json",
+      "sha256": "2e3e340a6103eccca2e64e1cdbd0fc4e417d5f819be147fa898ef65f5094487a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0137.public.ves.io.schema.views.ike_phase1_profile.ves-swagger.json",
+      "sha256": "a72d9a83ac5782d987c6c4500e18e2b45590a337a82b9c8c456251cd4fec07bf"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0138.public.ves.io.schema.ike1.ves-swagger.json",
+      "sha256": "72ffcf18c5c9389e4803b8e74e186ad0dd8b2d76e90f47114ad49ba69a021352"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0139.public.ves.io.schema.views.ike_phase2_profile.ves-swagger.json",
+      "sha256": "21ce34d2aee63f0013197d562c371c212ee07672d05a04e163b34eb1c2f341a4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0140.public.ves.io.schema.ike2.ves-swagger.json",
+      "sha256": "42b0bce3ed475a359adb62a6be943e37398bcbc1a36c3c01935c346dd031442c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0141.public.ves.io.schema.ip_prefix_set.ves-swagger.json",
+      "sha256": "007e2b50a49b43204b79204db3fbd97f491f3fbda29a42bac203959d416586b3"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0142.public.ves.io.schema.implicit_label.ves-swagger.json",
+      "sha256": "292f1df0aecc439288130261948a8f3b648d37385b192dae884eb98016453955"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0143.public.ves.io.schema.infraprotect.ves-swagger.json",
+      "sha256": "fe65e904bf409baad7553a1f28b74a413e43ac3a735319ef82c2f5042f204945"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0144.public.ves.io.schema.infraprotect_asn.ves-swagger.json",
+      "sha256": "048f7dc544cf4df7cafeed939e166ed92d473d62bbb66bb671594ce4b9be9309"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0145.public.ves.io.schema.infraprotect_asn_prefix.ves-swagger.json",
+      "sha256": "14f805b809fcf6e81438399110d488208df4ec780ba3dbe35a78bdf828ce6df7"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0146.public.ves.io.schema.infraprotect_deny_list_rule.ves-swagger.json",
+      "sha256": "dd3dec1475378471610ddd9fa45b8d1c33494b3ed6b5b58da9a1b398b89ca1ea"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0147.public.ves.io.schema.infraprotect_firewall_rule.ves-swagger.json",
+      "sha256": "ac72e20e5c46f85e048a9e3742c9334e55df3bf813d9ab6083d325d2fc4e95e8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0148.public.ves.io.schema.infraprotect_firewall_rule_group.ves-swagger.json",
+      "sha256": "44717a11fec66dcaf2ed121329fbf5152d6021604397a5a25e7862fc03a9b760"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0149.public.ves.io.schema.infraprotect_firewall_ruleset.ves-swagger.json",
+      "sha256": "1be6b49404583596817b7290f60433cd06ad2cd10ad157192d9d2e9b53535204"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0150.public.ves.io.schema.infraprotect_information.ves-swagger.json",
+      "sha256": "22f131621d9e927d03dc5eaa526b7efe561b49a4f9286a3963129d5f8a0336bd"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0151.public.ves.io.schema.infraprotect_internet_prefix_advertisement.ves-swagger.json",
+      "sha256": "fdf4638029863a993f8c43fc6fa67842743abefb8fc6a42b35399544a21e136a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0152.public.ves.io.schema.infraprotect_packet_capture.ves-swagger.json",
+      "sha256": "404c381f1f1eddbea81a39b614c166ed96fd0e2262072aec04c65c70b7bcbe7b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0153.public.ves.io.schema.k8s_cluster.ves-swagger.json",
+      "sha256": "81d941208e67eb61ded494d0361cf47647a0d25ee1485f663bcfb8e03833b8a4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0154.public.ves.io.schema.k8s_cluster_role.ves-swagger.json",
+      "sha256": "dbe1eb54f14871c04c9f06d31dd908b8d829740e167a86836636b5b7c5930729"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0155.public.ves.io.schema.k8s_cluster_role_binding.ves-swagger.json",
+      "sha256": "3403f01dc918f56114b3e9ed8abda4f08cba7058b8779d175ca67326d0317b9d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0156.public.ves.io.schema.k8s_pod_security_admission.ves-swagger.json",
+      "sha256": "30f307a9bf7530931cf6052e23e695fb1d98f984f968b1de69d2a215aecba204"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0157.public.ves.io.schema.k8s_pod_security_policy.ves-swagger.json",
+      "sha256": "aa10b7276afa397eba182acbc2cc133af3135a77b2ea9f54d9746a18091c937a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0158.public.ves.io.schema.known_label.ves-swagger.json",
+      "sha256": "b979abbf21065681eae7d9bd2a5196a37206a87421458ea35c766d72b0407dab"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0159.public.ves.io.schema.known_label_key.ves-swagger.json",
+      "sha256": "c9cb04edcdcd134df475e3a4401e2aaf7b6f0f1a02b8aef94b0802b469a0991f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0160.public.ves.io.schema.data_privacy.lma_region.ves-swagger.json",
+      "sha256": "74acccebd63ecbc1f5d662ba3840f8ba139f3453bfd5cda0b05dbf9e0c6000fe"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0161.public.ves.io.schema.operate.lte.ves-swagger.json",
+      "sha256": "e0922002ddad76eaffd2d9e496a5279e89f86766f0f5994b01011eef7afa3a5b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0162.public.ves.io.schema.log_receiver.ves-swagger.json",
+      "sha256": "030468ac67a68748c962d3bb4e64ff3581d48420d7f42c212de9d6cbad0739a2"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0163.public.ves.io.schema.log.ves-swagger.json",
+      "sha256": "15873e5d1c164f50924f249b52c6e3354d7212d8990a012f68d1faedee113ce4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0164.public.ves.io.schema.malicious_user_mitigation.ves-swagger.json",
+      "sha256": "b2701eef6ae407661027f53ceb9027feb05614653670bb5eed47161d8e2833f8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0165.public.ves.io.schema.access.access_active_sessions.ves-swagger.json",
+      "sha256": "8caacadd3a1e205deac43132f5d466067285baf744087abe4bc7eea3cef09056"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0166.public.ves.io.schema.tenant_management.managed_tenant.ves-swagger.json",
+      "sha256": "e9d46965d5eba33ee4804ac4e0edb777c2a3bd8ae9e731a306deb8dd003c923f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0167.public.ves.io.schema.shape.mobile_app_shield.subscription.ves-swagger.json",
+      "sha256": "31bb3242b05dcdfb0bb537503f38493528aa34e6192f521464b8cb95e75db7c2"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0168.public.ves.io.schema.shape.mobile_integrator.subscription.ves-swagger.json",
+      "sha256": "1855dcbffa76dbec4a3c07f8042132d9d7966e5f69efcf0ddfe045ec57f99c3e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0169.public.ves.io.schema.shape.bot_defense.mobile_sdk.ves-swagger.json",
+      "sha256": "d4d46743d52bb7961810aefcff531655be692991b7432081ea613204128fbc93"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0170.public.ves.io.schema.shape.bot_defense.mobile_base_config.ves-swagger.json",
+      "sha256": "94c6f7d55b2c2844dacdac2f7de6f95a6785d3f86966854b9d463d6cd66960c5"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0171.public.ves.io.schema.module_management.ves-swagger.json",
+      "sha256": "f144fd7f096a1f9e7e190a33d49c5014e255170dc35b89383b41d7717352dd91"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0172.public.ves.io.schema.nat_policy.ves-swagger.json",
+      "sha256": "7fdbae2fe01a91eff678e68f0c182dcd92c25296275b8990c3f1ddac0ddd01b9"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0173.public.ves.io.schema.nfv_service.ves-swagger.json",
+      "sha256": "68841daf5233cdc3df4d7b324838843112444cc34ec4b72130a4fb8e3f9db8ce"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0174.public.ves.io.schema.nginx.one.nginx_csg.ves-swagger.json",
+      "sha256": "d281fd2005266a67695291010e125f030aebafe062b2a6b5f2994ddd9caf5ee0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0175.public.ves.io.schema.nginx.one.nginx_instance.ves-swagger.json",
+      "sha256": "02c542e19b2923611f4d2888743bd8b89a138cdeb4103f9063943206784f171f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0176.public.ves.io.schema.nginx.one.nginx_server.ves-swagger.json",
+      "sha256": "6d0bea10680120298c0cb55cfdb7343026a0318372a5a1b4a021ecddbff5605b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0177.public.ves.io.schema.nginx.one.subscription.ves-swagger.json",
+      "sha256": "9ed18abb4c737d90f12236067f5cb64a3be1a53497baf493828f86f86242d8ec"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0178.public.ves.io.schema.nginx.one.nginx_service_discovery.ves-swagger.json",
+      "sha256": "e06997bdf1dda82eec0e7447c5930d76f8ec40196ff50116782546de66b947eb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0179.public.ves.io.schema.namespace.ves-swagger.json",
+      "sha256": "eafda1716db0062330d175fa88094c8e1bb4bb6e844985089224e6f87a152747"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0180.public.ves.io.schema.namespace_role.ves-swagger.json",
+      "sha256": "e7c15889ad1a8c1e32c3e184fb94a85b57077911f7e875b2bcabc175ebc328e4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0181.public.ves.io.schema.pbac.navigation_tile.ves-swagger.json",
+      "sha256": "3f30a624b47bc52cddde2f423cc6f74e06a4a9aa7cce3b8a154155d4f8e845ac"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0182.public.ves.io.schema.network_connector.ves-swagger.json",
+      "sha256": "039140ded8dec55edc6455e96c0413bb4bcec2d7d85f71b7998c33fd3206bc35"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0183.public.ves.io.schema.network_firewall.ves-swagger.json",
+      "sha256": "8f472d729ab291ec33f1b2b9da6e79d5f85ba55f0c0874100a30b048eba774a7"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0184.public.ves.io.schema.network_interface.ves-swagger.json",
+      "sha256": "05eb7532463f38b30f4ea72ad7099db80d29ba145dc012f99ef288a136dcb7e6"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0185.public.ves.io.schema.network_policy.ves-swagger.json",
+      "sha256": "2a03171a5bdff200783b8a26ca26efb4ff7d9308d96ca4d0bb1d5b2b2b7e02be"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0186.public.ves.io.schema.network_policy_rule.ves-swagger.json",
+      "sha256": "997fee39a948f4c0bfd1fbf4cf4637ccef4a40a3163ab539641d0dd2a5546fa5"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0187.public.ves.io.schema.network_policy_set.ves-swagger.json",
+      "sha256": "2bf064464406b3a5b2c729f6dd2247ef02e9bfbd4c42214d07dceb9ec381bdd9"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0188.public.ves.io.schema.observability.subscription.ves-swagger.json",
+      "sha256": "c18984f8d0f315cca3ff741f2e7eb671bb0ebeb20dc10730dc21a9ed6ae349af"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0189.public.ves.io.schema.marketplace.aws_account.ves-swagger.json",
+      "sha256": "b307dfcbd3c9e5067fc8dba9f6df16a22623377fa70d3df445379d74f7751d15"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0190.public.ves.io.schema.views.origin_pool.ves-swagger.json",
+      "sha256": "a1c691bb4901db3da62735825153774fc815ecb2394add42b59c8ed60b3e957b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0191.public.ves.io.schema.operate.ping.ves-swagger.json",
+      "sha256": "5a771350cfbfa731287d444f4e9d72cec04fe251b3e826e1813a2783e06301fb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0192.public.ves.io.schema.pbac.plan.ves-swagger.json",
+      "sha256": "4580b4e8a580990a15d08921f9f8d3ad786a48b42c4af25cf00d13effa287c77"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0193.public.ves.io.schema.billing.plan_transition.ves-swagger.json",
+      "sha256": "384a96966416d0d900027eaaef4b44b9efe3bdebb58eb999c66ee992e0353604"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0194.public.ves.io.schema.policer.ves-swagger.json",
+      "sha256": "cf5b0e7768a18cc0f7e37a8a02fc0a270f76479951afba4ae3ade6a73ebab968"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0195.public.ves.io.schema.views.policy_based_routing.ves-swagger.json",
+      "sha256": "57b1a93d2142c4e5483597c62e9d445f1388921aa80ff3dfef0b53dbfca6c213"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0196.public.ves.io.schema.shape.bot_defense.protected_application.ves-swagger.json",
+      "sha256": "17c683edb2dc2d9051e37848a5e10b9f2aa103b1f9a1bd0b0bd10bbf26bbb5c8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0197.public.ves.io.schema.protocol_policer.ves-swagger.json",
+      "sha256": "3c3481aced6d95ea327df2c9bffd91963b646c887a91c0a9764f752d7cadd53d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0198.public.ves.io.schema.views.proxy.ves-swagger.json",
+      "sha256": "fe2e464f380a2be32f29e007b4ecd8ad220e3e4eec387e9aa7bfd61a35166523"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0199.public.ves.io.schema.public_ip.ves-swagger.json",
+      "sha256": "4ba5ed8037c00c666c9d626900cdb0ebc0d95da4202b83dea32209c973ecad68"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0200.public.ves.io.schema.quota.ves-swagger.json",
+      "sha256": "02448f5d6a83460122906bd3a6e34f4d7c8162778fedd6d53d72ba7dae2e6b17"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0201.public.ves.io.schema.rbac_policy.ves-swagger.json",
+      "sha256": "dd2d82689ec02bd3a36b87ab3834b717119129fd67f7c3c618a3ffe9308888e5"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0202.public.ves.io.schema.rtip.ves-swagger.json",
+      "sha256": "b447a99c93ff1feedae8d28508685a521417ccee4a1a99880bb2b6398da54d8c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0203.public.ves.io.schema.rate_limiter.ves-swagger.json",
+      "sha256": "c3496411ce8f10f62d848c727321b172dafe5b6567e8873dc03237075475471e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0204.public.ves.io.schema.views.rate_limiter_policy.ves-swagger.json",
+      "sha256": "535c8993406fb20e2f418b0c9a39dd9a61ed02683f440d0e9a7461fbad0a1ce0"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0205.public.ves.io.schema.registration.ves-swagger.json",
+      "sha256": "b8a5172b567be7ca9a6307dabef398def8a99152758f5f50d51e6aefb8b69962"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0206.public.ves.io.schema.report.ves-swagger.json",
+      "sha256": "d2027bac8a9ffcca8779fd7c38465f43726ac5627f3e4a7994807a0eb0eb7a57"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0207.public.ves.io.schema.report_config.ves-swagger.json",
+      "sha256": "97c3147b744bd3308e76964a9429c2232112cf07fab44aab0d5094951f611eeb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0208.public.ves.io.schema.role.ves-swagger.json",
+      "sha256": "b28f26dbb282e2b871bb212ec975bd2075bc324431e8c38524ac16f31e6901df"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0209.public.ves.io.schema.trusted_ca_list.ves-swagger.json",
+      "sha256": "c7b4627e2ddbc22610a51640bb4fc7b552e9de69ccc8985f81ffda6dd5d491c7"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0210.public.ves.io.schema.route.ves-swagger.json",
+      "sha256": "9cb3244ae5e4b2d2352706a832a3383723deb8bd9f48f0907665db4ddfcfa88e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0211.public.ves.io.schema.operate.route.ves-swagger.json",
+      "sha256": "24d5e7a24be9cdb1970e9f33bbfbcbc1e2556ec5db424e6e742fa5f1db147844"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0212.public.ves.io.schema.srv6_network_slice.ves-swagger.json",
+      "sha256": "61ad64171e8a84631c380802673f4f1571393905442591b13b3a94e064f95cce"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0213.public.ves.io.schema.oidc_provider.ves-swagger.json",
+      "sha256": "f04e97bd2bec2f08ce135d4ef642ecc5736c6531e68b3c6438426f76a7aee5d4"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0214.public.ves.io.schema.secret_management_access.ves-swagger.json",
+      "sha256": "5fc8825811da962512adfbd1f173906e0200227c2bf7c4461c2bcd4235e14885"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0215.public.ves.io.schema.secret_policy.ves-swagger.json",
+      "sha256": "2b3c9a0d8d4e14d070fd80dfe0a72a4596d62fc147cf8b8141ff85f9cabf9cda"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0216.public.ves.io.schema.secret_policy_rule.ves-swagger.json",
+      "sha256": "c9611614f547c2e0efe9338c02744fc64923d6d05d655f80c230ad894a71ec9f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0217.public.ves.io.schema.segment.ves-swagger.json",
+      "sha256": "8476a73b9d507eb874c11fdc3ec264cf2fcfa14e73ed6b1b43cb7ed69a2ed938"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0218.public.ves.io.schema.segment_connection.ves-swagger.json",
+      "sha256": "0c53e487d31625036a89000021361081239b2498e516def4a807d149205d5e26"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0219.public.ves.io.schema.sensitive_data_policy.ves-swagger.json",
+      "sha256": "fcb0ba23d90e38acf76f0550757e7cd1b89d881f8e281afcfe6040ab3f3ded1d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0220.public.ves.io.schema.graph.service.ves-swagger.json",
+      "sha256": "ee4a6427c204e3ed9313f0b86674727198364c84a1cbd978402b5952b6b97b9b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0221.public.ves.io.schema.service_policy.ves-swagger.json",
+      "sha256": "b03376cb54a01185d8d5769f265008284b6db8dbaf2d410e75c8417540566efb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0222.public.ves.io.schema.service_policy_rule.ves-swagger.json",
+      "sha256": "b488b467e2be9ea96b84464b08b45710a95f28fe0903bc3a8ddbe764b843b647"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0223.public.ves.io.schema.service_policy_set.ves-swagger.json",
+      "sha256": "468b173c67c0b7709f5ac9672c66a4caaa4a3ac96155a9b57e4e04c3fa49ef6d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0224.public.ves.io.schema.shape_bot_defense_instance.ves-swagger.json",
+      "sha256": "cca80fa2df34f4e27f507a7933d0839499bf9875db446e8858c301dedf764495"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0225.public.ves.io.schema.shape.bot_defense.reporting.ves-swagger.json",
+      "sha256": "24473efaa5d71f9f7fdb8e84f5686be0ffa0329b6982f401833184783f5da877"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0226.public.ves.io.schema.shape.bot_defense.subscription.ves-swagger.json",
+      "sha256": "fe651d73019e4c2233c21d19f354baf7cd769058827fb71a339337a575570b35"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0227.public.ves.io.schema.signup.ves-swagger.json",
+      "sha256": "99258ec6350748fc0ed6f127b675d539197dbae5e87b494d52add78bb16a8379"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0228.public.ves.io.schema.site.ves-swagger.json",
+      "sha256": "e8d33d151d97cc795bd74433b16fae7f140c210d52fb863559d8c81799451adb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0229.public.ves.io.schema.graph.site.ves-swagger.json",
+      "sha256": "fc4f006f02ae9cedb70b565be6de851f92187dc6a36bc2bbf90c2aeff996541f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0230.public.ves.io.schema.site_mesh_group.ves-swagger.json",
+      "sha256": "0d3e01b9190784f5a6c30d9b8729aa4f53d3fab2c1fef03b5e359e324e3f457e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0231.public.ves.io.schema.site_signatures.ves-swagger.json",
+      "sha256": "c4a9864a59f638f480db665e2b39ea425b6a582de9b411f442927f7ff982c13f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0232.public.ves.io.schema.status_at_site.ves-swagger.json",
+      "sha256": "d5c89bbe57e952d430c98e292166841d21b11be0b6a46ae4956e279255918e7d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0233.public.ves.io.schema.stored_object.ves-swagger.json",
+      "sha256": "bd4cbba4138468feee358c76dec81c89ef5c45edbdef0c49664cf5f5d3b2d3b3"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0234.public.ves.io.schema.subnet.ves-swagger.json",
+      "sha256": "6bf32ef36804eacd49ee81cccdf8e49728ca7f01aa607272f0e02a45d4def051"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0235.public.ves.io.schema.subscription.ves-swagger.json",
+      "sha256": "e606138d097d1792989bec4c25fd210f254525a9737dc971a629a65ccfd7eaca"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0236.public.ves.io.schema.observability.synthetic_monitor.ves-swagger.json",
+      "sha256": "63c365d948e9daa76995aead3c1a2f138463939a109022e79d2024078803e923"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0237.public.ves.io.schema.scim.ves-swagger.json",
+      "sha256": "de068816e169adcce9370811f6ae6cd64ff2ddd5ed0b6751bacf8a9ffc7e7117"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0238.public.ves.io.schema.tmm_session.ves-swagger.json",
+      "sha256": "305ea9b1139c4104a04daa93364644b57e8f10e91d6b15ea85ab9df4b183c933"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0239.public.ves.io.schema.tpm_api_key.ves-swagger.json",
+      "sha256": "28137cb24fd10265a5be6ccff5b4a51e0f6c080819718652c66e1640ccdbf216"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0240.public.ves.io.schema.tpm_category.ves-swagger.json",
+      "sha256": "ec775173b1f95b681ed999121deb2b596126cce9fb90dc23b7e1bbe91ad599e7"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0241.public.ves.io.schema.tpm_manager.ves-swagger.json",
+      "sha256": "29ec09cd983da48b4d933a4091ce09922b0ffc9d319d90ae875256871bc11781"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0242.public.ves.io.schema.tpm_provision.ves-swagger.json",
+      "sha256": "438da309edabfa463d9fda6fb63cd84b34adbf1f920a14ad56082007d2ddd848"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0243.public.ves.io.schema.operate.tcpdump.ves-swagger.json",
+      "sha256": "ae3edfb645b2e533b58135a840b29d1330c8ac23bb35f7355fb61b260e3fe815"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0244.public.ves.io.schema.tenant.ves-swagger.json",
+      "sha256": "39a8d738933088460e3ce714d2c094c2a2bd061f357b299772db67522973ab29"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0245.public.ves.io.schema.views.tenant_configuration.ves-swagger.json",
+      "sha256": "26dd47af66b98b64a45fe24aa9e5d257d061a3509ff6653b8ef3fbcda439f4c9"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0246.public.ves.io.schema.tenant_management.ves-swagger.json",
+      "sha256": "a17283d02f80d6f093fef45e7f975399f09c8818c996e582b79cc24761f47a31"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0247.public.ves.io.schema.tenant_management.tenant_profile.ves-swagger.json",
+      "sha256": "8c031378e9951eff57aa272652b655797a64b6d2c1db09bf9a6c88cfbe4ec6dc"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0248.public.ves.io.schema.views.third_party_application.ves-swagger.json",
+      "sha256": "8f19cf9190b76c5e2a2bf6f25f12ea7cd71fb508ed741b1a9dd0c9b4b898423d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0249.public.ves.io.schema.ticket_management.ticket_tracking_system.ves-swagger.json",
+      "sha256": "2afc61dcee84d89ba956a3e3d5e844a78e23d0eb79e3de8baec0d31a056a9b96"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0250.public.ves.io.schema.token.ves-swagger.json",
+      "sha256": "d12445e1bfa1d4db6e783cfb2a514bd5bd1db6b43c690d6ecd63a1df64f09191"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0251.public.ves.io.schema.topology.ves-swagger.json",
+      "sha256": "72ae7a6c8006ff7d894a5c18fbec9cccd7251a304e403ac040838f9c5f611c36"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0252.public.ves.io.schema.operate.traceroute.ves-swagger.json",
+      "sha256": "13882e3e55308504f8daaabc5b40909cc10cceaa3be1e67035554dcb3a6d199c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0253.public.ves.io.schema.tunnel.ves-swagger.json",
+      "sha256": "b4427c6629fbdc70de8a2de919d1e78e584b81443cfcf72b9c89355d0661a76a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0254.public.ves.io.schema.infraprotect_tunnel.ves-swagger.json",
+      "sha256": "619b35a5d4a148a5ae788a52da98b6bdc44db09ea515652e49476ce989e1fed2"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0255.public.ves.io.schema.operate.usb.ves-swagger.json",
+      "sha256": "89c44344df227518cc3a022b54103b5e39c4c3c19a66f269cd4f84a112e89d09"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0256.public.ves.io.schema.usb_policy.ves-swagger.json",
+      "sha256": "e8ed7b66b265e40782fee9df2e3b2254113fdb2e226547d18822d12301852ee8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0257.public.ves.io.schema.ui.ui_schemas.ves-swagger.json",
+      "sha256": "f59b48ed1ce6a80f8700b379d6c285decec787bb289fd1f9132621ed8e62762f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0258.public.ves.io.schema.ui.static_component.ves-swagger.json",
+      "sha256": "6cd24ac6fad5a849c1c1f6fb2d7eb21672185e8c9ec741255072db6f6ca81181"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0259.public.ves.io.schema.virtual_appliance.ves-swagger.json",
+      "sha256": "26c38bb5d986bf9b3b73d68eb2f90775fe873a05a6669b940da5ea0aa20b680f"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0260.public.ves.io.schema.upgrade_status.ves-swagger.json",
+      "sha256": "264b1e1933e3dc7203e0db3bcb8ea7861dfd18a434f9eb93123f44f814c2c200"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0261.public.ves.io.schema.usage.plan.ves-swagger.json",
+      "sha256": "103e70433de68106952c67c47b881c96e6f55683b2d5a4d64d23437630d8eeca"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0262.public.ves.io.schema.user.ves-swagger.json",
+      "sha256": "b57875258c279e5854d44aae173c3663149f38eae24494cb5c598d8eb3290bfc"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0263.public.ves.io.schema.user_group.ves-swagger.json",
+      "sha256": "9bf03423fcce522eaf2c45f8a24dc2a5d0f5a530414b8900cf99562ac5290837"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0264.public.ves.io.schema.user_identification.ves-swagger.json",
+      "sha256": "a544cf1f72043c5556e8fbc798294cda5c8bd21cbcb621443bc21fd8f0a61b9c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0265.public.ves.io.schema.user.setting.ves-swagger.json",
+      "sha256": "4e5efa0b2c065a31b34861d089cd8579756e84b76b017bf03e831908404e051a"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0266.public.ves.io.schema.views.view_internal.ves-swagger.json",
+      "sha256": "134a8fd8d63e42c9af0b25f14ea15da00f0f4837f7c9807f7a1e624ed9d301b5"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0267.public.ves.io.schema.views.terraform_parameters.ves-swagger.json",
+      "sha256": "b79a9daeee79578569e66986a6526cd9b72cf7e4aad0604abd960f63221064f9"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0268.public.ves.io.schema.virtual_host.ves-swagger.json",
+      "sha256": "1d864e2d6e9dc8e7fb40d7ed93156781d73edf1062d57d9216707bceef153cd1"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0269.public.ves.io.schema.virtual_k8s.ves-swagger.json",
+      "sha256": "fde7643614ce926e642912f6711dab0e9b0be0bfc50a0c794e0a835a557d806c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0270.public.ves.io.schema.virtual_network.ves-swagger.json",
+      "sha256": "c38984f7e8c32ed14b724c9f02817474916ccc21ade5c1b8048056468b80d243"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0271.public.ves.io.schema.views.virtual_server.ves-swagger.json",
+      "sha256": "d137b87104a0cda64bfe31276966d44c8f3b6f07a8f9974dd01b4229c33f80d5"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0272.public.ves.io.schema.virtual_site.ves-swagger.json",
+      "sha256": "e05a6113d35432b40b3fd352ca10aa07289ba0dc391361d931e7c413e26af74e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0273.public.ves.io.schema.voltshare_admin_policy.ves-swagger.json",
+      "sha256": "a8d47e941bc1f06802ac5d5e98d2de0bea2b33f76bc4309b2b9a287f6efba72c"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0274.public.ves.io.schema.waf.ves-swagger.json",
+      "sha256": "71c2639b0d04a5502b61804684d9f1106fc5a0f76a895f529b201c768a0765b8"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0275.public.ves.io.schema.waf_exclusion_policy.ves-swagger.json",
+      "sha256": "ed76e134dc0f64d5a2d07c8ce90b0d78070ff7b13045b39d85fbdbc024ca0ca3"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0276.public.ves.io.schema.waf_signatures_changelog.ves-swagger.json",
+      "sha256": "c91766456ab141ce3ab00a5d5bd357408f8307ee39ee302717727164a01969cb"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0277.public.ves.io.schema.operate.wifi.ves-swagger.json",
+      "sha256": "cf74ecf74da25995c44fd0976d554204700dde62630553d8cdb9269fb2aa9d6b"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0278.public.ves.io.schema.was.user_token.ves-swagger.json",
+      "sha256": "97010790df61adf9012b8c74fc51612fef7bab618eed63b824617f9869132d5e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0279.public.ves.io.schema.views.workload.ves-swagger.json",
+      "sha256": "e4a1dff582f076ea30232efe315ee9440d312743dc4152b3f491d46c6b00642e"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0280.public.ves.io.schema.workload_flavor.ves-swagger.json",
+      "sha256": "e6f8ee348fb7f72b99e6e95080625af256d2f0894f32200f6d8bc47d2556236d"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0281.public.ves.io.schema.marketplace.xc_saas.ves-swagger.json",
+      "sha256": "da6694f50736f908963f566113f377f177160b52cfdcce4dbe36e5d7a637ed55"
+    },
+    {
+      "path": "corrected/release/specs/docs-cloud-f5-com.0282.public.ves.io.schema.graph.l3l4.ves-swagger.json",
+      "sha256": "2a086e11d9283a6bbc156c18a26b45b6eebc8200e21c75810db60f5ce792fa88"
+    },
+    {
+      "path": "enriched/domains/admin_console_and_ui.json",
+      "sha256": "1d0f1b6afea40ed4036427cc4a06a1bb3c1a1a83fb54ffd84b0547180e99e947"
+    },
+    {
+      "path": "enriched/domains/ai_services.json",
+      "sha256": "bca6591eb2ca28a05e2ba87dcc4cb0c44703ebfd28a4b99f6aa6b7d06fa453ff"
+    },
+    {
+      "path": "enriched/domains/api.json",
+      "sha256": "63548c7f73bff9f873c574ecf119e4214d2adc6abdbc701a636837b8d8515b9f"
+    },
+    {
+      "path": "enriched/domains/authentication.json",
+      "sha256": "80015519248f8e39c05635ca7e163165a745c59ea815a769041d3784f0ae4d33"
+    },
+    {
+      "path": "enriched/domains/bigip.json",
+      "sha256": "db62da818cccf940e3b2aa8867a017a3b34114fc98bb6bc9045a94c7eb90a68d"
+    },
+    {
+      "path": "enriched/domains/billing_and_usage.json",
+      "sha256": "c771247ee8f59febf93cc0b3ac5ba52b4cf1699cc931b048be65edbe81d631ef"
+    },
+    {
+      "path": "enriched/domains/blindfold.json",
+      "sha256": "73d936e2d1539918d6e713f1e8be00c688eec7196d57fee0fcd330dffa552a7a"
+    },
+    {
+      "path": "enriched/domains/bot_and_threat_defense.json",
+      "sha256": "b68f003feced00f904be693796ca6c0bb1dd6232fbde5c4166f7f54d8ce8e1e3"
+    },
+    {
+      "path": "enriched/domains/cdn.json",
+      "sha256": "bb58166628c5209f4bab896a4653ae023759b2a229ce9260e8ca579c1b5263ca"
+    },
+    {
+      "path": "enriched/domains/ce_management.json",
+      "sha256": "864ec5b6447bc3fcbeef14a5ce93bad87bb2555e1eb924cf16196f0b69fe86d2"
+    },
+    {
+      "path": "enriched/domains/certificates.json",
+      "sha256": "dfbf21eb62bc733766fedbaf8a428054512fb732a84eeb8963ccbdecd652af95"
+    },
+    {
+      "path": "enriched/domains/cloud_infrastructure.json",
+      "sha256": "da145804f324fcf91a8d70a9a483ab15a654b887fa8647723c3f6b001720b2f4"
+    },
+    {
+      "path": "enriched/domains/container_services.json",
+      "sha256": "f33739f9762a15631fba06c77416cf17c4e4a9f44e57fd8c330d3ee60adabfb5"
+    },
+    {
+      "path": "enriched/domains/data_and_privacy_security.json",
+      "sha256": "1acf65b08267c8fa855e5689cf65b3d157d024435b32cfe2e6323b15c8613dee"
+    },
+    {
+      "path": "enriched/domains/data_intelligence.json",
+      "sha256": "9587bd28f5a6698c4ef77933abaffd0cbee466219985ba40add0120765bc397c"
+    },
+    {
+      "path": "enriched/domains/ddos.json",
+      "sha256": "9dc95167c341d0f11225dae5a11c96b3aff6f9e36ce3cedbed7719bda834fc4f"
+    },
+    {
+      "path": "enriched/domains/dns.json",
+      "sha256": "4d423d3fddefc9f1095109e8f9c93abbd6ef683d49002588727875725adc04b7"
+    },
+    {
+      "path": "enriched/domains/managed_kubernetes.json",
+      "sha256": "5f5b75a4cc2e53f2dbf84abcb45963a8ec3aadb6581d71f4148d8d6a631c20b4"
+    },
+    {
+      "path": "enriched/domains/marketplace.json",
+      "sha256": "3d2ea775d34c1aa9b284ecb779186125844018bb966342f6ddc3f9fae36414e6"
+    },
+    {
+      "path": "enriched/domains/network.json",
+      "sha256": "dc1465a8ac2b45579caa663a9cc4d11fc97402ff2ee006bf2e1807c9851ef8ca"
+    },
+    {
+      "path": "enriched/domains/network_security.json",
+      "sha256": "e3c17f8d2eec17d22f1c416bd1a5ed7c60351fb80f580236ffc29f2985db3bcf"
+    },
+    {
+      "path": "enriched/domains/nginx_one.json",
+      "sha256": "3b064010abd1f882be8dde74a7a9cde7459730010b089b258a91fdc89269dd78"
+    },
+    {
+      "path": "enriched/domains/object_storage.json",
+      "sha256": "ab5a9d56a46ff5f5e343918e57a90ebc615dcaf6e4d2ffb22ca838441233bf7c"
+    },
+    {
+      "path": "enriched/domains/observability.json",
+      "sha256": "0f94871b7643d28d6ca544fcd442b4173ac87de8d6c22a0af60b652d48bc55ce"
+    },
+    {
+      "path": "enriched/domains/other.json",
+      "sha256": "2e21d52ffdd62bf633aa9ffa3a3a24f9ba61c9e0a5e6fe776a899a88ad8c9903"
+    },
+    {
+      "path": "enriched/domains/rate_limiting.json",
+      "sha256": "2a3c2472bf80a7975f1468c115c0eba0d58341760806b0fb5ea3abcd9d41090a"
+    },
+    {
+      "path": "enriched/domains/secops_and_incident_response.json",
+      "sha256": "4e69153f2abffaa9750f98765c1f53f234c2364878e916594695ba1f8396a483"
+    },
+    {
+      "path": "enriched/domains/service_mesh.json",
+      "sha256": "aeb8ae2446369c5df9a2622b455ab9dd503dc1f3ebeffc0a42e44b1864438bed"
+    },
+    {
+      "path": "enriched/domains/shape.json",
+      "sha256": "dd1ae15827cddf10bc35a80d3d52f69773f88f11f536bc8a3c29439d9b85d8b0"
+    },
+    {
+      "path": "enriched/domains/sites.json",
+      "sha256": "3e60a3aca294b06c51686c24edd48f3c5100284caa01e0020b781ca8753b2c41"
+    },
+    {
+      "path": "enriched/domains/statistics.json",
+      "sha256": "c668fe45c98f5e23f73f47a4d2c42089dd442c60bceb75934a271de94771d7b1"
+    },
+    {
+      "path": "enriched/domains/support.json",
+      "sha256": "5ca9ba3936bc31256e1451c8047f83d33d707ab9a49e10b21d6e815697f45ff6"
+    },
+    {
+      "path": "enriched/domains/telemetry_and_insights.json",
+      "sha256": "c2675993a4857528902fab19d3f473c8983258a663629c2b73923ac1e0bdfa35"
+    },
+    {
+      "path": "enriched/domains/tenant_and_identity.json",
+      "sha256": "a2037ca487e73ed60c78f2cfc3f403cbda8cbf8e846bc4764d1634325b40b03d"
+    },
+    {
+      "path": "enriched/domains/threat_campaign.json",
+      "sha256": "a615209c016910e6fd614c27deb0c67405538456dd5bed08e678fcb654557811"
+    },
+    {
+      "path": "enriched/domains/users.json",
+      "sha256": "9aca5e672476a24653e9224d8c5a6692ddfaf86868dec6c4afbfa3158496807e"
+    },
+    {
+      "path": "enriched/domains/virtual.json",
+      "sha256": "20e858315bfa6a6bba0d7dc5f475e4f60c79e6d7145625e29452f5636d833011"
+    },
+    {
+      "path": "enriched/domains/vpm_and_node_management.json",
+      "sha256": "3ca2842796426f03c370f93708753f6a839f239a26ce18fdd3ba537e724607a4"
+    },
+    {
+      "path": "enriched/openapi.json",
+      "sha256": "47f9e2161a4690aa7546a385f2f2f5f6f70581b05cb4ed45528d62297d57bbca"
+    }
+  ]
+}
