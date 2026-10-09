@@ -18,7 +18,7 @@ Use Terraform 1.8 or later and the Azure CLI in your prepared Bash session. For 
 
 1. Sign in to Azure and select the approved demo subscription:
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_AZURE_SUBSCRIPTION_ID">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_AZURE_SUBSCRIPTION_ID" data-xcsh-render="inline">
 
    ```bash
    az login
@@ -29,10 +29,10 @@ Use Terraform 1.8 or later and the Azure CLI in your prepared Bash session. For 
 
 2. Bind Terraform to that subscription:
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_AZURE_SUBSCRIPTION_ID">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_AZURE_SUBSCRIPTION_ID" data-xcsh-render="inline">
 
    ```bash
-   export TF_VAR_subscription_id="$XCSH_AZURE_SUBSCRIPTION_ID"
+   export TF_VAR_subscription_id="<XCSH_AZURE_SUBSCRIPTION_ID>"
    export TF_CLI_CONFIG_FILE=/dev/null
    ```
 
@@ -42,22 +42,22 @@ Use Terraform 1.8 or later and the Azure CLI in your prepared Bash session. For 
 
 Use the form values with the native Terraform environment interface. Keep credentials in `XCSH_API_TOKEN`; tfvars must contain no credentials. For an existing deployment, load its private identity overrides before planning.
 
-<div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_LB_NAME XCSH_DOMAINNAME XCSH_ORIGIN_POOL_NAME XCSH_HC_NAME XCSH_WAF_NAME XCSH_DEPLOYER XCSH_ENVIRONMENT XCSH_OWNER XCSH_PURPOSE XCSH_TIMER_NAME XCSH_AZURE_REGION XCSH_SSH_PUBLIC_KEY_PATH">
+<div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_LB_NAME XCSH_DOMAINNAME XCSH_ORIGIN_POOL_NAME XCSH_HC_NAME XCSH_WAF_NAME XCSH_DEPLOYER XCSH_ENVIRONMENT XCSH_OWNER XCSH_PURPOSE XCSH_TIMER_NAME XCSH_AZURE_REGION XCSH_SSH_PUBLIC_KEY_PATH" data-xcsh-render="inline">
 
 ```bash
-export TF_VAR_namespace="$XCSH_NAMESPACE"
-export TF_VAR_domainname="$XCSH_DOMAINNAME"
-export TF_VAR_lb_name="$XCSH_LB_NAME"
-export TF_VAR_origin_pool_name="$XCSH_ORIGIN_POOL_NAME"
-export TF_VAR_healthcheck_name="$XCSH_HC_NAME"
-export TF_VAR_waf_name="$XCSH_WAF_NAME"
-export TF_VAR_deployer="$XCSH_DEPLOYER"
-export TF_VAR_environment="$XCSH_ENVIRONMENT"
-export TF_VAR_owner="$XCSH_OWNER"
-export TF_VAR_purpose="$XCSH_PURPOSE"
-export TF_VAR_timer_name="$XCSH_TIMER_NAME"
-export TF_VAR_location="$XCSH_AZURE_REGION"
-export TF_VAR_ssh_public_key_path="$XCSH_SSH_PUBLIC_KEY_PATH"
+export TF_VAR_namespace="<XCSH_NAMESPACE>"
+export TF_VAR_domainname="<XCSH_DOMAINNAME>"
+export TF_VAR_lb_name="<XCSH_LB_NAME>"
+export TF_VAR_origin_pool_name="<XCSH_ORIGIN_POOL_NAME>"
+export TF_VAR_healthcheck_name="<XCSH_HC_NAME>"
+export TF_VAR_waf_name="<XCSH_WAF_NAME>"
+export TF_VAR_deployer="<XCSH_DEPLOYER>"
+export TF_VAR_environment="<XCSH_ENVIRONMENT>"
+export TF_VAR_owner="<XCSH_OWNER>"
+export TF_VAR_purpose="<XCSH_PURPOSE>"
+export TF_VAR_timer_name="<XCSH_TIMER_NAME>"
+export TF_VAR_location="<XCSH_AZURE_REGION>"
+export TF_VAR_ssh_public_key_path="<XCSH_SSH_PUBLIC_KEY_PATH>"
 ```
 
 </div>

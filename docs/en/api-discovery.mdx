@@ -13,11 +13,11 @@ API discovery must be enabled (`XCSH_API_DISCOVERY_ENABLED=true`) for these quer
 
 1. Build a fixed-window summary request.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    test "$XCSH_API_DISCOVERY_ENABLED" = true
-   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" \
+   XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg vh "$XCSH_VIRTUAL_HOST" \
      --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" '{
        namespace: $ns, name: $vh,
        apiep_summary_filter: {start_time: $start, end_time: $end}
@@ -28,15 +28,15 @@ API discovery must be enabled (`XCSH_API_DISCOVERY_ENABLED=true`) for these quer
 
 2. Query the returned API-call counters.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    XCSH_API_CALLS_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
      --request POST \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
-     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/calls_by_response_code")"
+     "<XCSH_API_URL>/api/ml/data/namespaces/<XCSH_NAMESPACE>/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/calls_by_response_code")"
    jq -er '{total_calls,
      request_count_per_rsp_code: (.request_count_per_rsp_code | sort_by(.rsp_code_class))
    }' <<<"$XCSH_API_CALLS_JSON"
@@ -74,10 +74,10 @@ Use the same namespace, virtual host, discovery requirement, and fixed two-hour 
 
 1. Build the top-five request-percentage selector and query the endpoint summary.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
-   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" \
+   XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg vh "$XCSH_VIRTUAL_HOST" \
      --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" '{
        namespace: $ns, name: $vh,
        apiep_summary_filter: {start_time: $start, end_time: $end},
@@ -85,10 +85,10 @@ Use the same namespace, virtual host, discovery requirement, and fixed two-hour 
      }')"
    XCSH_API_TOP_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
      --request POST \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
-     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/top_active")"
+     "<XCSH_API_URL>/api/ml/data/namespaces/<XCSH_NAMESPACE>/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/summary/top_active")"
    jq -er '{top_apieps: [.top_apieps[]? | {apiep_url, method, top_by_metric_value}]}
    ' <<<"$XCSH_API_TOP_JSON"
    ```
@@ -136,15 +136,15 @@ This discovery snapshot uses the namespace and telemetry virtual host without a 
 
 1. Query the telemetry virtual host and summarize category counts.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    test "$XCSH_API_DISCOVERY_ENABLED" = true
    test -n "$XCSH_VIRTUAL_HOST"
    curl --silent --show-error --fail-with-body \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Accept: application/json' \
-     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/stats" |
+     "<XCSH_API_URL>/api/ml/data/namespaces/<XCSH_NAMESPACE>/virtual_hosts/${XCSH_VIRTUAL_HOST}/api_endpoints/stats" |
    jq -er '{total_endpoints, inventory, discovered, shadow, pii_detected}'
    ```
 
@@ -176,15 +176,15 @@ Use the exact `XCSH_APP_TYPE` label from the load balancer configuration. If it 
 
 1. Query the app type and summarize its inventory.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    test "$XCSH_API_DISCOVERY_ENABLED" = true
    test -n "$XCSH_APP_TYPE"
    curl --silent --show-error --fail-with-body \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Accept: application/json' \
-     "${XCSH_API_URL}/api/ml/data/namespaces/${XCSH_NAMESPACE}/app_types/${XCSH_APP_TYPE}/api_endpoints" |
+     "<XCSH_API_URL>/api/ml/data/namespaces/<XCSH_NAMESPACE>/app_types/${XCSH_APP_TYPE}/api_endpoints" |
    jq -er '{
      last_update,
      count: (.apiep_list | length),

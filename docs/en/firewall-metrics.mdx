@@ -15,10 +15,10 @@ Query `XCSH_NAMESPACE` over the fixed two-hour `XCSH_START_TIME`–`XCSH_END_TIM
 
 1. Build the firewall request.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
-   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+   XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
      --arg end "$XCSH_END_TIME" '{
        namespace: $ns, start_time: $start, end_time: $end,
        step: "5m", range: "5m",
@@ -32,14 +32,14 @@ Query `XCSH_NAMESPACE` over the fixed two-hour `XCSH_START_TIME`–`XCSH_END_TIM
 
 2. Query the counters.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    curl --silent --show-error --fail-with-body --request POST \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
-     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/app_firewall/metrics" |
+     "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/app_firewall/metrics" |
    jq -er --arg vh "$XCSH_VIRTUAL_HOST" '{
      step,
      metrics: [.data[]? | {

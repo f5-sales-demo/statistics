@@ -15,7 +15,7 @@ Record a baseline with [Load balancer metrics](../service-graph/). This sequence
 
 1. Send the bounded sequence and stop on any status mismatch.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME" data-xcsh-render="inline">
 
    ```bash
    export XCSH_RUN_MARKER="statistics-outcomes-$(date -u +%Y%m%dT%H%M%SZ)"
@@ -34,7 +34,7 @@ Record a baseline with [Load balancer metrics](../service-graph/). This sequence
      XCSH_STATUS="$(curl --silent --show-error --max-time 10 --output /dev/null \
        --write-out '%{http_code}' --get \
        --data-urlencode "statistics_probe=$XCSH_RUN_MARKER-$XCSH_SEQUENCE" \
-       "https://$XCSH_DOMAINNAME$XCSH_PATH")"
+       "https://<XCSH_DOMAINNAME>$XCSH_PATH")"
      printf 'sequence=%s expected=%s status=%s\n' "$XCSH_SEQUENCE" "$XCSH_EXPECTED" "$XCSH_STATUS"
      test "$XCSH_STATUS" = "$XCSH_EXPECTED"
    done
@@ -55,12 +55,12 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 1. Build a virtual-host query capped at 100 records.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    XCSH_LOG_QUERY="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
      '"{vh_name=" + ($vh | tojson) + "}"')"
-   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+   XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
      --arg end "$XCSH_END_TIME" --arg query "$XCSH_LOG_QUERY" '{
        namespace: $ns, start_time: $start, end_time: $end,
        limit: 100, sort: "DESCENDING", query: $query
@@ -71,17 +71,17 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 2. Fetch a page and retain only outcome fields.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    XCSH_LOG_PAGE="$(curl --silent --show-error --fail-with-body --max-time 60 \
      --request POST \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
-     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/access_logs")"
+     "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/access_logs")"
    XCSH_TOTAL_HITS="$(jq -er '.total_hits | tonumber' <<<"$XCSH_LOG_PAGE")"
-   XCSH_LOG_ROWS="$(jq -ec --arg ns "$XCSH_NAMESPACE" --arg vh "$XCSH_VIRTUAL_HOST" '
+   XCSH_LOG_ROWS="$(jq -ec --arg ns "<XCSH_NAMESPACE>" --arg vh "$XCSH_VIRTUAL_HOST" '
      [.logs[]? | (if type == "string" then fromjson else . end)
        | select(.namespace == $ns and .vh_name == $vh)
        | {rsp_code, rsp_code_class, method}]
@@ -168,20 +168,20 @@ Increase that bound deliberately for a larger authorized export.
 
 1. Start a fresh scroll snapshot.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
-   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+   XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
      --arg end "$XCSH_END_TIME" --arg query "$XCSH_LOG_QUERY" '{
        namespace: $ns, start_time: $start, end_time: $end,
        limit: 100, sort: "DESCENDING", scroll: true, query: $query
      }')"
    XCSH_LOG_PAGE="$(curl --silent --show-error --fail-with-body --max-time 60 \
      --request POST \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
-     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/access_logs")"
+     "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/access_logs")"
    XCSH_TOTAL_HITS="$(jq -er '.total_hits | tonumber' <<<"$XCSH_LOG_PAGE")"
    XCSH_LOG_ROWS='[]'
    XCSH_PAGES=0
@@ -191,13 +191,13 @@ Increase that bound deliberately for a larger authorized export.
 
 2. Collect only response codes, classes, and methods from every page.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    while :; do
      XCSH_PAGES="$((XCSH_PAGES + 1))"
      test "$XCSH_PAGES" -le 100
-     XCSH_PAGE_ROWS="$(jq -ec --arg ns "$XCSH_NAMESPACE" \
+     XCSH_PAGE_ROWS="$(jq -ec --arg ns "<XCSH_NAMESPACE>" \
        --arg vh "$XCSH_VIRTUAL_HOST" '
        [.logs[]? | (if type == "string" then fromjson else . end)
          | if .namespace == $ns and .vh_name == $vh
@@ -209,14 +209,14 @@ Increase that bound deliberately for a larger authorized export.
        --argjson page "$XCSH_PAGE_ROWS" '$rows + $page')"
      XCSH_SCROLL_ID="$(jq -r '.scroll_id // empty' <<<"$XCSH_LOG_PAGE")"
      test -n "$XCSH_SCROLL_ID" || break
-     XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg cursor "$XCSH_SCROLL_ID" \
+     XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg cursor "$XCSH_SCROLL_ID" \
        '{namespace: $ns, scroll_id: $cursor}')"
      XCSH_LOG_PAGE="$(curl --silent --show-error --fail-with-body --max-time 60 \
        --request POST \
-       --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+       --header "Authorization: APIToken <XCSH_API_TOKEN>" \
        --header 'Content-Type: application/json' \
        --data-binary "$XCSH_REQUEST" \
-       "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/access_logs/scroll")"
+       "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/access_logs/scroll")"
    done
    test "$(jq -r 'length' <<<"$XCSH_LOG_ROWS")" -eq "$XCSH_TOTAL_HITS"
    XCSH_COUNT_SCOPE=complete_window

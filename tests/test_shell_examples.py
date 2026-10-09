@@ -19,7 +19,7 @@ scenario = os.environ["SCENARIO"]
 request = json.loads(args[args.index("--data-binary") + 1]) if "--data-binary" in args else None
 with open(os.environ["CALLS"], "a") as file:
     file.write(json.dumps({"url": url, "request": request, "args": args}) + "\n")
-ns, vh = "example", "telemetry-example"
+ns, vh = os.environ["XCSH_NAMESPACE"], os.environ["XCSH_VIRTUAL_HOST"]
 def point(value, timestamp=100):
     return {"timestamp": timestamp, "value": value, "trend_value": None}
 def metric(kind):
@@ -99,7 +99,9 @@ sys.stdout.write("\n503" if scenario in ["http", "late_http"] and fail else "\n2
 
 
 class ShellExamples(unittest.TestCase):
-    def run_script(self, script="get-stats.sh", scenario="success", omit=None):
+    def run_script(
+        self, script="get-stats.sh", scenario="success", omit=None, personalized=None
+    ):
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)
             mock = work / "curl"
@@ -121,11 +123,18 @@ class ShellExamples(unittest.TestCase):
                 "XCSH_END_TIME": "7300",
                 "XCSH_START_24H": "1",
             }
+            target = ROOT / "docs/assets/scripts" / script
+            if personalized is not None:
+                target = work / script
+                target.write_text(personalized)
+                env["XCSH_NAMESPACE"] = "wrong-parent-namespace"
+                env["XCSH_LB_NAME"] = "wrong-parent-lb"
+                env["XCSH_API_URL"] = "https://wrong-parent.example.com"
             if omit:
                 env.pop(omit)
             # The executable and script are fixed test-owned paths; no shell is used.
             result = subprocess.run(  # noqa: S603
-                [str(shutil.which("bash")), str(ROOT / "docs/assets/scripts" / script)],
+                [str(shutil.which("bash")), str(target)],
                 env=env,
                 text=True,
                 capture_output=True,
@@ -260,6 +269,57 @@ class ShellExamples(unittest.TestCase):
         result, _ = self.run_script(scenario="cap_complete")
         assert result.returncode == 0, result.stderr
         assert json.loads(result.stdout)["http_access_logs"]["pages"] == 100
+
+    def test_personalized_scripts_with_alternate_settings(self):
+        # Same canonical runtime programs, with settings inserted by the shared renderer.
+        builder = os.environ.get("STATISTICS_BUILDER_SOURCE")
+        if not builder:
+            self.skipTest(
+                "set STATISTICS_BUILDER_SOURCE for shared-renderer acceptance"
+            )
+        for script in ["simple-stats.sh", "get-stats.sh"]:
+            source = ROOT / "docs/assets/scripts" / script
+            renderer = Path(builder) / "src/lib/personalization.mjs"
+            values = {
+                "XCSH_API_URL": "https://alternate.example.com",
+                "XCSH_API_TOKEN": "DOWNLOAD_SECRET_SENTINEL",
+                "XCSH_NAMESPACE": 'Reader O\'Brien "quote" \\ $HOME $(id)',
+                "XCSH_LB_NAME": "alternate-lb",
+            }
+            rendered = subprocess.run(  # noqa: S603
+                [
+                    str(shutil.which("node")),
+                    "--input-type=module",
+                    "-e",
+                    "import fs from 'node:fs'; const {renderRunnable}=await import(process.argv[1]); "
+                    "const values=JSON.parse(process.argv[3]); "
+                    "process.stdout.write(renderRunnable(fs.readFileSync(process.argv[2],'utf8'),"
+                    "Object.keys(values),values,{mode:'script'}));",
+                    renderer.as_uri(),
+                    str(source),
+                    json.dumps(values),
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout
+            assert "DOWNLOAD_SECRET_SENTINEL" not in rendered
+            assert "export XCSH_API_TOKEN=" not in rendered
+            result, calls = self.run_script(script, personalized=rendered)
+            assert result.returncode == 0, result.stderr
+            assert calls
+            assert all(c["url"].startswith(values["XCSH_API_URL"] + "/") for c in calls)
+            assert calls[0]["request"]["namespace"] == values["XCSH_NAMESPACE"]
+            if script == "get-stats.sh":
+                report = json.loads(result.stdout)
+                assert report["context"]["namespace"] == values["XCSH_NAMESPACE"]
+                assert report["context"]["load_balancer"] == values["XCSH_LB_NAME"]
+                assert report["origin_performance"]["destination"] == "S:203.0.113.10"
+            missing, calls = self.run_script(
+                script, omit="XCSH_API_TOKEN", personalized=rendered
+            )
+            self.assert_failure(missing)
+            assert calls == []
 
 
 if __name__ == "__main__":

@@ -24,13 +24,13 @@ The configuration and telemetry APIs use different identifiers for the same load
 
 1. Fetch the load balancer configuration.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME" data-xcsh-render="inline">
 
    ```bash
    XCSH_LB_JSON="$(curl --silent --show-error --fail-with-body \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Accept: application/json' \
-     "${XCSH_API_URL}/api/config/namespaces/${XCSH_NAMESPACE}/http_loadbalancers/${XCSH_LB_NAME}")"
+     "<XCSH_API_URL>/api/config/namespaces/<XCSH_NAMESPACE>/http_loadbalancers/<XCSH_LB_NAME>")"
    ```
 
    </div>
@@ -67,10 +67,10 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
 
 1. Request active service graph nodes in the current window.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
-   XCSH_REQUEST="$(jq -nc --arg ns "$XCSH_NAMESPACE" --arg start "$XCSH_START_TIME" \
+   XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
      --arg end "$XCSH_END_TIME" '{
        namespace: $ns, start_time: $start, end_time: $end,
        step: "5m", range: "5m", group_by: ["VHOST"],
@@ -78,20 +78,20 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
      }')"
    XCSH_GRAPH_JSON="$(curl --silent --show-error --fail-with-body \
      --request POST \
-     --header "Authorization: APIToken ${XCSH_API_TOKEN}" \
+     --header "Authorization: APIToken <XCSH_API_TOKEN>" \
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
-     "${XCSH_API_URL}/api/data/namespaces/${XCSH_NAMESPACE}/graph/service")"
+     "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/graph/service")"
    ```
 
    </div>
 
 2. Select this load balancer's unique virtual host.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_LB_NAME">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_LB_NAME" data-xcsh-render="inline">
 
    ```bash
-   XCSH_VIRTUAL_HOST="$(jq -er --arg suffix "-$XCSH_LB_NAME" '
+   XCSH_VIRTUAL_HOST="$(jq -er --arg suffix "-<XCSH_LB_NAME>" '
      [.data.nodes[]?.id.vhost // empty | select(endswith($suffix))]
      | unique
      | if length == 1 then .[0] else error("Expected one demo VHOST") end
