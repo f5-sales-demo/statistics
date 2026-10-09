@@ -4,17 +4,23 @@ import copy
 import importlib.util
 import unittest
 from pathlib import Path
+from typing import Any, ClassVar
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
     "api_catalog", ROOT / "scripts/api_catalog.py"
 )
+assert SPEC is not None
+assert SPEC.loader is not None
 CATALOG = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(CATALOG)
 
 
 class CatalogTests(unittest.TestCase):
     """Protect reporting queries, exclusions, source coverage, and rendering."""
+
+    inventory: ClassVar[dict[str, Any]]
+    entries: ClassVar[dict[tuple[str, str], dict[str, Any]]]
 
     @classmethod
     def setUpClass(cls):
