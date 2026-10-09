@@ -42,7 +42,7 @@ Use Terraform 1.8 or later and the Azure CLI in your prepared Bash session. For 
 
 Use the form values with the native Terraform environment interface. Keep credentials in `XCSH_API_TOKEN`; tfvars must contain no credentials. For an existing deployment, load its private identity overrides before planning.
 
-<div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_LB_NAME XCSH_DOMAINNAME XCSH_ORIGIN_POOL_NAME XCSH_HC_NAME XCSH_WAF_NAME XCSH_DEPLOYER XCSH_ENVIRONMENT XCSH_OWNER XCSH_PURPOSE XCSH_TIMER_NAME XCSH_AZURE_REGION XCSH_SSH_PUBLIC_KEY_PATH" data-xcsh-render="inline">
+<div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_DOMAINNAME XCSH_LB_NAME XCSH_ORIGIN_POOL_NAME XCSH_HC_NAME XCSH_WAF_NAME XCSH_DEPLOYER XCSH_ENVIRONMENT XCSH_OWNER XCSH_PURPOSE XCSH_TIMER_NAME XCSH_AZURE_REGION XCSH_SSH_PUBLIC_KEY_PATH" data-xcsh-render="inline">
 
 ```bash
 export TF_VAR_namespace="<XCSH_NAMESPACE>"
@@ -64,7 +64,7 @@ export TF_VAR_ssh_public_key_path="<XCSH_SSH_PUBLIC_KEY_PATH>"
 
 A sanitized [example tfvars file](https://github.com/f5-sales-demo/statistics/blob/main/terraform/terraform.tfvars.example) provides the same inputs. Copy the personalized block below to a private tfvars file; `TF_VAR_subscription_id` stays in the environment.
 
-<div data-xcsh-context="hcl">
+<div data-xcsh-context="hcl" data-xcsh-fields="XCSH_NAMESPACE XCSH_DOMAINNAME XCSH_LB_NAME XCSH_ORIGIN_POOL_NAME XCSH_HC_NAME XCSH_WAF_NAME XCSH_DEPLOYER XCSH_ENVIRONMENT XCSH_OWNER XCSH_PURPOSE XCSH_TIMER_NAME XCSH_AZURE_REGION XCSH_SSH_PUBLIC_KEY_PATH">
 
 ```hcl
 namespace = "<XCSH_NAMESPACE>"
@@ -156,7 +156,7 @@ Follow [Demo readiness](../verification/) after the origin and generator finish 
 
 The first reviewed apply completed on 5 October 2026. The local receipt reported:
 
-<div data-personalize="off">
+<div data-xcsh-context="text" data-xcsh-fields="XCSH_DOMAINNAME XCSH_GENERATOR_VM_NAME XCSH_ORIGIN_VM_NAME">
 
 ```text
 Apply complete! Resources: 22 added, 0 changed, 0 destroyed.

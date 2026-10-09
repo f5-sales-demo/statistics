@@ -1,0 +1,29 @@
+{
+  "docs/en/setup.mdx": [
+    "9277e2d2fb38a54faacf487b0117315f000338c927634c6dce3ae47c536f23da",
+    "3544170537e600756d7c94d1bf56c5b01e224117927cdcd7330f93f232034c41"
+  ],
+  "docs/en/api-discovery.mdx": [
+    "2c108dee81be3c9adac034a4ce8cb5d9b6a7b37b5301c7a8dcec594d27aff17a",
+    "f65474ece6b8f326ab51b15f1ccbcb5b3166748084707598fd7d02c1f35d2b0a",
+    "e9d397e95d9fe6404250a2455bf9f1ad69834e73416571f66142f397d96b19d7",
+    "b45f4dba5735d0c18beac118a4118ee847823265acb32e0f25f4769179fbfef4"
+  ],
+  "docs/en/firewall-metrics.mdx": ["a985265608be2e48157c1240e37a723850b5c16c53847e491573bffec5ac8124"],
+  "docs/en/origin-performance.mdx": [
+    "742f59f3fe04046ebfdbda4e5cb15c69498f0bd9226366e91629bcc6c260f4c7",
+    "9e021a3609613c4f5cf83244b9d2588cb8117009716f7774cdbbdd73f6480e23"
+  ],
+  "docs/en/verification.mdx": ["ba56e36ac5bad1cdbe633f1d8cee2aefb868e63d49b7e6129a5c06735a8caa0b"],
+  "docs/en/access-logs.mdx": [
+    "41d70a40d2092b6482ccd002b9cd5907961f64b19c6ae8b53d1f1143cac722c5",
+    "430a36de85b1caf7531f6925f556c8c24ef35e07dbcae33683297e621dc4bca9"
+  ],
+  "docs/en/service-graph.mdx": ["d2ef5bb30cdf627db53e929d18ff783ed264a6e5126c505eb5f211c349bd16be"],
+  "docs/en/security-events.mdx": [
+    "e187998e15e79f6fe5a72f4ed659e8daf3d8ad7397590de3de2fe38efadd0dbe",
+    "aa5d3cb6b12c45e3b6b61d88cc014bc8f85c813422983c9d363539e2fb12970e"
+  ],
+  "docs/en/application-health.mdx": ["9125c72ff3546c95f1c4b2b8cbea7cc7fdfb5d5865a8d05d8ea13db648598f3b"],
+  "docs/en/deployment.mdx": ["a6f1ce784436e3841c47b9449094127314b53214dc1e29a0166319c7244a6197"]
+}

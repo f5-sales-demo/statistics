@@ -16,12 +16,38 @@
     "XCSH_TIMER_NAME",
     "XCSH_AZURE_SUBSCRIPTION_ID",
     "XCSH_AZURE_REGION",
-    "XCSH_SSH_PUBLIC_KEY_PATH"
+    "XCSH_SSH_PUBLIC_KEY_PATH",
+    "XCSH_VIRTUAL_HOST",
+    "XCSH_APP_TYPE",
+    "XCSH_GRAPH_SOURCE",
+    "XCSH_GRAPH_DESTINATION",
+    "XCSH_API_ENDPOINT_1",
+    "XCSH_API_ENDPOINT_2",
+    "XCSH_API_ENDPOINT_3",
+    "XCSH_ORIGIN_VM_NAME",
+    "XCSH_GENERATOR_VM_NAME",
+    "XCSH_ORIGIN_IP"
   ],
   "groups": [
     {
       "label": "XC API and application",
       "keys": ["XCSH_API_URL", "XCSH_API_TOKEN", "XCSH_NAMESPACE", "XCSH_LB_NAME", "XCSH_DOMAINNAME"]
+    },
+    {
+      "label": "Discovered identifiers",
+      "description": "Run the linked discovery procedure, then paste its exact identifier here. Blank fields retain placeholders; identifiers are never inferred from other settings.",
+      "keys": [
+        "XCSH_VIRTUAL_HOST",
+        "XCSH_APP_TYPE",
+        "XCSH_GRAPH_SOURCE",
+        "XCSH_GRAPH_DESTINATION",
+        "XCSH_API_ENDPOINT_1",
+        "XCSH_API_ENDPOINT_2",
+        "XCSH_API_ENDPOINT_3",
+        "XCSH_ORIGIN_VM_NAME",
+        "XCSH_GENERATOR_VM_NAME",
+        "XCSH_ORIGIN_IP"
+      ]
     },
     {
       "label": "Terraform resource names",
@@ -40,5 +66,9 @@
       "label": "Azure",
       "keys": ["XCSH_AZURE_SUBSCRIPTION_ID", "XCSH_AZURE_REGION", "XCSH_SSH_PUBLIC_KEY_PATH"]
     }
-  ]
+  ],
+  "examples": {
+    "XCSH_ORIGIN_IP": ""
+  },
+  "statisticsAuthoringVersion": 2
 }

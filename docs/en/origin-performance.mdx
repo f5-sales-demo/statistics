@@ -16,7 +16,7 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 1. Read the configured default pool and its unique public IP.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_TOKEN XCSH_API_URL XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
    XCSH_ORIGIN_POOL="$(jq -er '
@@ -36,12 +36,12 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 2. Discover the source and destination services.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_VIRTUAL_HOST XCSH_API_TOKEN XCSH_API_URL XCSH_ORIGIN_IP" data-xcsh-render="inline">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" \
      --arg start "$XCSH_START_TIME" --arg end "$XCSH_END_TIME" \
-     --arg vh "$XCSH_VIRTUAL_HOST" '{
+     --arg vh "<XCSH_VIRTUAL_HOST>" '{
        namespace: $ns, start_time: $start, end_time: $end,
        step: "5m", range: "5m", group_by: ["VHOST", "SERVICE"],
        label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
@@ -54,13 +54,13 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
      "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/graph/service")"
-   XCSH_GRAPH_DESTINATION="$(jq -er --arg vh "$XCSH_VIRTUAL_HOST" \
-     --arg ip "$XCSH_ORIGIN_IP" '
+   XCSH_GRAPH_DESTINATION="$(jq -er --arg vh "<XCSH_VIRTUAL_HOST>" \
+     --arg ip "<XCSH_ORIGIN_IP>" '
      [.data.edges[]? | select(.dst_id.vhost == $vh)
        | .dst_id.service | select(. == ("S:" + $ip))] | unique
      | if length == 1 then .[0] else error("No unique configured origin edge") end
    ' <<<"$XCSH_GRAPH_JSON")"
-   XCSH_GRAPH_SOURCE="$(jq -er --arg vh "$XCSH_VIRTUAL_HOST" \
+   XCSH_GRAPH_SOURCE="$(jq -er --arg vh "<XCSH_VIRTUAL_HOST>" \
      --arg dst "$XCSH_GRAPH_DESTINATION" '
      [.data.edges[]? | select(.dst_id.vhost == $vh and .dst_id.service == $dst)
        | .src_id.service] | unique
@@ -77,7 +77,7 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 Captured 2026-10-06T03:13:41Z; HTTP 200.
 
-<div data-personalize="off">
+<div data-xcsh-context="json" data-xcsh-fields="XCSH_GRAPH_SOURCE XCSH_GRAPH_DESTINATION">
 
 ```json
 {
@@ -95,11 +95,11 @@ The origin address is returned as a service identity prefixed with `S:`. The sou
 
 1. Request node and edge metrics with service identities retained.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_VIRTUAL_HOST" data-xcsh-render="inline">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
-     --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
+     --arg end "$XCSH_END_TIME" --arg vh "<XCSH_VIRTUAL_HOST>" '{
        namespace: $ns, start_time: $start, end_time: $end,
        step: "5m", range: "5m", group_by: ["VHOST", "SERVICE"],
        label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
@@ -124,7 +124,7 @@ The origin address is returned as a service identity prefixed with `S:`. The sou
 
 2. Query the matched node and edge.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_TOKEN XCSH_API_URL XCSH_NAMESPACE XCSH_VIRTUAL_HOST XCSH_GRAPH_SOURCE XCSH_GRAPH_DESTINATION" data-xcsh-render="inline">
 
    ```bash
    XCSH_ORIGIN_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
@@ -133,8 +133,8 @@ The origin address is returned as a service identity prefixed with `S:`. The sou
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
      "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/graph/service")"
-   jq -er --arg vh "$XCSH_VIRTUAL_HOST" --arg src "$XCSH_GRAPH_SOURCE" \
-     --arg dst "$XCSH_GRAPH_DESTINATION" '
+   jq -er --arg vh "<XCSH_VIRTUAL_HOST>" --arg src "<XCSH_GRAPH_SOURCE>" \
+     --arg dst "<XCSH_GRAPH_DESTINATION>" '
      def summary: {type, unit, points: (.value.raw | length),
                    latest: (.value.raw[-1] // null)};
      {step, source: $src, destination: $dst,
@@ -152,7 +152,7 @@ The origin address is returned as a service identity prefixed with `S:`. The sou
 
 Captured 2026-10-06T03:13:42Z; HTTP 200.
 
-<div data-personalize="off">
+<div data-xcsh-context="json" data-xcsh-fields="XCSH_GRAPH_SOURCE XCSH_GRAPH_DESTINATION">
 
 ```json
 {

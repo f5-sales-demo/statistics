@@ -55,10 +55,10 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 1. Build a virtual-host query capped at 100 records.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_VIRTUAL_HOST XCSH_NAMESPACE" data-xcsh-render="inline">
 
    ```bash
-   XCSH_LOG_QUERY="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
+   XCSH_LOG_QUERY="$(jq -nr --arg vh "<XCSH_VIRTUAL_HOST>" \
      '"{vh_name=" + ($vh | tojson) + "}"')"
    XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
      --arg end "$XCSH_END_TIME" --arg query "$XCSH_LOG_QUERY" '{
@@ -71,7 +71,7 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
 
 2. Fetch a page and retain only outcome fields.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_TOKEN XCSH_API_URL XCSH_NAMESPACE XCSH_VIRTUAL_HOST" data-xcsh-render="inline">
 
    ```bash
    XCSH_LOG_PAGE="$(curl --silent --show-error --fail-with-body --max-time 60 \
@@ -81,7 +81,7 @@ Use `XCSH_NAMESPACE`, the discovered `XCSH_VIRTUAL_HOST`, and the fixed two-hour
      --data-binary "$XCSH_REQUEST" \
      "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/access_logs")"
    XCSH_TOTAL_HITS="$(jq -er '.total_hits | tonumber' <<<"$XCSH_LOG_PAGE")"
-   XCSH_LOG_ROWS="$(jq -ec --arg ns "<XCSH_NAMESPACE>" --arg vh "$XCSH_VIRTUAL_HOST" '
+   XCSH_LOG_ROWS="$(jq -ec --arg ns "<XCSH_NAMESPACE>" --arg vh "<XCSH_VIRTUAL_HOST>" '
      [.logs[]? | (if type == "string" then fromjson else . end)
        | select(.namespace == $ns and .vh_name == $vh)
        | {rsp_code, rsp_code_class, method}]
@@ -168,7 +168,7 @@ Increase that bound deliberately for a larger authorized export.
 
 1. Start a fresh scroll snapshot.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_API_TOKEN XCSH_API_URL" data-xcsh-render="inline">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
@@ -191,14 +191,14 @@ Increase that bound deliberately for a larger authorized export.
 
 2. Collect only response codes, classes, and methods from every page.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_VIRTUAL_HOST XCSH_API_TOKEN XCSH_API_URL" data-xcsh-render="inline">
 
    ```bash
    while :; do
      XCSH_PAGES="$((XCSH_PAGES + 1))"
      test "$XCSH_PAGES" -le 100
      XCSH_PAGE_ROWS="$(jq -ec --arg ns "<XCSH_NAMESPACE>" \
-       --arg vh "$XCSH_VIRTUAL_HOST" '
+       --arg vh "<XCSH_VIRTUAL_HOST>" '
        [.logs[]? | (if type == "string" then fromjson else . end)
          | if .namespace == $ns and .vh_name == $vh
            then {rsp_code, rsp_code_class, method}
@@ -297,9 +297,13 @@ The log snapshot at 2026-10-06T03:13:40Z contained 430 logs across five populate
 
 For a later query, change the matcher to response codes in the 4xx or 5xx classes. To filter a method, add an exact `method="GET"` matcher. Rebuild the request and run the pagination procedure for complete filtered counts.
 
+<div data-xcsh-context="shell" data-xcsh-fields="XCSH_VIRTUAL_HOST" data-xcsh-render="inline">
+
 ```bash
-XCSH_LOG_QUERY="$(jq -nr --arg vh "$XCSH_VIRTUAL_HOST" \
+XCSH_LOG_QUERY="$(jq -nr --arg vh "<XCSH_VIRTUAL_HOST>" \
   '"{vh_name=" + ($vh | tojson) + ",rsp_code=~\"[45].*\",method=\"GET\"}"')"
 ```
+
+</div>
 
 The [bounded request sequence](#run-the-bounded-request-sequence) produces explicit 404 and 503 responses without taking the origin offline. An HTTP status does not identify WAF action: the demo rejection page can return 200, so confirm blocks with [security events](../security-events/).
