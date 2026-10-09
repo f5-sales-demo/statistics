@@ -60,7 +60,7 @@ class TerraformInputs(unittest.TestCase):
             actual = [
                 hashlib.sha256(
                     re.sub(
-                        r'<XCSH_[A-Z0-9_]+>',
+                        r"<XCSH_[A-Z0-9_]+>",
                         "IDENTIFIER",
                         body,
                     ).encode()
