@@ -13,13 +13,13 @@ For a new deployment, wait for the origin and generator applications to finish p
 
 1. Check DNS and the HTTPS health route.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME" data-xcsh-render="inline">
 
    ```bash
-   dig +short "$XCSH_DOMAINNAME" A
+   dig +short "<XCSH_DOMAINNAME>" A
    curl --silent --show-error --fail-with-body --output /dev/null \
      --write-out 'status=%{http_code} tls=%{ssl_verify_result}\n' \
-     "https://$XCSH_DOMAINNAME/health"
+     "https://<XCSH_DOMAINNAME>/health"
    ```
 
    </div>
@@ -28,26 +28,26 @@ For a new deployment, wait for the origin and generator applications to finish p
 
 2. Check an API route through the load balancer.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME" data-xcsh-render="inline">
 
    ```bash
    curl --silent --show-error --fail-with-body --output /dev/null \
      --write-out 'status=%{http_code}\n' \
-     "https://$XCSH_DOMAINNAME/httpbin/get?statistics_probe=$(date -u +%s)"
+     "https://<XCSH_DOMAINNAME>/httpbin/get?statistics_probe=$(date -u +%s)"
    ```
 
    </div>
 
 3. Check the WAF rejection page with one authorized probe to this F5-owned demo.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_DOMAINNAME" data-xcsh-render="inline">
 
    ```bash
    XCSH_WAF_BODY="$(mktemp)"
    trap 'rm -f "$XCSH_WAF_BODY"' EXIT
    curl --silent --show-error --output "$XCSH_WAF_BODY" --write-out 'status=%{http_code}\n' \
      --get --data-urlencode "q=' OR 1=1--" \
-     "https://$XCSH_DOMAINNAME/httpbin/get"
+     "https://<XCSH_DOMAINNAME>/httpbin/get"
    grep -i '<title>Request Rejected</title>' "$XCSH_WAF_BODY"
    ```
 
