@@ -79,7 +79,7 @@ The expanded source below is imported from the same executable file as the
 download. It requests only `HTTP_REQUEST_RATE` and selects the exact discovered
 virtual host.
 
-<div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="script" data-xcsh-download="simple-stats-personalized.sh" data-xcsh-source-file="assets/scripts/simple-stats.sh">
+<div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_VIRTUAL_HOST" data-xcsh-render="script" data-xcsh-download="simple-stats-personalized.sh" data-xcsh-source-file="assets/scripts/simple-stats.sh">
 
 ```bash file=../assets/scripts/simple-stats.sh
 ```
@@ -94,7 +94,7 @@ match the selected namespace and virtual host, and `counted` must equal
 `total_hits`. The script retains only response codes, classes, and methods from
 logs. Narrow the window if the page cap prevents a complete count.
 
-<div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME" data-xcsh-render="script" data-xcsh-download="get-stats-personalized.sh" data-xcsh-source-file="assets/scripts/get-stats.sh">
+<div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME XCSH_VIRTUAL_HOST XCSH_APP_TYPE" data-xcsh-render="script" data-xcsh-download="get-stats-personalized.sh" data-xcsh-source-file="assets/scripts/get-stats.sh">
 
 ```bash file=../assets/scripts/get-stats.sh
 ```

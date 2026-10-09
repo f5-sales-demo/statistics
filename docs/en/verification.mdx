@@ -59,14 +59,27 @@ For a new deployment, wait for the origin and generator applications to finish p
 
    Authenticate to the approved Azure subscription before using the Azure CLI.
 
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_GENERATOR_VM_NAME XCSH_TIMER_NAME" data-xcsh-render="inline">
+
    ```bash
+   XCSH_GENERATOR_RESOURCE_GROUP="$(az vm list --output json |
+     jq -er --arg name "<XCSH_GENERATOR_VM_NAME>" '
+       [.[] | select(.name == $name) | .resourceGroup] | unique
+       | if length == 1 then .[0] else error("Expected one generator VM") end
+     ')"
+   XCSH_VM_COMMAND="$(jq -nr --arg timer "<XCSH_TIMER_NAME>" '
+     "systemctl is-active " + (($timer + ".timer") | @sh) + "; cat " +
+     (("/var/lib/" + $timer + "/run-count") | @sh)
+   ')"
    az vm run-command invoke \
-     --resource-group rg-traffic-generator-lab-statistics \
-     --name vm-traffic-generator-statistics \
+     --resource-group "$XCSH_GENERATOR_RESOURCE_GROUP" \
+     --name "<XCSH_GENERATOR_VM_NAME>" \
      --command-id RunShellScript \
-     --scripts 'systemctl is-active statistics-demo-traffic.timer; cat /var/lib/statistics-demo/run-count' \
+     --scripts "$XCSH_VM_COMMAND" \
      --query 'value[].message' --output tsv
    ```
+
+   </div>
 
    Expect `active` and an increasing run count. The timer sends three normal requests each minute and one WAF probe every fifth run. Keep it enabled for fresh telemetry.
 

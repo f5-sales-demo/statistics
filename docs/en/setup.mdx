@@ -20,11 +20,15 @@ The configuration and telemetry APIs use different identifiers for the same load
 | `XCSH_ORIGIN_POOL`, `XCSH_ORIGIN_IP` | Configured pool and public-IP origin | [Origin performance](../origin-performance/#match-the-origin-graph-identity) |
 | `XCSH_GRAPH_SOURCE`, `XCSH_GRAPH_DESTINATION` | Services at each end of the origin request edge | Origin performance; exact configured address match |
 
+In **Customize examples → Discovered identifiers**, paste the exact values returned by discovery. Blank fields keep their `<XCSH_...>` placeholders. Recorded response identifiers follow the form; captured times, counts, and metric values stay unchanged.
+
+Selected namespace: `<XCSH_NAMESPACE>`; load balancer: `<XCSH_LB_NAME>`; telemetry virtual host: `<XCSH_VIRTUAL_HOST>`; application type: `<XCSH_APP_TYPE>`.
+
 ## Read the load balancer identifiers
 
 1. Fetch the load balancer configuration.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE XCSH_LB_NAME" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_TOKEN XCSH_API_URL XCSH_NAMESPACE XCSH_LB_NAME" data-xcsh-render="inline">
 
    ```bash
    XCSH_LB_JSON="$(curl --silent --show-error --fail-with-body \
@@ -50,13 +54,13 @@ The configuration and telemetry APIs use different identifiers for the same load
 
 Captured 2026-10-06T03:13:41Z; HTTP 200.
 
-<div data-personalize="off">
+<div data-xcsh-context="json" data-xcsh-fields="XCSH_LB_NAME XCSH_NAMESPACE XCSH_WAF_NAME">
 
 ```json
 {
-  "name": "statistics",
+  "name": "<XCSH_LB_NAME>",
   "namespace": "<XCSH_NAMESPACE>",
-  "waf": "statistics-waf",
+  "waf": "<XCSH_WAF_NAME>",
   "api_discovery_enabled": true
 }
 ```
@@ -67,7 +71,7 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
 
 1. Request active service graph nodes in the current window.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_API_TOKEN XCSH_API_URL" data-xcsh-render="inline">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
@@ -106,7 +110,7 @@ Captured 2026-10-06T03:13:41Z; HTTP 200.
 
 Captured 2026-10-06 02:22:43 UTC; the service graph request returned HTTP 200.
 
-<div data-personalize="off">
+<div data-xcsh-context="text" data-xcsh-fields="XCSH_VIRTUAL_HOST">
 
 ```text
 XCSH_VIRTUAL_HOST=<XCSH_VIRTUAL_HOST>

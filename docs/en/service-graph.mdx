@@ -11,11 +11,11 @@ The query selects `XCSH_NAMESPACE` and the discovered `XCSH_VIRTUAL_HOST` over t
 
 1. Build a request grouped by virtual host.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_NAMESPACE XCSH_VIRTUAL_HOST" data-xcsh-render="inline">
 
    ```bash
    XCSH_REQUEST="$(jq -nc --arg ns "<XCSH_NAMESPACE>" --arg start "$XCSH_START_TIME" \
-     --arg end "$XCSH_END_TIME" --arg vh "$XCSH_VIRTUAL_HOST" '{
+     --arg end "$XCSH_END_TIME" --arg vh "<XCSH_VIRTUAL_HOST>" '{
        namespace: $ns, start_time: $start, end_time: $end,
        step: "5m", range: "5m", group_by: ["VHOST"],
        label_filter: [{label: "LABEL_VHOST", op: "EQ", value: $vh}],
@@ -37,7 +37,7 @@ The query selects `XCSH_NAMESPACE` and the discovered `XCSH_VIRTUAL_HOST` over t
 
 2. Query and summarize the returned series.
 
-   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_URL XCSH_API_TOKEN XCSH_NAMESPACE" data-xcsh-render="inline">
+   <div data-xcsh-context="shell" data-xcsh-fields="XCSH_API_TOKEN XCSH_API_URL XCSH_NAMESPACE XCSH_VIRTUAL_HOST" data-xcsh-render="inline">
 
    ```bash
    XCSH_TRAFFIC_JSON="$(curl --silent --show-error --fail-with-body --max-time 60 \
@@ -46,7 +46,7 @@ The query selects `XCSH_NAMESPACE` and the discovered `XCSH_VIRTUAL_HOST` over t
      --header 'Content-Type: application/json' \
      --data-binary "$XCSH_REQUEST" \
      "<XCSH_API_URL>/api/data/namespaces/<XCSH_NAMESPACE>/graph/service")"
-   jq -er --arg vh "$XCSH_VIRTUAL_HOST" '
+   jq -er --arg vh "<XCSH_VIRTUAL_HOST>" '
      def summary: {type, unit, points: (.value.raw | length),
                    latest: (.value.raw[-1] // null)};
      {step, virtual_host: $vh,
@@ -63,7 +63,7 @@ The query selects `XCSH_NAMESPACE` and the discovered `XCSH_VIRTUAL_HOST` over t
 
 Captured 2026-10-06T03:13:42Z; HTTP 200.
 
-<div data-personalize="off">
+<div data-xcsh-context="json" data-xcsh-fields="XCSH_VIRTUAL_HOST">
 
 ```json
 {
